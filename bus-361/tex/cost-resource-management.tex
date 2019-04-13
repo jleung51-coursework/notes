@@ -1,0 +1,74 @@
+%
+% BUS 361: Project Management - A Course Overview
+% Section: Cost and Resource Management
+%
+% Author: Jeffrey Leung
+%
+
+\section{Cost and Resource Management}
+	\label{sec:cost-resource-management}
+\begin{easylist}
+
+& \textbf{Effort:} Actual time invested in an activity (e.g. man hours)
+& \textbf{Duration:} Time between activity start and finish
+
+& Process to calculate resource cost:
+	&& Create a WBS document
+	&& Effort:
+		&&& Create an estimate for total effort of all work packages
+		&&& Multiply effort by resource cost
+	&& Cost:
+		&&& Create an estimate for total cost of all work packages
+		&&& Apply contingency to effort and cost
+
+& Types of costs:
+	&& \textbf{Direct:} Costs which are clearly assigned to the output
+		&&& E.g. Labor, materials, subcontractors, equipment, facilities, travel
+	&& \textbf{Indirect:} Costs from internal spending which indirectly translate to output
+		&&& E.g. Overhead costs (utilities, taxes, insurance, maintenance, depreciation) or administration (advertising, salaries, sales, commissions)
+	&& \textbf{Fully loaded rate:} Labor costs which are calculated using an overhead multiplier
+	&& \textbf{Nonrecurring:} Charges which are applied once (e.g. preliminary analyses, training)
+	&& \textbf{Recurring:} Charges which continue over the timeline (e.g. labor, material)
+	&& \textbf{Fixed:} Charges which do not change with usage (e.g. leasing capital hardware)
+	&& \textbf{Variable:} Charges which increase with usage (e.g. equipment degradation)
+	&& \textbf{Normal:} Charges which are expected and agreed upon
+	&& \textbf{Expedited:} Charges which are unplanned and occur to speed up completion
+
+& \textbf{Gantt chart:} Diagram of project schedule with start and finish dates of summary elements
+	&& Simple to create and read
+	&& Can be used for control
+	&& Does not display details, sequencing, path to completion
+	&& Does not provide information on efficient resources usage
+
+\end{easylist}
+\subsection{Critical Path Method}
+	\label{subsec:critical-path-method}
+\begin{easylist}
+
+& \textbf{Float/slack:} Amount of time an activity can be delayed without affecting the project
+	&& \textbf{Free float:} Amount of time an activity can be delayed without affecting the following activity
+	&& \textbf{Total float:} Amount of time an activity can be delayed without affecting project completion date
+
+& \textbf{Critical path:} Sequence of activities which determines the shortest total duration of the project
+	&& Given possible sequences of precedence activities, the longest path has no float and is the critical path
+
+& Critical path method:
+	&& Conduct a forward pass to determine earliest start/end activity times
+	&& Conduct a backward pass to determine latest start/end activity times
+	&& Calculate the possible slack for each item
+
+& To shorten the critical path:
+	&& Eliminate tasks
+	&& \textbf{Crashing:} Speeding up a task to reduce project duration
+		&&& Shorten all/early/long/easy tasks, or tasks which cost less to speed up
+	&& \textbf{Fast tracking:} Allow parallel work
+	&& Overlap sequential tasks
+
+& Process to create a schedule:
+	&& Using the effort calculated, create duration estimates
+	&& Create a network diagram
+	&& Generate a critical path from the network diagram
+	&& Take the total duration from the critical path
+
+\end{easylist}
+\clearpage
