@@ -6,7 +6,12 @@
 
 \documentclass[10pt, oneside, letterpaper, titlepage]{article}
 
+% Pre pre-amble
+\usepackage[dvipsnames]{xcolor} % Must be declared before Tikz
+
+% Pre-amble
 \usepackage{amsmath}
+\usepackage[skip=4pt]{caption}
 \usepackage[ampersand]{easylist}
 	\ListProperties(
 		Progressive*=5ex,
@@ -28,13 +33,18 @@
 		Hide6=6,
 		Hide7=7,
 		Hide8=8 )
+\usepackage{forest}
+	\useforestlibrary{edges}
 \usepackage{geometry}
 	\geometry{margin=1.2in}
 \usepackage{graphicx}
 	\graphicspath{ {img/} }
 \usepackage[colorlinks=true, linkcolor=blue]{hyperref}
 \usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage[caption=false]{subfig}
 \usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{tikz}
+	\usetikzlibrary{trees,arrows}
 \usepackage{verbatim}
 
 \renewcommand{\arraystretch}{1.2}

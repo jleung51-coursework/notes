@@ -35,14 +35,68 @@
 \begin{figure}[!htb]
 	\caption{Work Breakdown Structure Example (Diagram)}
 	\label{fig:wbs-example-diag}
-	\includegraphics[width=\linewidth]{wbs-example-diag}
+	\centering
+
+	\begin{forest}
+		for tree={
+			draw,
+			line width=0,
+			align=center
+		},
+		forked edges,
+		[WUSC Cycling Event, fill={Cyan}
+			[Itinerary, fill={Dandelion}
+				[Transportation, fill={Aquamarine}
+					[Book tickets, edge={->}
+						[Research means of transport, edge={->}]
+					]
+				]
+				[Route, fill={Aquamarine}
+					[Research possible routes, edge={->}
+						[Check weather conditions, edge={->}
+							[Establish route, edge={->}]
+						]
+					]
+				]
+			]
+			[Participants, fill={Dandelion}
+				[Recruitment, fill={Aquamarine}
+					[Contact WUSC, edge={->}
+						[Create invitations, edge={->}
+							[Send invitations, edge={->}
+								[Confirm participants, edge={->}]
+							]
+						]
+					]
+				]
+			]
+		]
+	\end{forest}
 \end{figure}
 
+\end{easylist}
 \begin{figure}[!htb]
 	\caption{Work Breakdown Structure Example (Hierarchy)}
 	\label{fig:wbs-example-hier}
-	\includegraphics[width=\linewidth]{wbs-example-hier}
+	\begin{tabular}{ l | l | l }
+		\textbf{WBS Code} & \textbf{Name} & \textbf{Description} \\
+		\hline
+		1 & Foundations & All of the work necessary to build a foundation \\
+		1.1 & Excavate & Create a hole ready for the foundation to be framed and poured \\
+		1.1.1 & Dig & Dig a hole of the right shape and size in the correct location \\
+		1.1.2 & Level & Level the hole so that it is packed and even \\
+		1.2 & Frame & Frame the foundation including steel supports \\
+		1.3 & Concrete & Acquire, transport, pour, and cure the concrete foundation \\
+		1.3.1 & Pour & Pour, pack, and level the foundation \\
+		1.3.2 & Cure & All procedures necessary for the foundation to cure successfully \\
+		\hline
+		2 & Exterior & All of the work necessary to complete the exterior of the house \\
+		\vdots & \vdots & \vdots \\
+		3 & Interior & All of the work necessary to complete the interior of the house \\
+		\vdots & \vdots & \vdots
+	\end{tabular}
 \end{figure}
+\begin{easylist}
 
 	&& \textbf{Work package:} Unit of work which can be estimated, is a package which can be outsourced or contracted out, and produces a measurable deliverable
 		&&& Smallest unit of a WBS
