@@ -1,0 +1,220 @@
+\documentclass[10pt, oneside, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[ampersand]{easylist} % For 8-level simulations of itemize using easylist
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\textperiodcentered\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\textperiodcentered\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage{forest}
+	\useforestlibrary{edges}
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+
+% Font-related commands:
+\usepackage[T1]{fontenc} % Allows the use of symbols in LMSS such as the braces
+\usepackage[default, osfigures]{opensans}
+\usepackage{textcomp} % Allows the use of symbols in LMSS such as textasterisk and textbullet
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{Minimax Worksheet: Solutions}
+\author{}
+\date{}
+
+\begin{document}
+
+	\maketitle
+	
+	Apply the minimax algorithm to the partial game trees below, where it is the minimizer's turn to play and the game does not involve randomness. The values estimated by the board evaluation heuristic are indicated in the leaf nodes (higher scores are better for the maximizer).
+	\vspace{\baselineskip}
+
+	Write the estimated values of the nodes inside their circles. Processing this game tree working left-to-right, strike out the nodes which are pruned and do not need to be evaluated.
+	
+\begin{figure}[!htb]
+	\caption{Game Tree}
+	\label{fig:game-tree-1}
+	\centering
+
+	\begin{forest}
+		for tree={
+			draw,
+			circle,
+			minimum size=1cm,
+			line width=0,
+			align=center
+		},
+		[-2
+			[7
+				[7]
+				[-3]
+				[1]
+			]
+			[-2
+				[-2]
+				[-6]
+				[-5]
+			]
+			[8
+				[4]
+				[8, edge={densely dashed}]
+				[-9, edge={densely dashed}]
+			]
+		]
+	\end{forest}
+\end{figure}
+	
+\begin{figure}[!htb]
+	\caption{Game Tree}
+	\label{fig:game-tree-2}
+	\centering
+
+	\begin{forest}
+		for tree={
+			draw,
+			circle,
+			minimum size=1cm,
+			line width=0,
+			align=center
+		},
+		[4
+			[4
+				[4]
+				[-1]
+				[2]
+			]
+			[11
+				[-19]
+				[11]
+				[3, edge={densely dashed}]
+			]
+			[18
+				[18]
+				[3, edge={densely dashed}]
+				[13, edge={densely dashed}]
+			]
+		]
+	\end{forest}
+\end{figure}
+	
+\begin{figure}[!htb]
+	\caption{Game Tree}
+	\label{fig:game-tree-3}
+	\centering
+
+	\begin{forest}
+		for tree={
+			draw,
+			circle,
+			minimum size=1cm,
+			line width=0,
+			align=center
+		},
+		[0
+			[2
+				[2]
+				[-3]
+				[-14]
+			]
+			[20
+				[14]
+				[17, edge={densely dashed}]
+				[20, edge={densely dashed}]
+			]
+			[0
+				[-12]
+				[-18]
+				[0]
+			]
+		]
+	\end{forest}
+\end{figure}
+	
+\begin{figure}[!htb]
+	\caption{Game Tree}
+	\label{fig:game-tree-4}
+	\centering
+
+	\begin{forest}
+		for tree={
+			draw,
+			circle,
+			minimum size=1cm,
+			line width=0,
+			align=center
+		},
+		[5
+			[9
+				[-8]
+				[9]
+				[-16]
+			]
+			[5
+				[-5]
+				[5]
+				[-7]
+			]
+			[16
+				[5]
+				[-11, edge={densely dashed}]
+				[16, edge={densely dashed}]
+			]
+		]
+	\end{forest}
+\end{figure}
+	
+\begin{figure}[!htb]
+	\caption{Game Tree}
+	\label{fig:game-tree-5}
+	\centering
+
+	\begin{forest}
+		for tree={
+			draw,
+			circle,
+			minimum size=1cm,
+			line width=0,
+			align=center
+		},
+		[-9
+			[-9
+				[-16]
+				[-9]
+				[-13]
+			]
+			[18
+				[18]
+				[15, edge={densely dashed}]
+				[3, edge={densely dashed}]
+			]
+			[19
+				[19]
+				[1, edge={densely dashed}]
+				[-5, edge={densely dashed}]
+			]
+		]
+	\end{forest}
+\end{figure}
+	
+\end{document}
