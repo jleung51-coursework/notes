@@ -1,0 +1,39 @@
+%
+% CMPT 310: Artificial Intelligence - A Course Overview
+% Section: Introduction
+%
+% Author: Jeffrey Leung
+%
+
+\section{Introduction}
+	\label{sec:introduction}
+\begin{easylist}
+
+& \textbf{Artificial intelligence:} Systems which may think like humans, think rationally, act like humans, or act rationally/correctly
+	&& \textbf{Strong AI:} System which is functionally and cognitively equal to a human
+	&& \textbf{Weak AI:} System which can solve a specific problem well
+	
+& \textbf{Agent:} Entity which interacts with another entity (if mechanically, through sensors and actuators)
+	&& E.g. Humans, animals, robots, Roombas
+	&& \textbf{Percept:} Input from sensors
+	&& \textbf{Agent function:} Mapping from the percept history to an action by actuators
+		&&& Notation: $f : P^* \rightarrow A$
+		&&& \textbf{Agent program:} Agent function in software form
+	&& \textbf{Performance measure:} Arbitrary calculation of the success of actions
+	&& \textbf{Rational agent:} Agent which acts to maximize the result of the performance measure
+		&&& Is neither omniscient (not all information is known) nor clairvoyant (outcomes may not be as expected)
+		&&& \textbf{Task environment:} Performance measure, Environment, Actuators, and Sensors of a rational agent (PEAS)
+			&&&& \textbf{Fully observable:} Environment where all aspects can be perceived at all times, at any time (alternate: \textit{partially observable} or \textit{unobservable})
+			&&&& \textbf{Deterministic:} Environment with no randomness (antonym: \textit{stochastic})
+			&&&& \textbf{Episodic:} Environment which occurs in a series of independent tasks, none of which affect each other (antonym: \textit{sequential})
+			&&&& \textbf{Static:} Environment which does not change while the agent is between actions \\ (antonym: \textit{dynamic})
+			&&&& \textbf{Discrete:} Environment which occurs in distinct stages (antonym: \textit{continuous})
+			&&&& \textbf{Single-agent:} Environment where only one agent acts upon or influences any other entity (antonym: \textit{multi-agent})
+		&&& Basic types of agents:
+			&&&& \textbf{Simple reflex agent:} Agent which acts only based on immediate input
+			&&&& \textbf{Reflex agent with state:} Agent which acts based on immediate input and an modelled understanding of the environment and how it changes over time
+			&&&& \textbf{Goal-based agent:} Agent which acts based on immediate, input, a modelled understanding of the environment, and a desired situation to achieve
+			&&&& \textbf{Utility-based agent:} Agent which acts based on immediate, input, a modelled understanding of the environment, a desired situation to achieve, and a performance measure to maximize
+
+\end{easylist}
+\clearpage

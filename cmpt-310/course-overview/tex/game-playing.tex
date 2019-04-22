@@ -1,0 +1,98 @@
+%
+% CMPT 310: Artificial Intelligence - A Course Overview
+% Section: Game Playing and Adversarial Search
+%
+% Author: Jeffrey Leung
+%
+
+\section{Game Playing and Adversarial Search}
+	\label{sec:game-playing-adversarial-search}
+\begin{easylist}
+
+& Game playing: Scenario where a game with discrete states is played with two players, each seeking to maximize their position which minimizes the opponent's position
+	&& E.g. Chess, checkers
+	&& \textbf{Heuristic/evaluation function:} Estimate of the optimality of a game state
+	&& \textbf{Terminal state:} Game state which has no further states
+	&& Example diagram of game state evaluations in a tree: See figure~\ref{fig:game-tree}
+	
+\begin{figure}[!htb]
+	\caption{Game Tree (Minimizer first)}
+	\label{fig:game-tree}
+	\centering
+
+	\begin{forest}
+		for tree={
+			draw,
+			circle,
+			minimum size=1cm,
+			line width=0,
+			align=center
+		},
+		[0
+			[2
+				[2]
+				[-3]
+				[-14]
+			]
+			[14
+				[14]
+				[17]
+				[20]
+			]
+			[0
+				[-12]
+				[-18]
+				[0]
+			]
+		]
+	\end{forest}
+\end{figure}
+
+& \textbf{Minimax algorithm:} Decision-making rule which minimizes the potential loss for a worst-case scenario, given two entities who are alternatively trying to maximize and minimize a score
+	&& Performs the equivalent of a depth-first search
+	&& Each alternating level of the decision tree is minimized or maximized from the values in the levels below it
+	&& Complete: Yes, as long as the tree is finite
+
+& \textbf{$\alpha / \beta$ pruning:} Keeping the maximum/minimum searched values at a given level so far to eliminate nodes which will not exceed a minimum/maximum
+	&& $\alpha$: Lower bound on the potential value of a maximum node
+	&& $\beta$: Upper bound on the potential value of a minimum node
+	&& \href{http://inst.eecs.berkeley.edu/~cs61b/fa14/ta-materials/apps/ab_tree_practice/}{Resource for practice}
+	&& See figure~\ref{fig:game-tree-ab} for an example of pruned nodes (notated by dashed edges)
+	
+\begin{figure}[!htb]
+	\caption{Game Tree with $\alpha / \beta$ Pruning (Minimizer first)}
+	\label{fig:game-tree-ab}
+	\centering
+
+	\begin{forest}
+		for tree={
+			draw,
+			circle,
+			minimum size=1cm,
+			line width=0,
+			align=center
+		},
+		[0
+			[2
+				[2]
+				[-3]
+				[-14]
+			]
+			[14
+				[14]
+				[17, edge={densely dashed}]
+				[20, edge={densely dashed}]
+			]
+			[0
+				[-12]
+				[-18]
+				[0]
+			]
+		]
+	\end{forest}
+\end{figure}
+
+& Time, space, and optimal complexity of algorithms: See figure~\ref{fig:algos-complexity}
+
+\end{easylist}
+\clearpage

@@ -1,0 +1,495 @@
+%
+% CMPT 310: Artificial Intelligence - A Course Overview
+% Section: Probability
+%
+% Author: Jeffrey Leung
+%
+
+\section{Probability}
+	\label{sec:probability}
+\subsection{Fundamentals of Probability}
+	\label{subsec:probability-fundamentals}
+\begin{easylist}
+
+& Fundamentals:
+	&& Continuous variable: Variable which can be any continuous value between two given points defining the domain
+		&&& Uniform distribution: Variable which has a equal possibility of being any value in the domain
+	&& Inverse of a probability: $P(a) = 1 - P(\lnot a)$
+	&& Probability of at least one of two events: $P(a \lor b) = P(a) + P(b) - P(a \land b)$
+	&& Probability of both events: $P(a \land b) = P(a, b) = P(a) + P(b) - P(a \lor b)$
+
+& \textbf{Factor/probability table:} Set of probabilities of all possible values of a specific set of random variables
+	&& May not sum to 1 (in contrast with a probability table)
+		&&& \textbf{Normalization constant:} Value equaling the sum of the probabilities, by which every probability is divided by in order to reduce a probability function to a total probability of 1
+	&& E.g. See figure~\ref{sec:prob-table}.
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Example Probability Table}
+	\label{sec:prob-table}
+	\centering
+	\begin{tabular}{ r | c | c | c | c }
+		& \multicolumn{2}{ | c | }{Toothache} & \multicolumn{2}{ | c }{$\lnot$ Toothache} \\
+		& Rough & $\lnot$ Rough & Rough & $\lnot$ Rough \\
+		\hline
+		Cavity & 0.108 & 0.012 & 0.072 & 0.008 \\
+		\hline
+		$\lnot$ Cavity & 0.016 & 0.064 & 0.144 & 0.578
+	\end{tabular}
+\end{figure}
+\begin{easylist}
+
+& \textbf{Probabilistic inference:} Using previous information to compute specific probabilities
+
+& \textbf{Conditional probability:} Probability of one event occurring given the guarantee of another event happening
+	&& Notation: Probability of $a$ given $b = P(a|b) = \frac{P(a, b)}{P(b)}$
+	&& Inverted: $P(a \land b) = P(a | b) \times P(b)$
+	&& \textbf{Conditional Probability Table (CPT):} Probability table showing the probability of the query variable being true given all possible combinations of values of the condition variables
+		&&& E.g. See figure~\ref{fig:cpt-example}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Example of a Conditional Probability Table}
+	\label{fig:cpt-example}
+	\centering
+	\begin{tabular}{ c | c || c }
+		A & B & P(C $\vert$ A, B) \\
+		\hline
+		T & T & 0.5 \\
+		T & F & 0.14 \\
+		F & T & 0.29 \\
+		F & F & 0.001
+	\end{tabular}
+\end{figure}
+\begin{easylist}
+
+	&& \textbf{Query variable:} Variable for which the value is sought
+		&&& E.g. For variables $A, B, C, D$ and the conditional probability $P(a|b, c)$, the query variable is $a$
+	&& \textbf{Evidence/condition variable:} Variable which is known
+		&&& E.g. For variables $A, B, C, D$ and the conditional probability $P(a|b, c)$, the condition variables are $b, c$
+	&& \textbf{Hidden variable:} Variable which is unrelated and not included
+		&&& E.g. For variables $A, B, C, D$ and the conditional probability $P(a|b, c)$, the hidden variable is $d$
+		
+& \textbf{Chain rule:} Derivation of the probability of two events:
+
+	\end{easylist}
+	\begin{align*}
+	P(a, b) &= P(a) P(b|a) = P(b) P(a|b) \\
+	P(x_1, \dotsc, x_n) &= \prod_{i=1}^n P(x_i | x_1, \dotsc, x_{i-1})
+	\end{align*}
+	\begin{easylist}
+	
+	&& When conditional dependence is added:
+	\[
+		P(a, b | c) &= P(a | c) P(b | a, c)
+	\]
+	
+	&& Derived from the formula for conditional probability
+
+& \textbf{Bayes' Rule:} Equation which allows conditional probability calculation given the independent probabilities and inverse conditional probability
+	\[
+		P(B | A) = \frac{P(A | B) \times P(B)}{P(A)}
+	\]
+
+	&& $P(A | B)$: Causal probability (e.g. probability that symptoms occur given a disease is present)
+	&& $P(B | A)$: Diagnostic probability (e.g. probability that a disease is present given the symptoms)
+
+\end{easylist}
+\begin{align*}
+	P(A \land B) &= P(A | B) \times P(B) = P(B | A) \times P(A) \\
+	P(B | A) \times P(B) &= P(A | B) \times P(A) \\
+	P(B | A) &= \frac{P(A | B) \times P(B)}{P(A)}
+\end{align*}
+\begin{easylist}
+
+& \textbf{Joint probability distribution:} Probability model consisting of all the possible variables in a model
+	&& Size: $d^n-1$ where $d$ = size of the domain, $n$ = number of variables
+	&& Runtime: $O(d^n)$ where $d$ = size of the domain, $n$ = number of variables
+	&& Requires all data (amount proportional to $d^n$) to create parameters beforehand
+
+& \textbf{Marginalization/summing out:} Determining the probability of a variable from a joint probability distribution by adding up the probabilities for all values of other variables, effectively eliminating the other variables
+	&& E.g. For variables $A, B, C$, $P(a, b) = P(a, b, c) + P(a, b, \lnot c)$
+
+& \textbf{Independence:} Property of two variables which do not rely on each other (i.e. knowing if one event occurred has no effect on the probability of the other event)
+	&& Definition: $A, B$ are independent iff $P(A | B) = P(A)$ or $P(A, B) = P(A) P(B)$
+	&& In a Bayesian network, two variables are dependent if they share a parent nodes (including themselves)
+& \textbf{Conditional independence:} Property of two variables given a third variable where, if the third variable is known, then knowing if one event occurred has no effect on the probability of the other event
+	&& Definition: $A, B$ are conditionally independent given C if $P(A, B|C) = P(A|C) P(B|C)$
+	&& In a Bayesian network, two variables are conditiionally dependent if they share a child node (including themselves)
+
+\end{easylist}
+\subsection{Bayesian Networks}
+	\label{subsec:bayesian-networks}
+\begin{easylist}
+
+& \href{https://www.youtube.com/watch?v=VfyxPtlqZh4}{\textbf{Bayesian Network:}} Acyclic digraph where each node (representing a variable) has a probability conditional on its parents
+	&& Nodes represent random variables, directed edges represent conditional dependence
+	&& Each node is independent of all nodes which do not share a child node with the original node
+	&& Each node is conditionally independent of all nodes which are not its descendents
+	&& Runtime: $O(n d^p (d-1))$ where $n$ = number of variables, $d$ = values in the domain, and $p$ = number of parents
+	&& For an example, see figure~\ref{fig:bay-net-example}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Example of a Bayesian Network}
+	\label{fig:bay-net-example}
+	\centering
+	\begin{tikzpicture}[
+		node distance=1cm and 0cm,
+		baynetnode/.style={draw, ellipse, text width=2cm, align=center}
+	]
+		\node[baynetnode] (a) {Alarm};
+		\node[right=0.5cm of a]{
+			\begin{tabular}{ c | c || c }
+				B & E & P(A $\vert$ B, E) \\
+				\hline
+				T & T & 0.95 \\
+				T & F & 0.94 \\
+				F & T & 0.29 \\
+				F & F & 0.001
+			\end{tabular}
+		};
+		%
+		\node[baynetnode, above left=2.5cm of a] (b) {Burglary}
+			edge [-latex] (a)
+			;
+		\node[above=0.5cm of b]{
+			\begin{tabular}{ c }
+				P(B) \\
+				\hline
+				0.001
+			\end{tabular}
+		};
+		%
+		\node[baynetnode, above right=2.5cm of a] (e) {Earthquake}
+			edge [-latex] (a)
+			;
+		\node[above=0.5cm of e]{
+			\begin{tabular}{ c }
+				P(E) \\
+				\hline
+				0.002
+			\end{tabular}
+		};
+		%
+		\node[baynetnode, below left=2.5cm of a] (jc) {John calls}
+			edge [latex-] (a)
+			;
+		\node[below=0.5cm of jc]{
+			\begin{tabular}{ c || c }
+				A & P(J $\vert$ A) \\
+				\hline
+				T & 0.9 \\
+				F & 0.05
+			\end{tabular}
+		};
+		%
+		\node[baynetnode, below right=2.5cm of a] (mc) {Mary calls}
+			edge [latex-] (a)
+			;
+		\node[below=0.5cm of mc]{
+			\begin{tabular}{ c || c }
+				A & P(M $\vert$ A) \\
+				\hline
+				T & 0.7 \\
+				F & 0.01
+			\end{tabular}
+		};
+	\end{tikzpicture}
+\end{figure}
+\begin{easylist}
+
+\end{easylist}
+\subsection{Exact Inference}
+	\label{subsec:exact-inference}
+\begin{easylist}
+
+& \textbf{Exact inference:} Methods of finding the exact probabilities of a specific solution to specific variables
+	&& Runtime: Exponential
+	&& Methods: Joint probability table, enumeration
+	&& Equation:
+	\[
+		P(x_1, \dotsc, x_n) = \prod_{i=1}^n P(x_i | parents(x_i))
+	\]
+
+& \textbf{Factor multiplication:} Determining the probability of a specific solution to specific variables by multiplying together the probabilities of the relevant relationships in the Bayesian network
+	&& E.g. Given the network in figure~\ref{fig:bay-net-example}, to find the probabilities of the conditionally dependent variables $M, A, B, E$, see figure~\ref{tab:factor-mult}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Factor multiplication example}
+	\label{tab:factor-mult}
+	\centering
+	\begin{math}
+		\begin{array}{ c | c | c | c || c }
+			M & A & B & E & \textrm{Probability} \\
+			\hline
+			m & a & b & e & P(m|a) P(a, b|e) \\
+			m & a & b & \lnot e & P(m|a) P(a, b|\lnot e) \\
+			m & a & \lnot b & e & P(m|a) P(a, \lnot b|e) \\
+			\vdots & \vdots & \vdots & \vdots & \vdots
+		\end{array}
+	\end{math}
+\end{figure}
+\begin{easylist}
+
+	&& \textbf{Inference by enumeration:} Determining the probability of a specific solution to all variables by multiplying together the probabilities of all relationships in the Bayesian network
+		&&& E.g. Given the network in figure~\ref{fig:bay-net-example}:
+
+		\end{easylist}
+		\begin{align*}
+			P(b, \lnot e, \lnot a, j, \lnot m)
+			&= P(b) P(\lnot e) P(\lnot a \vert b, \lnot e) P(j \vert \lnot a) P(\lnot m \vert \lnot a) \\
+			P(B | j, m)
+			&= \alpha P(B) \sum_e P(e) \sum_a P(a | B, e) P(j|a) P(m|a) \\
+			&= \alpha P(B) \sum_e P(e) \bigg[
+				P(a|B,e) P(j|a) P(m|a) +
+				P(\lnot a|B,e) P(j|\lnot a) P(m|\lnot a)
+			\bigg] \\
+			&= \alpha P(B) \bigg[
+				P(a|B,e) P(j|a) P(m|a) +
+				P(\lnot a|B,e) P(j|\lnot a) P(m|\lnot a) \\
+			&+ 	P(a|B,\lnot e) P(j|a) P(m|a) +
+				P(\lnot a|B,\lnot e) P(j|\lnot a) P(m|\lnot a)
+			\bigg]
+		\end{align*}
+		\begin{easylist}
+
+	&& Runtime: $O(n d^n)$ ($n$ probability tables, $d^n$ entries in the probability tables)
+
+& \textbf{Inference by variable elimination:} Algorithm for efficiently executing inference by enumeration which combines relationships between probabilities and marginalizes out hidden variables to reduce factor size
+	&& Order can affect runtime; prefer starting from nodes which have no parents
+	&& Runtime: Exponential (worst-case) but often better than creating the entire table
+	&& E.g. Given variables $A, B, C$, query and condition variables $A, B$, and factors $(C), (A,B,C)$, all factors involving hidden variable $C$ are collected and combined in the first iteration of the algorithm and $C$ is marginalized out to create the factor $A, B$
+	&& E.g. Given the network in figure~\ref{fig:bay-net-example}: (warning: expanded version is not actually correct)
+
+	\end{easylist}
+	\begin{align*}
+		P(B | j, m)
+		&= \alpha P(B) \sum_e P(e) \sum_a P(a | B, e) P(j|a) P(m|a) \\[.5cm]
+		\textrm{Let } f_1(B, E, j, m)
+		&= \sum_a P(a | B, e) P(j|a) P(m|a) \\
+		&= P(a | B, e) P(j|a) P(m|a) + P(\lnot a | B, e) P(j|\lnot a) P(m|\lnot a) \\[.5cm]
+		P(B | j, m)
+		&= \alpha P(B) \sum_e P(e) f_1(B, E, j, m) \\[.5cm]
+		\textrm{Let } f_2(B, j, m)
+		&= \sum_e P(e) f_1(B, E, j, m) \\
+		&= P(e) f_1(B, e, j, m) + P(\lnot e) f_1(B, \lnot e, j, m) \\[.5cm]
+		P(B | j, m)
+		&= \alpha P(B) f_2(B, j, m) \\[1cm]
+		\textrm{Expanded: } P(B | j, m)
+		&= P(B) f_2 (B, j, m) \\
+		&= \alpha P(B) \Big[ P(e) f_1(B, e, j, m) + P(\lnot e) f_1(B, \lnot e, j, m) \Big] \\
+		&= \alpha P(B) \bigg\{
+			P(e) \Big[
+				P(a | B, e) P(j|a) P(m|a) +
+				P(\lnot a | B, e) P(j|\lnot a) P(m|\lnot a)
+			\Big] \\
+		&+	P(\lnot e) \Big[
+				P(a | B, \lnot e) P(j|a) P(m|a) +
+				P(\lnot a | B, \lnot e) P(j|\lnot a) P(m|\lnot a)
+			\Big]
+		\bigg\} \\
+		&= \alpha \cdot 0.001 \bigg\{
+			0.002 \cdot \Big[
+				0.95 \cdot 0.90 \cdot 0.7 +
+				0.05 \cdot 0.05 \cdot 0.01
+			\Big] \\
+		&+	0.998 \Big[
+				0.94 \cdot 0.90 \cdot 0.7 +
+				0.06 \cdot 0.05 \cdot 0.01
+			\Big]
+		\bigg\} \\
+		&= \begin{pmatrix} 0.284 \\ 0.716 \end{pmatrix}
+	\end{align*}
+	\begin{easylist}
+	
+	&& Algorithm:
+
+\begin{Verbatim}
+FUNCTION order(vars)
+	RETURN vars in a specific order
+END FUNCTION
+
+SET baynet to bayesian_network
+SET hidden to baynet.hidden_vars
+SET factors to baynet.factors_of_relationships
+FOR each var in order(hidden)
+	SET current_factors to factors.find(f WHERE f contains var)
+	REMOVE current_factors from factors
+	SET combined_factors to product_of(current_factors)
+	SET combined_factors to marginalize(combined_factors, var)
+	# var no longer appears in any factor
+	ADD combined_factors to factors
+	END IF
+END FOR
+RETURN factors
+\end{Verbatim}
+
+\end{easylist}
+\subsection{Approximate Inference}
+	\label{subsec:approximate-inference}
+\begin{easylist}
+
+& \textbf{Approximate/sampling-based inference:} Methods of inferring the probabilities of a specific solution to specific variables by sampling to create an approximate solution
+
+& \textbf{Rejection sampling:} Determining the approximate solution to specific variables by iterating through variables and for each, sampling the result of a probability multiple times (given all previous probabilities) and dividing the number of preferred results by the number of all results
+	&& Parents must be processed before their children (i.e. topological ordering)
+	&& Runtime: $O(NVD)$ where $N$ = number of samples, $V$ = number of variables, and $D$ = size of the domain
+
+& \textbf{Gibbs sampling:} Determining the approximate solution to specific variables by fixing evidence variables, randomly assigning values to non-evidence variables, taking a non-evidence variable, sampling given the other assigned values, assigning the result, and repeating with another non-evidence variable
+	&& Results converge to the probability
+	&& \textbf{Markov blanket:} The parents, children, and all parents of the children of a node, which the node is dependent on, and so the node is independent of all other variables
+	&& \textbf{Markov Chain Monte Carlo (MCMC) algorithm:} Algorithm which alters a solution, uses the solution to create a next state, and repeats
+
+\end{easylist}
+\subsection{Temporal Bayesian Networks}
+	\label{subsec:temporal-bayesian-networks}
+\begin{easylist}
+
+& \textbf{Temporal Bayesian Network:} Bayesian network where nodes represent the value of a variable at a specific time, and where each node may be a repeat of an antecedent node which represents the variable at a later time
+	&& \textbf{Tree width:} Number of edges crossed by a cut of the graph
+
+\end{easylist}
+\subsection{Markov Models}
+	\label{subsec:markov-models}
+\begin{easylist}
+
+& \textbf{Markov model:} State-change model which uses probabilities based on previous states
+	&& Notation: $e_t: e_1, e_2, \dotsc, e_n$ where $e_t$ = known evidence of the state of the model at time $t$
+	&& \textbf{First-order Markov model:} Markov model which depends only on the previous state (i.e. $P(x_t | x_{t-1})$)
+	&& \textbf{$n$\textsuperscript{th}-order Markov model:} Markov model which depends on the previous $n$ states (i.e. \\ $P(x_t | x_{t-1}, \dotsc, x_{t-n})$)
+	&& \textbf{Hidden Markov model:} Markov model which contains hidden states which are conditional upon evidence states
+		&&& Notation: $P(x_t | e_{t-1}, e_{t-2}, \dotsc)$ where $x_t =$ unknown state of the model at time $t$; 
+			&&&& \textbf{Initial distribution:} $P(e_1)$
+			&&&& \textbf{Transition distribution:} $P(x_t | x_{t-1})$
+			&&&& \textbf{Emission distribution/corrector:} $P(e_t | x_t)$
+		&&& For a diagram, see figure~\ref{fig:hidden-markov-model}
+
+		\end{easylist}
+		\begin{figure}[!htb]
+			\caption{Diagram of a Hidden Markov Model}
+			\label{fig:hidden-markov-model}
+			\centering
+			\begin{tikzpicture}[
+				node distance=1cm and 0cm,
+				hmmnode/.style={draw, circle, minimum size=1cm, align=center}
+			]
+				\node[hmmnode] (x1) {$x_1$};
+				\node[hmmnode, ->, below=1cm of x1] (e1) {$e_1$} edge [latex-] (x1);
+				\node[hmmnode, ->, right=1cm of x1] (x2) {$x_2$} edge [latex-] (x1);
+				\node[hmmnode, ->, below=1cm of x2] (e2) {$e_2$} edge [latex-] (x2);
+				\node[hmmnode, ->, right=1cm of x2] (ellipses) {$\dotso$} edge [latex-] (x2);
+				\node[hmmnode, ->, right=1cm of ellipses] (xt-1) {$x_{t-1}$} edge [latex-] (ellipses);
+				\node[hmmnode, ->, below=1cm of xt-1] (et-1) {$e_{t-1}$} edge [latex-] (xt-1);
+				\node[hmmnode, ->, right=1cm of xt-1] (xt) {$x_t$} edge [latex-] (xt-1);
+				\node[hmmnode, ->, below=1cm of xt] (et) {$e_t$} edge [latex-] (xt);
+			\end{tikzpicture}
+		\end{figure}
+		\begin{easylist}
+
+& \textbf{Filtering:} Method of hidden Markov model inference which finds an approximate hidden probability given evidences of all previous probabilities (i.e. finding $x_t$ given $e_{1:t}$)
+	&& Derivation: Given $P(x_{t-1} | e_{1:t-1})$, find $P(x_t|e_{1:t})$. (See equation~\ref{eq:filtering-deriv}.)
+	\end{easylist}
+	
+\begin{landscape}
+	\begin{figure}[!htb]
+		\caption{Derivation of Calculation for Filtering}
+		\label{eq:filtering-deriv}
+		\begin{align*}
+			P(x_t | e_{1:t})
+			&= P(x_t | e_{1:t-1}, e_t ) \\
+			&= \frac{1}{z} P(x_t, e_t | e_{1:t-1}) & \textrm{Move } e_t \textrm{ out of condition} \\
+			&= \frac{1}{z} \sum_{x_{t-1}} P(x_{t-1}, x_t, e_t | e_{1:t-1}) & \textrm{Reverse marginalization} \\
+			&= \frac{1}{z} \sum_{x_{t-1}} P(x_{t-1}, x_t | e_{1:t-1}) \cdot P(e_t | x_{t-1}, x_t, e_{1:t-1}) & \textrm{Chain rule} \\
+			&= \frac{1}{z} \sum_{x_{t-1}} P(x_{t-1} | e_{1:t-1}) \cdot P(x_t | x_{t-1}, e_{1:t-1}) \cdot P(e_t | x_{t-1}, x_t, e_{1:t-1}) & \textrm{Chain rule} \\
+			&= \frac{1}{z} \sum_{x_{t-1}} P(x_{t-1} | e_{1:t-1}) \cdot P(x_t | x_{t-1}) \cdot P(e_t | x_t) & \textrm{Conditional independence} \\
+			&= P(e_t | x_t) \cdot \frac{1}{z} \sum_{x_{t-1}} P(x_{t-1} | e_{1:t-1}) \cdot P(x_t | x_{t-1}) \\
+			\textrm{where } & P(e_t | x_t) \textrm{ is the emission distribution,} \\
+			& P(x_{t-1} | e_{1:t-1}) \textrm{ is the provided probability and evidence, and} \\
+			& P(x_t | x_{t-1}) \textrm{ is the transition distribution.}
+		\end{align*}
+	\end{figure}
+\end{landscape}
+
+	\begin{easylist}
+
+	&& Runtime: $O(T D^2)$ where $T =$ number of time periods and $D =$ degree of the hidden variable
+	&& Space complexity: $O(D)$ where $D =$ degree of the hidden variable
+		&&& Only the last two time periods of probabilities of each degree is necessary
+
+& \textbf{Smoothing (forward/backward algorithm):} Method of hidden Markov model inference which finds the approximated previous hidden probabilities given evidence of previous and future probabilities (i.e. finding $x_t$ given $e_{1:T}$ where $1 \leq t < T$)
+	&& Derivation: Given $e_{1:t}$, find $P(x_k | e_{1:t})$. (See equation~\ref{eq:smoothing-deriv}.)
+	\end{easylist}
+
+\begin{landscape}
+	\begin{figure}[!htb]
+		\caption{Derivation of Calculation for Smoothing}
+		\label{eq:smoothing-deriv}
+		\begin{align*}
+			P(x_k | e_{1:t})
+			&= \frac{1}{z} P(x_k, e_{k+1:t} | e_{1:k}) & \textrm{Chain rule} \\
+			&= \frac{1}{z} P(x_k | e_{1:k}) \cdot P(e_{k+1:t} | x_k, e_{1:k}) & \textrm{Chain rule} \\
+			&= \frac{1}{z} P(x_k | e_{1:k}) \cdot P(e_{k+1:t} | x_k) & \textrm{(Step 3) Conditional 	independence} \\
+			&= \frac{1}{z} P(x_k | e_{1:k}) \cdot \sum_{x_{k+1}} P(x_{k+1}, e_{k+1:t} | x_k) & \textrm{Reverse marginalization} \\
+			&= \frac{1}{z} P(x_k | e_{1:k}) \cdot \sum_{x_{k+1}} P(x_{k+1} | x_k) \cdot P(e_{k+1:t} | x_{k+1}, x_k) & \textrm{Chain rule} \\
+			&= \frac{1}{z} P(x_k | e_{1:k}) \cdot \sum_{x_{k+1}} P(x_{k+1} | x_k) \cdot P(e_{k+1:t} | x_{k+1}) & \textrm{Conditional independence} \\
+			&= \frac{1}{z} P(x_k | e_{1:k}) \cdot \sum_{x_{k+1}} P(x_{k+1} | x_k) \cdot P(e_{k+1} | x_{k+1}) \cdot P(e_{k+2:t} | x_{k+1}) & \textrm{Separating multiplied probabilities} \\
+			\textrm{where } & P(x_k | e_{1:k}) \textrm{ can be found as the result of filtering,} \\
+			& P(x_{k+1} | x_k) \textrm{ is the transition distribution,} \\
+			& P(e_{k+1} | x_{k+1}) \textrm{ is the emission distribution, and} \\
+			& P(e_{k+2:t} | x_{k+1}) \textrm{ is recursively solved from Step 3.} \\
+		\end{align*}
+	\end{figure}
+\end{landscape}
+
+	\begin{easylist}
+
+& \textbf{Prediction:} Method of hidden Markov model inference which finds the approximated future hidden probabilities given evidence of all previous probabilities (i.e. finding $x_t$ given $e_{1:t-\delta}$)
+
+& \textbf{Most likely sequence of states:} Method of hidden Markov model inference which finds the most likely sequence of states given evidence of their probabilities (i.e. finding $\underset{x_{1:t}}{arg \, max} \; P(x_{1:t} | e_{1:t})$, the most likely states $x_{1:t}$ given $e_{1:t}$)
+	&& \textbf{Viterbi algorithm:} Algorithm which finds the most likely sequence of states
+		&&& Algorithm:
+
+\begin{lstlisting}[breaklines=true, mathescape=true]
+# Initialize arrays
+SET vitr[num_observ][num_states] to [][]
+SET prev[num_observ][num_states] to [][]
+
+FOR each state from 1 to n
+	SET vitr[0][state] to original_prob[state] × emission(state i, observation 0)
+	SET prev[0][state] to 0
+END FOR
+
+# For each observation and state
+FOR each observation current_observ from 1 to num_observ-1
+	FOR each state current_state from 0 to num_states-1
+	
+		# Calculate all possible probabilities towards current state
+		SET max_prob to 0
+		FOR each prev_state from 0 to n-1
+			SET prob to vitr[current_observ-1][prev_state] $\times$ transition(prev_state, current_state) $\times$ emission(current_state, current_observ)
+			IF prob $>$ max_prob THEN
+				SET max_prob to prob
+			END IF
+		END FOR
+
+		# Set the max and argmax
+		SET vitr[current_observ][current_state] to max_prob
+		SET prev[current_observ][current_state] to vitr[current_observ].index(max_prob)
+	END FOR
+END FOR
+
+# Trace back to find most likely sequence
+SET sequence to []
+SET current_state to vitr[current_observ].index(max(vitr[current_observ]))
+FOR each observation current_observ from t-1 to -1
+	SET sequence to [current_state] + sequence
+	SET current_state to prev[current_observ][current_state]
+END FOR
+
+RETURN sequence
+\end{lstlisting}
+
+\end{easylist}
+\clearpage

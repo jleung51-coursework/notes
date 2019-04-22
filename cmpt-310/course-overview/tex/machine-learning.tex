@@ -1,0 +1,179 @@
+%
+% CMPT 310: Artificial Intelligence - A Course Overview
+% Section: Machine Learning
+%
+% Author: Jeffrey Leung
+%
+
+\section{Machine Learning}
+	\label{sec:machine-learning}
+\subsection{Introduction}
+	\label{subsec:ml-introduction}
+\begin{easylist}
+
+& \textbf{Machine learning:} Approximation of a function which detects the classification of a problem given attributes of data
+
+& \textbf{Classification:} Category of data
+& \textbf{Attribute:} Characteristics of a problem using a variable (boolean, discrete, continuous, etc.)
+& Epoch: Round of training data
+
+& Types of machine learning:
+	&& Supervised learning
+	&& \textbf{Semi-supervised learning:} Machine learning technique which classifies data through processing a combination of pre-classified data and unclassified data
+	&& \textbf{Unsupervised learning:} Machine learning technique which classifies data and finds patterns through processing previously unclassified data
+		&&& E.g. Clustering
+	&& \textbf{Reinforcement learning:} Machine learning technique which takes actions to obtain a score, and repeats to find the correct actions to obtain the optimal score
+		&&& Used for robotics, games
+
+\end{easylist}
+\subsection{Supervised Learning}
+	\label{subsec:supervised-learning}
+\begin{easylist}
+
+& \textbf{Supervised learning:} Machine learning technique which classifies data through processing provided pre-classified data
+
+& \textbf{Episodic problem (ML):} Situation in supervised learning where a dataset is built from discrete data points
+	&& E.g. Spam checker
+
+& \textbf{Inductive learning:} Approximation of a function on the attributes of a problem which produces a label
+	&& Notation: Ideal function $f(features) \rightarrow label$; find $h \approx f$
+	&& \textbf{Label:} Resulting classification
+	&& Highly similar to \href{http://onlinestatbook.com/2/regression/intro.html}{linear regression}
+	&& E.g. Finding a best-fit line to a set of datapoints
+	&& Choose the simplest and most generalizable model $h$ (Occam's razor)
+
+& \textbf{Hypothesis space:} Set of models $h$ which are valid
+	&& Given $n$ boolean functions, there are $2^n$ values in the dataset and $2^{2^n}$ unique possible assignments of results to the dataset
+	&& E.g. Neural networks, logistic regressions, support vector machines, random forests
+	
+& Dataset training:
+	&& {Training data:} Dataset which is applied to a neural network to provide neurons with weights and biases
+		&&& The greater the data for training, the better the model created
+	&& \textbf{Validation data:} Dataset which is applied to a neural network with known optimal results to test accuracy
+	&& \textbf{Testing data:} Dataset which is applied to a neural network after training and validation
+		&&& Cannot be the same as training data
+		&&& The greater the data for testing, the better the estimate of accuracy
+	&& Cross-validation: Splitting (`folding') the original dataset into equal subsets, one for testing, one for validation, and the remaining for training
+		&&& Strategy: Cross-validate multiple times with each fold to find the most accurate fold
+	&& \textbf{Overfitting:} Being overly specific with training data such that testing data is no longer accurate
+
+\end{easylist}
+\subsection{Decision Trees}
+	\label{subsec:decision-trees}
+\begin{easylist}
+
+& \textbf{Decision tree:} Tree where each node represents a decision with multiple choices and each leaf represents a unique choice
+	&& Restricting hypothesis space: Limit on depth
+	&& Split paths on most informative features (which result in the lowest resulting entropy)
+		&&& \textbf{Entropy:} Uncertainty of information (in this context, calculated as similarity of ratio between choices)
+			&&&& Notation: $H$ where $0 \leq H \leq 1$
+			&&&& Unit: Bits
+			&&&& Calculation: $H(p_1, p_2, \dotsc, p_n) = - \sum_i p_i \log_2 p_i$
+			&&&& E.g. $H(0.5, 0.5) = - \frac{1}{2} \log \frac{1}{\frac{1}{2}} = 1$
+			&&&& E.g. $H(0, 1) = - 0 \cdot \log \frac{1}{0} - 1 \cdot \log \frac{1}{1} = \lim_{x \rightarrow 0} x \log \frac{1}{x} = 0$
+			&&&& E.g. $H(\frac{1}{3}, \frac{2}{3}) = 0.918\dots$
+		&&& To find the reduction in uncertainty, calculate:
+
+		$$H(root) - \sum_{i \in \textrm{children}} \frac{\textrm{samples of } i}{\textrm{samples of root}} H(i)$$
+
+		&&& See diagram and patrons graph
+
+\end{easylist}
+\subsection{Neural Networks}
+	\label{subsec:neural-networks}
+\begin{easylist}
+
+& \href{https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi}{\textbf{Neural network:}} Combination of neuron structures through which data flows and is manipulated, to create a set of output values
+	&& \textbf{Bias:} Value which is added as a standalone neuron input (typically $-1$)
+	&& \textbf{Weight:} Value by which any neuron input is multipled
+	&& \href{http://playground.tensorflow.org}{Neural network simulation}
+
+& \textbf{Activation function:} Simple function applied to the sum of weighted neuron inputs to create a neuron output value
+	&& Notation: $g: \mathbb{R} \rightarrow \mathbb{R}$
+	&& Types of functions:
+		&&& \textbf{Threshold function:} Activation function which has the output value -1 for negative input values, and the output value 1 for positive input values
+		\end{easylist}
+		\[
+			a = \begin{dcases}
+				-1 & \textrm{if } in < 0 \\
+				1 & \textrm{otherwise}
+			\end{dcases}
+		\]
+		\begin{easylist}
+		
+		&&& \textbf{Sigmoid/logistic function:} Activation function which changes output value gradually from 0 to 1, and has output value 0.5 at input value 0
+		\end{easylist}
+		\[
+			a = \frac{1}{1+exp_e(-in)}
+		\]
+		\begin{easylist}
+		
+		&&& \textbf{Rectifier Linear Unit (ReLU) function:} Activation function which has output value 0 for negative values, and output value equal to the input value for positive values
+		\end{easylist}
+		\[
+			a = max(0, in) = \begin{dcases}
+				0 & \textrm{if } in \leq 0 \\
+				in & \textrm{otherwise}
+			\end{dcases}
+		\]
+		\begin{easylist}
+		
+& Process of training a network:
+	&& \textbf{Squared error:}
+	\end{easylist}
+	\begin{align*}
+		Err
+		&= y - h_w(x) \\[1em]
+		\textrm{Squared error } E
+		&= \frac{Err^2}{2} \\
+		&= \frac{(y - h_w(x))^2}{2} \\[1em]
+		\textrm{where }
+		x &= \textrm{ input value} \\
+		y &= \textrm{ true/ideal output value}
+	\end{align*}
+	\begin{easylist}
+	
+		&&& Using \href{https://www.youtube.com/watch?v=IHZwWFHWa-w&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&index=2}{gradient descent} to find the optimal value (one iteration per attribute):
+		\end{easylist}
+		\begin{align*}
+			\frac{\partial E}{\partial W_j}
+			&= Err \times \frac{\partial E}{\partial W_j} \\
+			&= Err \times \frac{\partial}{\partial W_j} (y - g(\sum_{j=0}^n W_j x_j)) \\
+			&= -Err \times g'(in) \times x_j
+		\end{align*}
+		\begin{easylist}
+		&&& Given the error, update the weight by:
+		\end{easylist}
+		\begin{align*}
+			W_j &\leftarrow W_j + (\alpha \times Err \times g'(in) \times x_j) \\[1em]
+			\textrm{where }
+			\alpha
+			&= \textrm{ rate of learning correction}
+		\end{align*}
+		\begin{easylist}
+	&& \href{https://www.youtube.com/watch?v=Ilg3gGewQ5U&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&index=3}{\textbf{Back propagation:}} Process of training a neural network by altering weights and biases to provide the intended results, using the outputs of training data
+		&&& Involves \href{https://www.youtube.com/watch?v=tIeHLnjs5U8&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&index=4}{calculus}
+	\[
+		\delta_{out} = (y - a_{out}) \cdot g'(in_{out})
+	\]
+
+& \textbf{Single-layer perceptron:} Neural network consisting of a single neuron
+	&& \textbf{Linearly separable:} Property of a multidimensional dataset which can be classified using a single linear function
+		&&& A function can be represented by a single-layer perceptron if and only if its data is linearly separable
+
+& \textbf{Multi-layer perceptron:} Neural network consisting of sets of multiple interconnected neurons where every node in each layer depends on at least one node in the layer immediately prior, and does not depend on nodes in other layers
+	&& \textbf{Hidden layer:} Layer of neurons which is neither the input layer nor the output layer
+	&& Acyclic digraph (i.e. has a topological order)
+	&& Multi-layer perceptron with 2 hidden layers (3 total layers of processing) can emulate any possible function
+	&& \textbf{Multi-task learning:} Model of multi-layer neural network which has consistent hidden layer processing but has multiple unique outputs
+		&& E.g. Image content differentiator
+
+& \href{https://adeshpande3.github.io/A-Beginner%27s-Guide-To-Understanding-Convolutional-Neural-Networks/}{\textbf{Convolutional layer:}} Layer component of a neural network which handles prestructured input by abstracting and processing components of the input, often to fewer inputs
+	&& E.g. Image consisting of a 2-d grid of pixels, squares of which are taken and compressed
+	&& \textbf{Filter:} Structured subset of input values
+	&& \textbf{Pooling:} Combination of multiple inputs (often the depth of a 3D matrix) into a single output (e.g. summation, multiplication, averaging, maximization)
+& \textbf{Recurrent network:} Acyclic digraph which is structured as a 2D matrix, with a set of input nodes flowing to a set of output nodes
+	&& E.g. Conversational bot
+
+\end{easylist}
+\clearpage

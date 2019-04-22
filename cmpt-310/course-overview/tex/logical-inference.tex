@@ -1,0 +1,37 @@
+%
+% CMPT 310: Artificial Intelligence - A Course Overview
+% Section: Logical Inference
+%
+% Author: Jeffrey Leung
+%
+
+\section{Logical Inference}
+	\label{sec:logical-inference}
+\begin{easylist}
+
+& \textbf{Entailment:} Logical connective which means the result is a consequence of the input
+	&& Notation: $\alpha \models \beta$
+
+& \textbf{Satisfiability:} Whether a model exists where the logical sentence is true
+	&& Includes constraint satisfaction problems
+	&& Searches such as: Backtracking, local
+	&& \textbf{DPLL algorithm:} Backtracking algorithm which permutes the variables until all clauses are satisfied
+		&&& \textbf{Pure symbol:} Symbol which is either never negated or always negated in each clause it appears
+		&&& \textbf{Unit clause:} Clause which only contains a single literal
+	&& \textbf{WalkSAT algorithm:} Local non-deterministic algorithm which chooses a random false variable and changes it to true to attempt to find a solution
+& \textbf{Deduction/Inference:} Given a knowledge base, whether a logical sentence is true (i.e. $KB \models S$)
+	&& $KB \models S$ if and only if $KB \land \lnot S$ is unsatisfiable
+	&& \textbf{Knowledge base:} Collection of known true sentences
+
+& \textbf{Conjuctive Normal Form (CNF):} Form of a logical statement which is a conjunction of disjunction(s) of literals
+	&& Steps to reduce a statement to CNF:
+		&&& Replace equivalencies with a conjunction of implications
+		&&& Replace implications with $\lnot A \lor B$
+		&&& Use DeMorgan's Law to apply negations to clauses
+		&&& Use the Distributive Law to reduce clauses to CNF
+
+& \textbf{Inference by resolution:} Process to reduce a set of CNF statements
+	&& Given a pair of clauses with complementary literals, resolve them to combine the clauses
+
+\end{easylist}
+\clearpage

@@ -1,0 +1,114 @@
+%
+% CMPT 310: Artificial Intelligence - A Course Overview
+% Section: Flashcard Questions
+%
+% Author: Jeffrey Leung
+%
+
+\section{Flashcard Questions}
+	\label{sec:flashcard-questions}
+\begin{easylist}
+
+& What characteristics does a task environment consist of?
+	&& Performance measure, Environment, Actuators, Sensors (PEAS)
+& What does a problem formulation consist of?
+	&& Initial state, goal test, successor function, and cost function
+
+& How is uniform-cost search different from breadth-first search?
+	&& Uniform-cost search uses a priority queue to follow the path of least cost
+& Which search algorithm is iterative deepening search derived from?
+	&& Depth-first search
+& How is iterative deepening search unique?
+	&& Maximum depth of depth-first search increases until the goal is found
+
+& What is an admissible heuristic?
+	&& Function which underestimates the true cost to the goal
+& What is a dominant heuristic?
+	&& Admissible heuristic which is greater than or equal to another admissible heuristic
+& How is greedy/heuristic search different from A* search?
+	&& Heuristic search does not consider the distance already travelled
+& What is the equation for A* search?
+	\end{easylist}
+	\begin{align*}
+		f(n) & = g(n) + h(n) \\
+		\textrm{where }
+		& f(n) = \textrm{ estimated total cost of the path through } n \textrm{ to the goal} \\
+		& g(n) = \textrm{ cost so far to reach } n \\
+		& h(n) = \textrm{ heuristic-estimated cost from } n \textrm{ to the goal}
+	\end{align*}
+	\begin{easylist}
+
+& Which of $\alpha / \beta$ is the upper bound on the potential minimum node, and which is the lower bound on the potential maximum node?
+	&& $\alpha$: Lower bound on the potential value of a maximum node
+	&& $\beta$: Upper bound on the potential value of a minimum node
+
+& When does backtracking search backtrack?
+	&& When a variable has no possible valid values, given the assignments of the other variables
+& What algorithm is DPLL derived from?
+	&& Backtracking search
+& How does WalkSAT `walk'?
+	&& The value of a random variable from a false clause is flipped
+
+& What is a normalization constant?
+	&& A value which every probability is divided by, to reduce a probability function to a total probability of 1
+& What is the difference between dependence and conditional dependence?
+	&& Dependence: Whether knowing a variable has an effect on the probability of another variable (share a parent node in Bayesian network)
+	&& Conditional dependence: Given an evidence variable(s), whether knowing a variable has an effect on the probability of another variable (share a child node in Bayesian network)
+& What is the formula for the Chain Rule?
+	\end{easylist}
+		\begin{align*}
+		P(a, b) &= P(a) P(b|a) = P(b) P(a|b) \\
+		P(x_1, \dotsc, x_n) &= \prod_{i=1}^n P(x_i | x_1, \dotsc, x_{i-1})
+		\end{align*}
+	\begin{easylist}
+
+& What is the formula for Bayes' Rule?
+	\[
+		P(B | A) = \frac{P(A | B) \times P(B)}{P(A)}
+	\]
+	
+& What is rejection sampling?
+	&& Sampling each variable multiple times to find approximate probabilities of all variables
+& What is Gibbs sampling?
+	&& Fixing evidence variables, randomly assigning values to non-evidence variables, sampling a non-evidence variable, and iterating through all non-evidence variables
+
+& What is filtering?
+	&& Finding a hidden probability given evidence of all previous probabilities (i.e. finding $x_t$ given $e_{1:t}$)
+& What is smoothing?
+	&& Finding previous hidden probabilities given evidence of previous and future probabilities (i.e. finding $x_t$ given $e_{1:T}$ where $1 <= t < T$)
+& What does the Viterbi algorithm do?
+	&& Find the most likely sequence of states ending in xt
+
+& How do you avoid overfitting?
+	&& Use relatively less training data
+
+& What is the equation used for entropy?
+	&& $H(p_1, p_2, \dotsc, p_n) = - \sum_i p_i \log_2 p_i$
+& What is the equation used for reduction in uncertainty?
+	&& $H(root) - \sum_{i \in \textrm{children}} \frac{\textrm{samples of } i}{\textrm{samples of root}} H(i)$
+& What is the entropy of a 50/50 choice?
+	&& 1
+& What is the entropy of a 0/100 choice?
+	&& 0
+& Do you make a choice at a decision tree to increase or decrease entropy?
+	&& Decrease entropy (i.e. maximize reduction of entropy)
+
+& What is the equation for a threshold function?
+	\end{easylist}
+	\[
+		a = \begin{dcases}
+			-1 & \textrm{if } in < 0 \\
+			1 & \textrm{otherwise}
+		\end{dcases}
+	\]
+	\begin{easylist}
+
+& What is the equation for a ReLU function?
+	\end{easylist}
+	\[
+		a = max(0, in)
+	\]
+	\begin{easylist}
+
+\end{easylist}
+\clearpage

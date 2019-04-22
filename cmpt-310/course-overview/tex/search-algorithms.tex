@@ -1,0 +1,100 @@
+%
+% CMPT 310: Artificial Intelligence - A Course Overview
+% Section: Search Algorithms
+%
+% Author: Jeffrey Leung
+%
+
+\section{Search Algorithms}
+	\label{sec:search-algorithms}
+\subsection{Uninformed Algorithms}
+	\label{subsec:uninformed-algorithms}
+\begin{easylist}
+
+& \textbf{Breadth-first search:} Utilizes a queue
+	&& Time and space complexity: Bounded by the number of nodes the same distance away from the root as the goal node
+	&& Complete if branching factor is finite
+
+& \textbf{Uniform-cost search:} Utilizes a priority queue to follow the path with least cost
+	&& Time and space complexity: Bounded by the branching factor to the power of the average action cost
+	&& Complete if branching factor is finite and step costs $\leq \epsilon$
+
+& \textbf{Depth-first search:} Utilizes a stack
+	&& Time complexity: Bounded by the maximum depth of the tree
+	&& Space complexity: Bounded by the length of the maximum-length path, and its remaining unexpanded child nodes for each node on the path
+	&& Not complete
+	&& More space-efficient than breadth-first search
+
+& \textbf{Iterative deepening (depth-first) search:} Depth-first search with maximum limited depth, which increases until the goal is found
+	&& Complete if branching factor is finite
+	&& Time complexity: Bounded by the number of nodes the same distance away from the root as the goal node
+	&& Space complexity: Bounded by the length of the goal path, and its remaining unexpanded child nodes for each node on the path
+
+\end{easylist}
+\subsection{Informed Algorithms}
+	\label{subsec:informed-algorithms}
+\begin{easylist}
+
+& \textbf{Admissible heuristic:} Underestimation of the true cost from a given node to the goal
+	&& Notation for a function evaluating a heuristic: $h(n)$
+	&& Will provide improved time and space complexity over the worst time
+	&& To create an admissible heuristic, relax a rule/constraint and find the shortest solution given
+	&& \textbf{Manhattan distance:} Number of unrestricted 4-directional moves from the goal state
+	&& \textbf{Dominance:} Characteristic of an admissible heuristic which has a result greater than or equal to another admissible heuristic for all $n$
+		&& Given admissible heuristics $h_a(n)$ and $h_b(n)$, $h(n) = \textrm{max}\left(h_a(n), h_b(n)\right)$ is also admissible and dominates $h_a(n)$ and $h_b(n)$
+
+& \textbf{Greedy search:} Best-first search algorithm which chooses subsequent nodes by minimizing direct cost to the goal
+	&& Complete: Only if state is checked for repeats
+	&& Time and space complexity: At worst, bounded by all nodes
+
+& \textbf{A* search:} Best-first search algorithm which expands only the paths with less cost than the optimal cost to the goal
+	&& Evaluation function:
+
+	\end{easylist}
+	\begin{align*}
+		f(n) & = g(n) + h(n) \\
+		\textrm{where }
+		& f(n) = \textrm{ estimated total cost of the path through } n \textrm{ to the goal} \\
+		& g(n) = \textrm{ cost so far to reach } n \\
+		& h(n) = \textrm{ heuristic-estimated cost from } n \textrm{ to the goal}
+	\end{align*}
+	\begin{easylist}
+
+	&& Complete: Yes (unless there are infinitely many nodes with $f \leq f(G)$)
+
+\end{easylist}
+\subsection{Complexity of Algorithms}
+	\label{subsec:complexity-of-algorithms}
+
+\begin{figure}[!htb]
+	\caption{Complexity of Algorithms}
+	\label{fig:algos-complexity}
+	\center
+	\begin{tabular}{ l | c c p{4cm} }
+		& Time & Space & Is the Goal Path Optimal? \\
+		\hline
+		Breadth-first search & $O(b^{d+1})$ & $O(b^d)$ & Only when $d = 1$ or when paths have no cost \\
+		Uniform-cost search & $O(b^{\left\lfloor \frac{C^*}{\epsilon} \right\rfloor})$ & $O(b^{\left\lfloor \frac{C^*}{\epsilon} \right\rfloor})$ & Yes \\
+		Depth-first search & $O(b^m)$ & $O(b \cdot m)$ & No \\
+		Iterative deepening search & $O(b^d)$ & $O(b \cdot d)$ & Yes \\
+		\hline
+		Greedy search & $O(b^m)$ & $O(b^m)$ & No \\
+		A\textsuperscript{*} search & $O(b^m)$ & $O(b^m)$ & Yes \\
+		\hline
+		Minimax algorithm & $O(b^m)$ (with $\alpha / \beta$, $O(b^\frac{m}{2})$) & $O(b \cdot m)$ & Yes (with rational adversary) \\
+		Backtracking search & & & Yes \\
+		Hill climbing search & & & No \\
+		Simulated annealing search & & & Yes
+	\end{tabular}
+
+	\begin{align*}
+		\textrm{where }
+		b &= \textrm{ branching factor} \\
+		d &= \textrm{ depth of the goal} \\
+		C^* &= \textrm{ cost of the optimal solution} \\
+		\epsilon &= \textrm{ the minimum cost of an action on the goal path} \\
+		m &= \textrm{ maximum depth}
+	\end{align*}
+\end{figure}
+
+\clearpage

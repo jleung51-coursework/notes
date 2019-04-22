@@ -1,0 +1,50 @@
+%
+% CMPT 310: Artificial Intelligence - A Course Overview
+% Section: Constraint Satisfaction Problems
+%
+% Author: Jeffrey Leung
+%
+
+\section{Constraint Satisfaction Problems}
+	\label{sec:constraint-satisfaction-problems}
+\begin{easylist}
+
+& \textbf{Constraint satisfaction problem (CSP):} Problem where a set of constraints acts on a set of variables, and the solution is a set of variable values which satisfies all constraints
+	&& E.g. Sudoku, assiging resources to tasks, map colorings
+	&& Formulation of a CSP:
+		&&& Specify the variables
+		&&& Specify the domain $D$ of possible values for the variables
+		&&& Specify contraints
+
+& \textbf{Backtracking search:} Depth-first search which assigns possible values to variables, and backtracks when a variable has no valid values
+	&& Complete: Yes
+	&& Runtime: $O(n! D^n)$ (actually $O(k^n)$ where $k$ = number of values, $n$ = number of variables)
+		&&& For each of $n$ variables, there are $D$ options
+		&&&& Unary constraint: Restriction which only applies to a single variable
+	&& Space: $O(m)$ where $m$ is the maximum depth
+	&& Improvements:
+		&&& \textbf{Forward checking:} Assigning to each variable an early set of possibilities restricted by constraints, independent of other variables
+		&&& \textbf{Arc consistency:} Whether for each value of a variable there is a valid value for all other variables sharing a binary constraint
+			&&&& Runtime complexity of enforcing arc consistency first: $O(n^2 D^2)$
+			&&&& $k$ consistency has runtime $O(n^k D^k)$
+		&&& Heuristics:
+			&&&& \textbf{Minimum-remaining-values heuristic:} Assigning variables starting from those with the least possible number of values, to maximize early failure in order to minimize the number of changed values
+			&&&& \textbf{Maximum-degree heuristic:} Assigning variables starting from those which share the most constraints with other variables, to prune future options faster
+				&&&&& Used for tiebreakers or starting
+			&&&& \textbf{Least-constraining-value heuristic:} Assigning variable values starting from the values which constrain other variables least, to minimize value failure
+
+& \textbf{Local search:} Heuristic which uses iterative improvement on an arbitrary sub-optimal solution
+	&& Choose candidates by the variable(s) which violate constraints, using all domain values
+	&& Complete: No
+	&& Runtime: Unknown
+	&& Space: $O(n)$
+	&& Methods to choose the next solution:
+		&&& \href{https://towardsdatascience.com/simulated-annealing-for-clustering-problems-part-1-3fa8994a3ebb}{\textbf{Hill-climbing search or gradient descent/ascent:}} Local search algorithm which chooses following candidate which violates the fewest constraints
+			&&&& Terminates when it reaches a peak where no neighbor has a higher value
+			&&&& \textbf{Simulated annealing:} Hill-climbing search algorithm which allows for moderate suboptimal moves (with decreased frequency over time) to escape local maxima and reach a global maximum
+				&&&&& Complete: Yes
+
+& \href{https://towardsdatascience.com/introduction-to-genetic-algorithms-including-example-code-e396e98d8bf3}{\textbf{Genetic algorithm:}} Search algorithm maintains a fixed-size set of solutions, from which the optimal individuals are selected to create the successive set of solutions, evolving to a global optimal state over time
+
+\end{easylist}
+\clearpage

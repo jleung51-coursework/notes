@@ -1,0 +1,25 @@
+%
+% CMPT 310: Artificial Intelligence - A Course Overview
+% Section: Problem Solving
+%
+% Author: Jeffrey Leung
+%
+
+\section{Problem Solving}
+	\label{sec:problem-solving}
+\begin{easylist}
+
+& Environment: Observable, deterministic, discrete
+& \textbf{State}: Possible arrangement of entities and agents in the environment
+	&& Transition: Change from an initial state to another state
+		&&& Successor function: Mapping from the current state and action to a new state
+			&&&& Notation: $(\textrm{state}, \textrm{action}) \rightarrow \textrm{state}$
+		&&& Goal state: Desired end state
+		&&& Goal test: Condition which determines whether or not the current state is the goal state
+			&&&& Notation: $(\textrm{state}) \rightarrow \textrm{true/false}$
+		&&& Path cost: Numeric cost to take a path
+	 	&&& Includes the possibility of no change
+	&& E.g. For a two-square grid of a possibly dirty carpet with a vacuum cleaner, there are 4 possibilities for the dirty squares and 2 possibilities for the vacuum cleaner
+
+\end{easylist}
+\clearpage
