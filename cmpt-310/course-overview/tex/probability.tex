@@ -69,7 +69,7 @@
 		&&& E.g. For variables $A, B, C, D$ and the conditional probability $P(a|b, c)$, the condition variables are $b, c$
 	&& \textbf{Hidden variable:} Variable which is unrelated and not included
 		&&& E.g. For variables $A, B, C, D$ and the conditional probability $P(a|b, c)$, the hidden variable is $d$
-		
+
 & \textbf{Chain rule:} Derivation of the probability of two events:
 
 	\end{easylist}
@@ -78,12 +78,12 @@
 	P(x_1, \dotsc, x_n) &= \prod_{i=1}^n P(x_i | x_1, \dotsc, x_{i-1})
 	\end{align*}
 	\begin{easylist}
-	
+
 	&& When conditional dependence is added:
 	\[
 		P(a, b | c) &= P(a | c) P(b | a, c)
 	\]
-	
+
 	&& Derived from the formula for conditional probability
 
 & \textbf{Bayes' Rule:} Equation which allows conditional probability calculation given the independent probabilities and inverse conditional probability
@@ -204,7 +204,7 @@
 	\label{subsec:exact-inference}
 \begin{easylist}
 
-& \textbf{Exact inference:} Methods of finding the exact probabilities of a specific solution to specific variables
+& \textbf{Exact inference:} Methods of finding the exact probabilities of a specific solution to specific variables, through application of the chain rule to a probability distribution
 	&& Runtime: Exponential
 	&& Methods: Joint probability table, enumeration
 	&& Equation:
@@ -303,7 +303,7 @@
 		&= \begin{pmatrix} 0.284 \\ 0.716 \end{pmatrix}
 	\end{align*}
 	\begin{easylist}
-	
+
 	&& Algorithm:
 
 \begin{Verbatim}
@@ -360,7 +360,7 @@ RETURN factors
 	&& \textbf{First-order Markov model:} Markov model which depends only on the previous state (i.e. $P(x_t | x_{t-1})$)
 	&& \textbf{$n$\textsuperscript{th}-order Markov model:} Markov model which depends on the previous $n$ states (i.e. \\ $P(x_t | x_{t-1}, \dotsc, x_{t-n})$)
 	&& \textbf{Hidden Markov model:} Markov model which contains hidden states which are conditional upon evidence states
-		&&& Notation: $P(x_t | e_{t-1}, e_{t-2}, \dotsc)$ where $x_t =$ unknown state of the model at time $t$; 
+		&&& Notation: $P(x_t | e_{t-1}, e_{t-2}, \dotsc)$ where $x_t =$ unknown state of the model at time $t$;
 			&&&& \textbf{Initial distribution:} $P(e_1)$
 			&&&& \textbf{Transition distribution:} $P(x_t | x_{t-1})$
 			&&&& \textbf{Emission distribution/corrector:} $P(e_t | x_t)$
@@ -391,7 +391,7 @@ RETURN factors
 & \textbf{Filtering:} Method of hidden Markov model inference which finds an approximate hidden probability given evidences of all previous probabilities (i.e. finding $x_t$ given $e_{1:t}$)
 	&& Derivation: Given $P(x_{t-1} | e_{1:t-1})$, find $P(x_t|e_{1:t})$. (See equation~\ref{eq:filtering-deriv}.)
 	\end{easylist}
-	
+
 \begin{landscape}
 	\begin{figure}[!htb]
 		\caption{Derivation of Calculation for Filtering}
@@ -464,7 +464,7 @@ END FOR
 # For each observation and state
 FOR each observation current_observ from 1 to num_observ-1
 	FOR each state current_state from 0 to num_states-1
-	
+
 		# Calculate all possible probabilities towards current state
 		SET max_prob to 0
 		FOR each prev_state from 0 to n-1
