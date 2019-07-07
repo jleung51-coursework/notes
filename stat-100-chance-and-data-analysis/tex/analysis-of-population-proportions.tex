@@ -1,0 +1,320 @@
+%
+% STAT 100: Chance and Data Analysis - A Course Overview
+% Section: Analysis of Population Proportions
+%
+% Author: Jeffrey Leung
+%
+
+\section{Analysis of Population Proportions}
+	\label{sec:analysis-of-population-proportions}
+\subsection{Margin of Error and Confidence Interval}
+	\label{subsec:analysis-of-population-proportions:margin-of-error-and-confidence-interval}
+\begin{easylist}
+
+	& \emph{Parameter:} Value which summarizes population data
+		&& Calculation requires collection of data from the entire population (i.e. see \emph{census}, subsection~\ref{subsec:data-collection:methods})
+		&& Estimation is often calculated from a sample statistic
+			&&& E.g. If 33\% of a random sample of Canadian adults support the Conservative Party, then the proportion of all Canadian adults who support the Conservative Party is estimated to be 33\%.
+		&& Denoted by $p$
+			&&& Sample proportion/statistic is denoted by $\hat{p}$
+	
+	\medskip
+	& \emph{Margin of error:} Percentage value of the uncertainty of an estimated population proportion
+		&& Calculation (for a 95\% confidence level):
+		\begin{math}
+			Margin\ of\ error = \frac{1}{\sqrt{sample\ size}}
+		\end{math}
+			&&& Unit: Percentage
+		&& Valid only for a random sample
+		&& Dependent on a confidence level
+			&&& \emph{Confidence level:} Degree of certainty of the accuracy of a population proportion estimate
+				&&&& Unit: Percentage
+				&&&& Often 95\% (expressed as a fraction; 19 times out of 20 = $\frac{19}{20}$)
+		&& Interpretation (with the confidence level): \smallskip \\
+		If many random samples of <sample size, subject> of the population are taken and the sample proportion of <statistic> is calculated for each sample, <confidence level percentage> of the sample proportions will be within $\pm$ <margin of error percentage> of the population proportion.
+		
+		&& E.g. ``A probability sample of this design and sample size would carry a margin of error in the range of $\pm 1.2\%$, 19 times out of 20.'' \smallskip \\
+		Margin of error: $\pm 1.2\%$ \\
+		Confidence level: $\frac{19}{20} = 95\%$
+		&& E.g. Given a study of Canadian adults who support the Conservatives with a random sample of 6005 Canadian adults and a margin of error of $\pm$ 1.2\%, 19 times out of 20: \smallskip \\
+		If many random samples of 6005 Canadian adults of the population are taken and the sample proportion of Canadian adults who support the Conservatives is calculated for each sample, 95\% of the sample proportions will be within $\pm$ 1.2\% of the population proportion.
+	
+	\medskip
+	& \emph{Confidence interval:} Set of values which the population proportion is within
+		&& Calculation:
+		\begin{math}
+			Confidence\ interval = sample\ proportion \pm margin\ of\ error
+		\end{math}
+			&&& Unit: Percentage range
+		&& Interpretation: \smallskip \\
+		Using the sample data, we are <confidence level percentage> confident that the population proportion of <statistic> is between <confidence interval lower bound percentage> and <confidence interval upper bound percentage>.
+			&&& Always specify the population proportion
+		&& E.g. Given the sample proportion of Canadian adults who will vote for the Conservatives as 33\% for 6005 subjects, the confidence interval is: \\
+		\begin{math}
+			Sample\ proportion \pm \frac{1}{\sqrt{sample\ size}}
+			= 33\% \pm \frac{1}{\sqrt{6005}}
+			= 33\% \pm 1.2904...\%
+			\approx (31.7\%, 34.3\%)
+		\end{math} \\
+		Using the sample data, we are 95\% confident that the population proportion of Canadian adults who support the Conservative Party is between 31.7\% and 34.3\%.
+		
+		&& Analyzing the confidence interval: Given a value, check whether or not all values of the confidence interval satisfy the condition
+			&&& E.g. Given the confidence interval for the population proportion of Canadian adults who support the Conservative Party to be (31.7\%, 34.3\%), can you conclude that more than 30\% of all Canadian adults support the Conservative Party? \smallskip \\
+			Yes; all values in the confidence interval are greater than 30\%.
+			&&& E.g. Given the confidence interval for the population proportion of Canadian adults who support the Conservative Party to be (31.7\%, 34.3\%), can you conclude that more than 34\% of all Canadian adults support the Conservative Party? \smallskip \\
+			No; there exist values in the confidence interval which are less than 34\%.
+			
+\end{easylist}
+\subsection{Bias and Variability}
+	\label{subsec:analysis-of-population-proportions:bias-and-variability}
+\begin{easylist}
+
+	& \emph{Bias:} Consistent under-estimation or over-estimation of results
+		&& Can be reduced by:
+			&&& Avoiding \hyperref[subsec:data-collection:sampling-errors]{non-sampling errors}
+			&&& Ensuring fair representation of the population
+			&&& Using random sampling
+		&& Increasing sample size does not reduce bias
+			
+	& \emph{Sampling variability:} Degree of variability between random samples
+		&& Quantified by the \hyperref[subsec:analysis-of-population-proportions:margin-of-error-and-confidence-interval]{margin of error}
+		&& Can be reduced by:
+			&&& Increasing sample size
+			
+\end{easylist}
+\subsection{Hypothesis Testing for Population Proportions}  %TODO move this to a different file
+	\label{subsec:analysis-of-population-proportions:hypothesis-testing-for-population-proportions}
+\subsubsection{Introduction}
+	\label{subsubsec:analysis-of-population-proportions:hypothesis-testing-for-population-proportions:introduction}
+\begin{easylist}
+
+	& \emph{Hypothesis test:} Calculation which determines whether a claim/research hypothesis is supported by evidence
+
+	& \emph{Null hypothesis (H\textsubscript{o}):} Statement that a population proportion is equal to a given value (which may be another population proportion)
+		&& Assumed to be possible until contradicting evidence is found
+	& \emph{Alternative hypothesis (H\textsubscript{a}):} Statement that a population proportion is less than, not equal to, or greater than a given value (which may be another population proportion)
+	& E.g. The sample proportion of Canadian adults who want to legalize marijuana was found to be 59\%. Test whether or not the population proportion of Canadian adults who want to legalize marijuana is greater than 50\%. \\
+	H\textsubscript{o}: The population proportion of Canadian adults who want to legalize marijuana is equal to 50\%. \\
+	H\textsubscript{a}: The population proportion of Canadian adults who want to legalize marijuana is greater than 50\%.
+	
+	\medskip
+	& \emph{Test statistic:} Standardized value representing a numerical summary of sample data 
+		&& Calculated from sample data; analyzed to determine the p-value
+		&& E.g. Z-statistic, t-statistic, chi-square statistic
+		&& \emph{Z-statistic:} Test statistic which can be calculated to determine whether an inequal relationship between population proportions exists
+			&&& Formula for one population proportion compared against a given percentage: \smallskip \\
+			\begin{displaymath}
+				z-statistic = 
+				\frac
+				{
+					\hat{p} - p_{0}
+				}
+				{
+					\sqrt
+					{
+						\frac
+						{
+							p_{0} \cdot (1 - p_{0})
+						}
+						{
+							n
+						}
+					}
+				}
+			\end{displaymath}
+			\Deactivate
+			\begin{center}
+				\begin{tabular}{ l r @{ = } l }
+					where & $\hat{p}$ & sample proportion \\
+					& $p_{0}$ & population proportion if H\textsubscript{0} is true \\
+					& $n$ & sample size
+				\end{tabular}
+			\end{center}
+			\Activate
+			
+			\medskip
+			&&& Formula for two population proportions compared against each other: \medskip \\
+			\begin{displaymath}
+				z-statistic =
+				\frac
+				{
+					\hat{p_{1}} - \hat{p_{2}}
+				}
+				{
+					\sqrt
+					{
+						\hat{p} \cdot (1-\hat{p}) \cdot
+						(
+							\frac{1}{n_{1}} + \frac{1}{n_{2}}
+						)
+					}
+				}
+			\end{displaymath}
+			\Deactivate
+			\begin{center}
+				\begin{tabular}{ l r @{ = } l }
+					where & $\hat{p_{x}}$ & sample proportion of the $x$\textsuperscript{th} set of data \\
+					& $\hat{p}$ & combined sample proportion \\
+					& $n_{x}$ & sample size of the $x$\textsuperscript{th} set of data
+				\end{tabular}
+			\end{center}
+			\Activate
+			
+				&&&& Combined sample proportion is the sum of the number of subjects satisfying the condition of sample dataset 1 and the number of subjects satisfying the condition of sample dataset 2, divided by the sum of the number of subjects of each dataset
+			
+		&& \emph{Chi-square statistic:} %TODO
+	
+	\medskip
+	& \emph{Probability value (p-value):} Probability that a given result is obtained through chance, calculated from sample data
+		&& Unit: Percentage
+		&& Interpretation: If many random samples of the given sample size and population are chosen and the sample proportion in question is calculated, then the p-value represents the percentage of the sample populations which would support the alternative hypothesis.
+			&&& E.g. Given that 50\% of all Canadian adults support the legalization of marijuana, the probability of calculating a sample proportion of 59\% or higher through random sampling is equal to the p-value (0.62\%).
+		&& The lesser the p-value, the greater the evidence for the alternative hypothesis
+		&& Calculated from a test statistic; compared against the significance level to determine the amount of evidence for the alternative hypothesis
+		&& For the interpretation of the p-value compared against the significance level, see \hyperref[subsec:analysis-of-population-proportions:statistical-significance]{statistical significance}
+		&& For the interpretation of the magnitude, see table~\ref{tab:p-value-magnitude-chart}
+		
+		\Deactivate
+		\begin{table}[!htb]
+			\centering
+			\caption{P-Value Magnitude Chart}
+			\label{tab:p-value-magnitude-chart}
+			\begin{tabular}{ r c l l }
+				\multicolumn{3}{ c }{P-value} & Strength of Evidence to Support H\textsubscript{a} \\
+				 10\% < & p-value & & No evidence \\
+				  5\% < & p-value & $\leq$  10\% & Weak evidence \\
+				  1\% < & p-value & $\leq$   5\% & Some evidence \\
+				0.1\% < & p-value & $\leq$   1\% & Strong evidence \\
+				        & p-value & $\leq$ 0.1\% & Very strong evidence
+			\end{tabular}
+		\end{table}
+		\Activate
+		
+		&& P-value of a z-statistic: Area under the standard normal distribution where z-statistic equals the z-score (see %\ref standard normal table
+			&&& If the alternative hypothesis is `less than', the p-value is the area to the left of the z-statistic
+			&&& If the alternative hypothesis is `not equal to', the p-value is the area to the left of the negative absolute value of the z-statistic an the area to the right of the positive absolute value of the z-statistic
+			&&& If the alternative hypothesis is `greater than', the p-value is the area to the right of the z-statistic
+		&& P-value of a chi-square statistic: %TODO
+		
+	& \emph{Significance level:} %TODO
+			
+	& General process:
+		&& Find the test statistic using the sample data
+		&& Find the p-value using the test statistic
+		&& Compare the p-value to the significance level
+			&&& Conclusion: ``Since the p-value (<p-value>) is <less than/greater than> the significance level (<significance level>), we <do not> reject the null hypothesis. There is <sufficient/insufficient> evidence to conclude that <alternative hypothesis>.''
+
+\end{easylist}
+\subsection{One Population Proportion (Z-Statistic)}
+	\label{subsec:analysis-of-population-proportions:one-population-proportion-z-statistic}
+\begin{easylist}
+	
+	& 
+	& E.g. %TODO
+
+\end{easylist}
+\subsection{Two Population Proportions (Z-statistic)}
+	\label{subsec:analysis-of-population-proportions:two-population-proportions-z-statistic}
+\begin{easylist}
+
+	& Process:
+		&& Compute the proportion of subjects in each test group who satisfy the condition
+		&& Compare the proportions using a bar graph
+		&& Conclude which group has a greater/lesser proportion
+		&& To compare population proportions, conduct a hypothesis test (see %TODO ref
+			&&& Null hypothesis states that the population proportions are equal; alternative hypothesis states that the population proportions are unequal (less than, not equal to, or greater than)
+			&&& Formula for the z-statistic for two population proportions:
+		
+	& E.g. Are the proportions...
+	
+\end{easylist}
+\subsubsection{Confidence Interval}
+	\label{subsubsec:analysis-of-population-proportions:two-population-proportions-z-statistic:confidence-interval}
+\begin{easylist}
+
+	& Formula (95\% confidence interval):
+	\begin{math}
+		(\hat{p_{1}} - \hat{p_{2}}) \pm 2 \cdot
+		\sqrt
+		{
+			\frac
+			{
+				\hat{p_{1}} \cdot (1 - \hat{p_{1}})
+			}{
+				n_{1}
+			}
+			+ \frac
+			{
+				\hat{p_{2}} \cdot (1-\hat{p_{2}})
+			}{
+				n_{2}
+			}
+		}
+	\end{math}
+	
+	& Example: [..] How does the proportion of people who have lung cancer...
+	
+	& There may be no difference between the proportion of students who use iPhones in UBC compared to the proportion of students who use iPhones in SFU.
+	
+\end{easylist}
+\subsection{Multiple Population Proportions (Chi-Square Statistic)}
+	\label{subsec:analysis-of-population-proportions:multiple-population-proportions-chi-square-statistic}
+\begin{easylist}
+
+	& The greater the difference, the greater the chi-square statistic
+	& P-value always uses the right side of the normal distribution
+	& Only concludes whether a relationship exists between two variables
+	& Can compare many population proportions
+
+\end{easylist}
+\subsection{Errors}
+	\label{subsec:analysis-of-population-proportions:errors}
+\begin{easylist}
+
+	& \emph{Type I error:} Rejection of H\textsubscript{o} from analysis of the sample data when H\textsubscript{o} is true
+		&& I.e. False positive/confirmation of the alternative hypothesis; finding evidence where there is none
+		&& May occur when H\textsubscript{o} is rejected
+		&& E.g. Judging a person for a crime: \\
+		H\textsubscript{o}: The person is not guilty. \\
+		H\textsubscript{a}: The person is guilty. \\
+		Truth: The person is not guilty (H\textsubscript{o} is true). \\
+		Decision: The person is guilty (H\textsubscript{o} is rejected).
+		&& Probability of its occurrence is directly proportional to the \hyperref[subsubsec:analysis-of-population-proportions:hypothesis-testing-for-population-proportions:introduction]{significance level}
+			&&& Reducing significance level (and therefore, the probability of the type I error) increases the probability of the type II error
+		
+	& \emph{Type II error:} Failure to reject H\textsubscript{o} from analysis of the sample data when H\textsubscript{a} is true
+		&& I.e. Failing to find evidence which exists
+		&& May occur when H\textsubscript{o} is not rejected
+		&& E.g. Judging a person for a crime: \\
+		H\textsubscript{o}: The person is not guilty. \\
+		H\textsubscript{a}: The person is guilty. \\
+		Truth: The person is guilty (H\textsubscript{a} is true). \\
+		Decision: The person is not guilty (H\textsubscript{o} is not rejected).
+		&& Probability of its occurrence is inversely proportional to the \hyperref[subsubsec:analysis-of-population-proportions:hypothesis-testing-for-population-proportions:introduction]{significance level}
+			&&& Increasing significance level (and therefore, the probability of the type II error) increases the probability of the type I error
+			
+	& E.g. A company will renew a contract with a radio station only if the station can find sufficient evidence to support that more than 20\% of the listeners have heard their ad. The station conducts a random survey of 400 people, 100 of which have heard the ad. \smallskip \\
+	H\textsubscript{o}: 20\% of the listeners have heard the ad. \\
+	H\textsubscript{a}: More than 20\% of the listeners have heard the ad. \smallskip \\
+	A type I error will occur if 20\% of the listeners have heard the ad, but the sample data provides sufficient evidence to conclude that more than 20\% of the listeners have heard the ad. H\textsubscript{o} is true but rejected; H\textsubscript{a} is false but accepted. \\
+	The possibility of this error can be reduced by decreasing the significance level. \smallskip \\
+	A type II error will occur if more than 20\$ of the listeners have heard the ad, but the sample data does not provide sufficient evidence to reject the hypothesis that 20\% of the listeners have heard the ad. H\textsubscript{o} false but not rejected; H\textsubscript{a} is true but not affirmed. \\
+	The possibility of this error can be reduced by increasing the significance level.
+	
+\end{easylist}
+\subsection{Statistical Significance}
+	\label{subsec:analysis-of-population-proportions:statistical-significance}
+\begin{easylist}
+
+	& P-value represents the probability that a given sample proportion is found, if the null hypothesis is correct, and therefore the probability of obtaining a difference of | sample proportion - test proportion | from the test proportion
+	
+	& \emph{Statistically significant:} Result which is unlikely to occur by chance
+		&& Statistically significant result: P-value is less than the significance level
+		&& Not statistically significant result: P-value is greater than the significance level
+	
+	& If a p-value is less than the significance level, then the difference between the sample proportion and the test proportion is statistically significant at the given significance level
+	& If a p-value is greater than the significance level, then the difference between the sample proportion and the test proportion is not statistically significant at the given significance level
+
+
+\end{easylist}
+\clearpage

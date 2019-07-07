@@ -1,0 +1,125 @@
+%
+% STAT 100: Chance and Data Analysis - A Course Overview
+% Section: Elements of Statistics
+%
+% Author: Jeffrey Leung
+%
+
+\section{Elements of Statistics}
+	\label{sec:elements-of-statistics}
+\subsection{Subject of Study}
+	\label{subsec:elements-of-statistics:subject-of-study}
+\begin{easylist}
+
+	& \emph{Statistics:} Collection, organization, analysis, and interpretation of data
+		&& \emph{Statistic:} Number which summarizes data about a sample
+		&& \emph{Descriptive statistic:} Description or summary about a sample
+			&&& Often inferred from analyzed statistics
+		&& \emph{Parameter:} Value which summarizes data about a population
+			&&& Calculated exactly by collecting data from the entire population (see \emph{census}, subsection~ %TODO reference, and 'exactly'?
+			&&& Estimated by calculating a statistic about a representative sample of the population
+			
+	
+	\bigskip
+	
+	& \emph{Individual:} Object of study about which data is collected
+		&& Not necessarily a person
+	& \emph{Sample:} Individual from which data is collected directly
+		&& See \emph{sample survey}, subsection~\ref{subsec:data-collection:methods}
+	& \emph{Population:} Set of \emph{all} individuals for which data is inferred
+		&& Inference about the population is made from the data of the sample
+		&& See \emph{census}, subsection~\ref{subsec:data-collection:methods}
+	
+	\medskip	
+	
+	& Example: In an analysis of salary distribution of all UBC recent graduates, a research team collected information from 500 individuals. The data contained the annual salary, age, occupation, gender, and year of graduation of the individual. \smallskip \\
+	Individual: A UBC recent graduate \\
+	Sample: The 500 surveyed UBC recent graduates \\
+	Population: All UBC recent graduates
+		
+\end{easylist}
+\subsection{Categorical Variables}
+	\label{subsec:elements-of-statistics:categorical-variables}
+\begin{easylist}
+
+	& \emph{Variable:} Data collected from an individual
+	
+	& \emph{Categorical:} Variable which is a label or category
+		&& Example: Occupation, gender
+		&& Has no unit of measurement
+		&& All possible options must be specified
+		&& Statistics of categorical data are the percentages/proportions of all categories
+		&& Displayed using a bar graph
+	
+	& Example: A study is conducted to collect the following information from an SFU student.
+		&& Whether or not an SFU student has a profile on Facebook \\
+			(categorical variable - options are yes or no)
+		&& Number of text messages sent recently \\
+			(not a categorial variable - number, not specific options)
+		&& How long it took to download the most recent video game \\
+			(not a categorical variable - amount, not specific options)
+			
+	& For the analysis of categorical data, see subsection~\ref{subsec:analysis-of-single-variable-data:categorical-data}
+	& For an example with both quantitative and categorical variables, see \emph{Quantitative Variables}, subsection~\ref{subsec:elements-of-statistics:quantitative-variables}
+	
+\end{easylist}
+\subsection{Quantitative Variables}
+	\label{subsec:elements-of-statistics:quantitative-variables}
+\begin{easylist}
+		
+	& See \emph{variable}, subsection~\ref{subsec:elements-of-statistics:categorical-variables}
+	
+	& \emph{Quantitative:} Variable which is countable
+		&& E.g. Salary, age
+		&& Always has a unit of measurement
+		&& Can have basic mathematical operations applied to it
+		&& Examples of quantitative statistics:
+			&&& Average/mean
+			&&& Median
+			&&& Standard deviation
+			&&& Quartiles
+			&&& Maximum/minimum
+		&& Displayed using a histogram
+	
+	\medskip
+	& Example: A study is conducted to collect the following information from an SFU student.
+		&& Whether or not an SFU student has a profile on Facebook \\
+			(not a quantitative variable - not a number)
+		&& Number of text messages sent recently \\
+			(quantitative variable - number of messages)
+		&& How long it took to download the most recent video game \\
+			(quantitative variable - amount of time)
+			
+	& For the analysis of quantitative data, see subsection~\ref{subsec:analysis-of-single-variable-data:quantitative-data}
+	
+	& Example: 7 countries were studied; the results are shown in table~\ref{tab:information-gathered-on-7-countries}.
+	
+	\Deactivate
+	\begin{table}[!htb]
+		\centering
+		\caption{Information gathered on 7 Countries}
+		\label{tab:information-gathered-on-7-countries}
+		\begin{tabular}{ l | l r r r }
+			& & Land area & Population & GDP \\
+			Country & Continent & (km\textsuperscript{2}) & (millions) & (per capita) \\
+			\hline
+			Canada & North America & 9,093,510 & 33.31 & 46,236 \\
+			China & Asia & 9,327,480 & 1324.66 & 4,428 \\
+			Germany & Europe & 348,630 & 82.11 & 40,152 \\
+			India & Asia & 2,974,190 & 1,139.97 & 1,475 \\
+			Japan & Asia & 364,500 & 127.70 & 42,831 \\
+			South Africa & Africa & 1,214,470 & 48.79 & 7,275 \\
+			United States & North America & 9,147,420 & 304.38 & 47,199
+		\end{tabular}
+	\end{table}
+	\Activate
+	
+	\medskip
+	Individual: A country in the world \\
+	Sample: The 7 countries surveyed \\
+	Population: All countries in the world \\
+	Quantitative variables: Land area, populations, GDP \\
+	Categorical variable: Continent
+
+\end{easylist}
+\clearpage

@@ -1,0 +1,70 @@
+%
+% STAT 100: Chance and Data Analysis - A Course Overview
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[10pt, oneside, letterpaper, titlepage]{article}
+
+\usepackage[justification=centering]{caption}
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\textperiodcentered\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\textperiodcentered\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{multirow}
+\usepackage{pgfplots, pgfplotstable}
+	\usepgfplotslibrary{statistics}
+	\pgfplotsset{compat=newest}
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{tikz}
+	\usetikzlibrary{patterns}
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{STAT 100: Chance and Data Analysis \\\medskip \Large A Course Overview}
+\author{Jeffrey Leung \\ Simon Fraser University}
+\date{Fall 2015}
+
+\begin{document}
+
+	\maketitle
+	\tableofcontents
+	\clearpage
+	
+	\input{./tex/elements-of-statistics.tex}
+	\input{./tex/analysis-of-single-variable-data.tex}
+	\input{./tex/analysis-of-multi-variable-data.tex}
+	\input{./tex/data-collection.tex}
+	\input{./tex/analysis-of-population-proportions.tex}
+	%\input{./tex/probability.tex}
+	\input{./tex/measurement-of-data.tex}
+	\input{./tex/ethics.tex}
+	
+\end{document}

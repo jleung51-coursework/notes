@@ -1,0 +1,112 @@
+%
+% STAT 100: Chance and Data Analysis - A Course Overview
+% Section: Measurement of Data
+%
+% Author: Jeffrey Leung
+%
+
+\section{Measurement of Data}
+	\label{sec:measurement-of-data}
+\subsection{Introduction}
+	\label{subsec:measurement-of-data:introduction}
+\begin{easylist}
+
+	& \emph{Measurement:} Collection of quantitative data
+	
+	& \emph{Unit of measurement:} System of set values to quantify data
+		&& Comparisons between measurements must use the same units
+	
+	& \emph{Instrument:} Tool to measure a quantitative characteristic of an individual
+		&& E.g. Ruler, scale
+		
+\end{easylist}
+\subsection{Imprecision of Measurements}
+	\label{subsec:measurement-of-data:imprecision-of-measurements}
+\begin{easylist}
+
+	& \emph{Uncertainty (measurement):} Possible error in a measurement due to imprecision of an instrument
+	& \emph{Bias (measurement):} Difference between the measured value and the true value of a quantitative characteristic
+	& Uncertainty and bias can be reduced by using instruments with higher precision
+
+	& \emph{Random error:} Variations between repeated measurements on the same individual
+		&& E.g. Surveying 100 people out of a population of 1000; recording the weight of a live, energetic pig
+		&& Can be reduced by averaging multiple repeated measurements
+		&& The less the random error, the more reliable the measurement
+		
+	& \emph{Variance:} Unreliability of a measurement (calculated from multiple measurements
+		&& Calculation:
+		\begin{displaymath}
+			Variance =
+			\frac
+			{
+				\sum\limits_{i=0}^{n}
+				(x_{i} - \bar{x})^{2}
+			}
+			{
+				n - 1
+			}
+		\end{displaymath}
+		\Deactivate
+		\begin{center}
+			\begin{tabular}{ l r @{ = } l }
+				where & $n$ & number of measurements \\
+				& $x_{i}$ & measurement number $i$ \\
+				& $\bar{x}$ & average of measurements
+			\end{tabular}
+		\end{center}
+		\Activate
+		
+		&& E.g. Find the variance of the measurements 220 lbs, 224 lbs, 217 lbs, and 227 lbs.
+		
+		\Deactivate
+		\begin{center}
+			\begin{tabular}{ r @{ = } l }
+				$n$ & 4 \\
+				$\bar{x}$ & $\frac{220 + 224 + 217 + 227}{4} = \frac{888}{4} = 222$
+			\end{tabular}
+		\end{center}
+		\Activate
+		
+		\Deactivate
+		\begin{IEEEeqnarray}{ r C l }
+			Variance
+			& = & \frac
+			{
+				\sum\limits_{i=0}^{n}
+				(x_{i} - \bar{x})^{2}
+			}
+			{
+				n - 1
+			} \\
+			& = & \frac
+			{
+				(220-222)^{2} + (224-222)^{2} + (217-222)^{2} + (227-222)^{2}
+			}
+			{
+				4-1
+			} \\
+			& = & \frac
+			{
+				4 + 4 + 25 + 25
+			}
+			{
+				3
+			} \\
+			& = & \frac{58}{3}
+		\end{IEEEeqnarray}
+		\Activate
+
+\end{easylist}
+\subsection{Relevancy of a Measurement}
+	\label{subsec:measurement-of-data:relevancy-of-a-measurement}
+\begin{easylist}
+
+	& A valid measurement should be a relevant representation of the property to be studied, and not some other property
+
+	& Rates are a standard measure of comparison, while counts are not
+		&& E.g. Out of 50 people, the morning class had 20 attendees. Out of 100 people, the evening class had 30 attendees. \smallskip \\
+		Comparing the number/count of subjects, the evening class (30) had greater attendance than the morning class (20). \\
+		Comparing the rates of subjects, the morning class ($\frac{20}{50} = 0.4$) had greater attendance than the evening class ($\frac{30}{100} = 0.3$).
+
+\end{easylist}
+\clearpage

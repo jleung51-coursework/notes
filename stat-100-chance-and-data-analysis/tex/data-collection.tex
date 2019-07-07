@@ -1,0 +1,117 @@
+%
+% STAT 100: Chance and Data Analysis - A Course Overview
+% Section: Data Collection
+%
+% Author: Jeffrey Leung
+%
+
+\section{Data Collection}
+	\label{sec:data-collection}
+\subsection{Methods}
+	\label{subsec:data-collection:methods}
+\begin{easylist}
+
+	& \emph{Census:} Survey which collects information from all individuals of a population
+		&& Process important?
+		&& Not always viable because it may be:
+			&&& Expensive
+			&&& Time-consuming
+			&&& Impossible (e.g. taking a census of everyone in the world)
+		&& E.g. Taking a census of all Canadian citizens
+		
+	& \emph{Sample survey:} Survey which collects information from a select group of individuals smaller than and representative of the population
+		&& Relatively greater data quality due to smaller samples
+		&& E.g. Taking a sample survey of which political party for which people plan to vote
+		
+	& \emph{Observational study:} Data collection method in which data is collected through observation without interference
+		&& Concludes an correlation or lack thereof between two variables
+			&&& Lurking variable(s) (see ref) may connect the two variables and explain the association %TODO reference
+		%TODO
+		&& E.g. Students were given the option to attend an optional tutorial session. Those who attended the tutorial session were more likely to receive a higher mark on their exam. %TODO
+	
+	& \emph{(Randomized) Experiment:} Data collection method in which individuals are chosen randomly to... %TODO
+		&& Not all factors can be studied through randomized experiments
+		&& E.g. Some students are chosen at random to be given extra tutorial sessions. They receive...
+		%TODO
+		
+		%TODO references to the subsections below
+
+\end{easylist}
+\subsection{Sampling}
+	\label{subsec:data-collection:sampling}
+\begin{easylist}
+
+	& \emph{Random sample:} %TODO
+	
+	& \emph{Simple random sample:} Set of individuals selected from the population such that each individual has an equal chance of being selected
+		&& Process: To select $y$ individuals from a group of $x$, number each individual
+		&& %TODO
+		
+\end{easylist}
+\subsection{Sampling Errors}
+	\label{subsec:data-collection:sampling-errors}
+\begin{easylist}
+
+	& Non-sample errors:
+	
+		&& \emph{Response error:} Inaccurate/untruthful response which skews data
+			&&& E.g. An experiment which asks a question about a morally shameful activity may have a response error due a tendency to answer with the morally best choice, so as to give a better impression
+		&& \emph{Non-response error:} Lack of response which skews data
+			&&& E.g. An experiment which offers an optional response to a survey, such as through email, may have a non-response error due to some people not responding because of not checking email, laziness, apathy
+			&&& No standard way to determine a good response rate
+				&&&& Theoretically, 75\% and above is acceptable
+			&&& Analyze the response rate if possible, and the reason for a low response rate
+		&& \emph{Question wording:} Syntax/keywords/details of a question in a survey which skews data
+		
+	& Voluntary response error:
+		&& To explain, calculate the (low) response rate and offer a possible explanation
+
+\end{easylist}
+\subsection{Design of an Experiment}
+	\label{subsec:data-collection:design-of-an-experiment}
+\begin{easylist}
+
+	& \emph{Explanatory variable:} Factor which is hypothesized to affect another factor
+		&& \emph{Treatment:} Unique combination of one of each type of explanatory variable
+			&&& $Number\ of\ treatments = num\ of\ variable_{1} \times num\ of\ variable_{2} \times \cdots$
+			&&& Table of all possible treatments should be written
+			&&& Sample is assigned equally and randomly into the number of treatments
+	& \emph{Response variable:} Resultant factor which is hypothesized to be affected by another factor
+	
+	& Experiment diagram + block diagram %TODO
+	
+	& E.g. An experiment was conducted to find out if the length and/or repetitions of a TV commercial affect the desire to buy a product. 20 subjects were chosen for the experiment. \smallskip \\
+	
+	\emph{Explanatory variables:} \\
+	\indent Length of the TV commercial (1 minute / 5 minutes / 10 minutes) \\
+	\indent Number of repetitions of the TV commercial (1 time / 3 times / 5 times) \\
+	\emph{Response variable:} \\
+	Desire to buy the product in the TV commercial (Scale from 1-5 where 1 = Do not want to buy) \\
+	\emph{Treatments:} \\
+	$3 \times 3 = 9$ treatments (see table~\ref{tab:experiment-length-repetitions-commercial-treatments}) \\
+	
+	
+	
+	\Deactivate
+	\begin{table}[!htb]
+		\centering
+		\caption{Treatments of a Experiment on Length and Repetitions of a Commercial}
+		\label{tab:experiment-length-repetitions-commercial-treatments}
+		\begin{tabular}{ r r }
+			Length (mins): & Repetitions: \\
+			\hline
+			 1 & 1 \\
+			   & 3 \\
+			   & 5 \\
+			 5 & 1 \\
+			   & 3 \\
+			   & 5 \\
+			10 & 1 \\
+			   & 3 \\
+			   & 5
+		\end{tabular}
+	\end{table}
+	\Activate
+		
+\end{easylist}
+\clearpage
