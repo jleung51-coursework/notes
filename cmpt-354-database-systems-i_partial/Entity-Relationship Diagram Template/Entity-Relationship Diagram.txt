@@ -1,0 +1,85 @@
+\usepackage{pdflscape}
+\usepackage{tikz-er2} % Entity-relationship diagram
+	\usetikzlibrary{positioning}
+	\tikzstyle{every entity} =
+		[
+			draw = blue
+		]
+	\tikzstyle{every attribute} =
+		[
+			draw = red
+		]
+	\tikzstyle{every relationship} =
+		[
+			draw = black
+		]
+	\tikzstyle{every isa} =
+		[
+			draw = green
+		]
+	
+	
+	
+	\begin{landscape}
+		\begin{figure}[!htb]
+			\centering
+			\caption{}
+			\label{fig:}
+			
+			\begin{tikzpicture}
+				[
+					node distance = 1.5cm
+				]
+				
+				% (Component) can be:
+				%	entity
+				%	attribute
+				%	derived attribute
+				%	relationship
+				%	isa
+				\node[component]
+					(componentLabel)
+					% Can be:
+					%	above=of
+					%	below=of
+					%	right=of
+					%	left=of
+					%	above right=of
+					%	above right=2cm and 3cm of
+					%	etc.
+					[above=of componentLabel]
+					% Can be:
+					%	{\key{Name}} - primary key attribute; underlined
+					{Name}
+					% Can be:
+					%	edge[<-](componentLabel) - arrow towards this component
+					%	edge[->](componentLabel) - arrow towards the other component
+					%	edge[>=triangle 90](componentLabel) - arrowhead angle set to 90 degrees
+					%	edge[total](componentLabel) - double line
+					%	edge[label=(TEXT)](componentLabel) - edge text
+					edge(componentLabel);
+					
+				% Right-angle edge
+				\draw[link]
+					(startComponentLabel.unitCircleAngle) % Begins drawing the line from the spot on the component corresponding to the unit circle angle 
+					% Can be:
+					%	|- 		- first vertical, then horizontal
+					%	-|		- first horizontal, then vertical
+					|-
+					node[auto]
+					{}
+					(endComponentLabel);
+					
+				% Aggregation
+				\node
+					[
+						rectangle,
+						draw=gray,
+						fit=(entityLabel)(relationshipLabel)(entityLabel), % Components to aggregate
+						inner xsep=0.5cm
+					]
+					{};
+				
+			\end{tikzpicture}
+		\end{figure}
+	\end{landscape}

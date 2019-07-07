@@ -1,0 +1,148 @@
+%
+% CMPT 276: Introduction to Software Engineering - A Course Overview
+% Section: Cpp
+%
+% Author: Jeffrey Leung
+%
+
+\section{C++}
+	\label{sec:cpp}
+\subsection{Initialization of Variables}
+	\label{subsec:cpp:initialization-of-variables}
+\begin{easylist}
+
+	& \emph{Initialization:} Setting the value of a variable when it is created
+		&& \emph{Assignment:} Replacing the current value of a variable
+
+	& A default value may or may not be assigned to the variable
+
+	& \emph{Universal initialization:}
+		&& Only in C++11 or later
+		&& E.g.
+		\begin{lstlisting}
+// Creates an integer variable set to the value 4
+int i {4};
+
+// Creates a 4-element vector of integers with the values 3, 1, 5, and 9
+std::vector<int> v { 3, 1, 5, 9 };
+		\end{lstlisting}
+
+		&& Possible syntax mistakes:
+			&&& Creating a 1-element vector of integers with the value 4:
+			\begin{lstlisting}
+std::vector<int> {4};
+			\end{lstlisting}
+			&&& Creating a 4-element vector of integers with the value 0 for each integer:
+			\begin{lstlisting}
+std::vector<int> (4);
+			\end{lstlisting}
+
+\end{easylist}
+\subsection{const Variables/Parameters}
+	\label{subsec:cpp:const-variables-parameters}
+\begin{easylist}
+
+	& \textbf{const} keyword ensures the value of a variable or parameter is not altered
+		&& Compilation will result in an error
+
+	& E.g.
+	\begin{lstlisting}
+const float pi = 3.14;
+	\end{lstlisting}
+
+	& Order is unimportant
+		&& E.g.
+		\begin{lstlisting}
+const int i = 4;
+int const j = 2;
+		\end{lstlisting}
+
+	& Overrided by \textbf{const\_cast<>} or a class member specified as \textbf{mutable}
+
+\end{easylist}
+\subsection{const Methods}
+	\label{subsec:cpp:const-methods}
+\begin{easylist}
+
+	& \textbf{const} keyword ensures the members of the associated class are not altered in the method
+		&& Compilation will result in an error
+
+	& E.g.
+	\begin{lstlisting}
+class C
+{
+  private:
+  int num = 0;
+
+  public:
+    int return_num() const
+    {
+      // num (and any other members of this object) cannot be modified in this method
+      return num;
+    }
+}
+	\end{lstlisting}
+
+	& Overrided for a class member specified as \textbf{mutable}
+
+\end{easylist}
+\subsection{Object Lifetime}
+	\label{subsec:cpp:object-lifetime}
+\begin{easylist}
+
+	& \emph{Scope:} Code in which the given object can be accessed
+	& \emph{Lifetime:} Time period during which the given object exists and is monitored
+
+	& Types of lifetimes:
+		&& \emph{Static:} Having a lifetime of the entire program
+			&&& Set when a variable is declared without memory specifiers and outside all functions/methods (including \textbf{main()})
+			&&& Static variables are created before and destroyed after the execution of \textbf{main()}
+			&&& Order of construction or destruction of static variables cannot be specified
+				&&&& Constructor of a static object cannot use another static object
+					&&&&& E.g.
+					\begin{lstlisting}
+std::string file_name = "file.txt";
+File f = file_name;  // Invalid
+
+int main()
+{
+  // Code here
+}
+					\end{lstlisting}
+
+		&& \emph{Local/stack:} Having a lifetime of a single block or function call
+			&&& Set when a variable is declared without memory specifiers within a block or function call
+			&&& Local variables are destroyed when the block or function call is exited
+				&&&& The earlier a local variable is created, the later it is destroyed (stack order; destroyed in reverse order of creation)
+			&&& \emph{Reference/Referring variable:} Object which acts as a direct representation of an assigned object
+				&&&& Syntax:
+				\begin{lstlisting}
+Type var;
+Type& var_ref = var;
+				\end{lstlisting}
+				&&&& The objects are the same; modifying one modifies the other
+				&&&& Must be initialized with the referenced object of the same type
+
+		&& \emph{Dynamic/heap:} Having a lifetime controlled directly by the programmer
+			&&& Set when a variable is declared with memory specifiers (i.e. \textbf{new} or \textbf{new []})
+			&&& Dynamic variables are created and destroyed (with \textbf{delete} or \textbf{delete []}) by the programmer
+			&&& Failure to deallocate dynamic memory can result in memory leaks and data errors
+			&&& \textbf{<memory>} header includes functions which allow automatic dynamic allocation of variables, as well as automatic de-allocation when all pointers to the object are destroyed
+				&&&& \textbf{std::unique\_ptr<T>} only allows one given pointer to a dynamic variable at any given time, and can be transferred
+					&&&&& Does not have a copy constructor or assignment function
+					&&&&& \textbf{std::move()} transfers the pointer
+					&&&&& \textbf{uniqueptr.get()} returns a standard pointer to the object; destroying the standard pointer does not destroy the object
+				&&&& \textbf{std::shared\_ptr<T>} allows multiple pointers to a dynamic variable at any given time, and can be duplicated
+					&&&&& Does not have a copy constructor
+					&&&&& Assignment function duplicates the pointer
+					&&&&& \textbf{std::move()} transfers the pointer
+					&&&&& Compared to \textbf{std::unique\_ptr<T>}:
+						&&&&&& Slower
+						&&&&&& More overhead
+						&&&&&& Reduces multi-threaded performance through locks
+				&&&& Due to the ability to use automatic allocation and deallocation, raw pointers should only be used to refer to existing variables rather than to own a variable
+
+		&& \emph{Thread-local:} Having a lifetime of the given thread
+
+\end{easylist}
+\clearpage

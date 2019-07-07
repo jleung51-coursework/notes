@@ -1,0 +1,437 @@
+%
+% CMPT 354: Database Systems I - A Course Overview
+% Section: SQL
+%
+% Author: Jeffrey Leung
+%
+
+\section{SQL}
+	\label{sec:sql}
+\begin{easylist}
+
+	& \emph{SQL (Structured Query Language):} Programming language designed to manage data in a database
+		&& Data manipulation language and data definition language (see subsection~\ref{subsec:introduction:languages})
+			&&& DML is used to write queries and insert/delete/modify records
+			&&& DDL is used to create/delete/modify table definitions, and create integrity constraints and views
+			
+	& Standards:
+		&& SQL-92: 3\textsuperscript{rd} revision of the standard
+		&& SQL 1999 / SQL 3: 4\textsuperscript{th} revision of the standard
+		&& %TODO more standards, do we need to know these for the exams?
+	
+\end{easylist}
+\subsection{Syntax}
+	\label{subsec:sql:syntax}
+\subsubsection{Introduction}
+	\label{subsubsec:sql:introduction}
+\begin{easylist}
+			
+	& Reasons to use short, explicit tuple variables:
+		&&& Readability
+		&&& Efficiency
+		&&& Distinguishing between columns with the same name from different tables
+		&&& Referencing the same table twice in the from-list
+			&&&& E.g. Finding the greatest income in the table
+			
+	& LIKE:
+		&& Pattern matching - 'Text' LIKE 'Text' %TODO
+		&& \% symbolizes 0+ arbitrary characters
+		&& \textunderscore{} symbolizes for exactly one arbitrary character
+		&& \% and \textunderscore{} characters must be escaped with \textbackslash
+		&& Does not ignore whitespace
+	& SIMILAR: %TODO
+		&& 
+		
+	& Set operations:
+		&& Tables must be union-compatible (see %TODO reference
+		&& WIll remove duplicate
+		&& Set union: UNION
+			&&& Difference between the ONE OF TWO BRANCHES UNION example:
+				&&&& Someone with an account in both Robson and Lonsdale will be returned twice in the first one (no default duplicates removed), and once in the second (set union) one
+		&& Set intersection: INTERSECT
+		&& Set difference: EXCEPT
+		&& %TODO
+			
+	& Strings:
+		&& Enclosed in single quotes
+		&& Single quote can be specified with two single quote characters
+		&& Comparable lexicographically using comparison operators
+			&&& Whitespace is ignored
+			
+	& Date: %TODO
+	& Time: %TODO
+	
+	& NULL:
+		&& Databases may contain NULL when data does not exist or is unknown
+		&& Using a non-special operator to test for NULL values evaluates to UNKNOWN
+		&& Special operators: %TODO
+			&&& IS NULL:
+			&&& IS NOT NULL:
+		&& Examples:
+			&&& 23 < NULL = UNKNOWN
+			&&& %TODO 
+		&& UNKNOWN is interpreted as FALSE
+		
+	& Nested queries: %TODO
+		&& Uncorrelated/independent query: Sub-query does not contain...
+		&& Correlated query: Sub-query must be evaluated for each row in the super-query
+			&&& Inefficient
+			
+	& Division in SQL:
+		&& Can be computed using NOT EXISTS and EXCEPT by SELECTing the target values WHERE NOT EXISTS ( all attributes to be contained EXCEPT all attributes of a given target )
+		
+	& \emph{UNIQUE:} Returns TRUE if no two rows contain the same attributes, and FALSE otherwise
+		&& If the table contains no rows or only one row, TRUE is returned
+	& \emph{NOT UNIQUE:} Returns TRUE if there exist at least one pair of rows with the same attributes, and FALSE otherwise
+	
+	& Aggregate operators:
+		&& \emph{COUNT(column\_ name):} Returns the number of values in a column %TODO ?
+		&& \emph{SUM(column\_ name):} Returns the sum of the values in a column
+		&& \emph{AVG(column\_ name):} Returns the average of the values in a column
+		&& \emph{MIN(column\_ name):} Returns the minimum of the values in a column
+		&& \emph{MAX(column\_ name):} Returns the maximum of the values in a column
+		&& May be used with DISTINCT to choose only unique values
+			&&& E.g. COUNT(DISTINCT column)
+		
+	%TODO lots. all the notes. all.
+
+	& Keywords are not case-sensitive
+	
+\end{easylist}
+\subsubsection{Tables}
+	\label{subsubsec:sql:syntax:tables}
+\begin{easylist}
+
+	& Creating a table:
+	\begin{lstlisting}
+CREATE TABLE TableName
+(
+	attribute DOMAIN,
+	attribute DOMAIN NOT NULL,
+	CONSTRAINT unique_attributename
+		UNIQUE(attribute),
+	CONSTRAINT unique_attributescombinedname
+		UNIQUE(attribute, attribute),
+	CONSTRAINT fk_tablename_references_tablename
+		FOREIGN KEY(attribute)
+		REFERENCES ReferencedTableName,
+	PRIMARY KEY(attribute)
+)
+	\end{lstlisting}
+		&& UNIQUE identifies a candidate key (see \emph{candidate key}, subsection~\ref{subsec:design:identification-of-tables})
+			&&& Records which have an attribute specified as UNIQUE cannot have the same value for that attribute
+			&&& Having multiple attributes in a UNIQUE statement creates a single candidate key consisting of all the attributes
+		&& PRIMARY KEY identifies a primary key (see \emph{primary key}, subsection~\ref{subsec:design:identification-of-tables})
+
+	& Deleting a table:
+	\begin{lstlisting}
+DROP TABLE TableName
+	\end{lstlisting}
+
+\end{easylist}
+\subsubsection{Modifying Schema}
+	\label{subsubsec:sql:modifying-schema}
+\begin{easylist}
+
+	& Adding a column:
+	\begin{lstlisting}
+ALTER TABLE TableName
+ADD attribute TYPE
+	\end{lstlisting}
+	
+	& Deleting a column:
+	\begin{lstlisting}
+ALTER TABLE TableName
+DROP attribute
+	\end{lstlisting}
+
+\end{easylist}
+\subsubsection{Modifying Data}
+	\label{subsubsec:sql:syntax:modifying-data}
+\begin{easylist}
+
+	& Modifying a record:
+	\begin{lstlisting}
+UPDATE TableName
+SET attribute=value
+WHERE attribute=value  -- Primary key
+	\end{lstlisting}
+	
+		&& Can affect more than one record
+		&& Though the SET statement comes before the WHERE statement, the WHERE statement is evaluated first
+
+	& Inserting a record into a table:
+	\begin{lstlisting}
+INSERT
+INTO TableName (attribute, attribute)
+VALUES (value, 'string')
+	\end{lstlisting}
+	
+		&& List of column names is optional
+		&& Values must be in the same order as the columns
+
+	& Deleting a record from a table:
+	\begin{lstlisting}
+DELETE
+FROM TableName
+WHERE attribute=value
+	\end{lstlisting}
+	
+	& Deleting all records from a table:
+	\begin{lstlisting}
+DELETE
+FROM TableName
+	\end{lstlisting}
+
+\end{easylist}
+\subsubsection{Accessing Data}
+	\label{subsubsec:sql:syntax:accessing-data}
+\begin{easylist}
+
+	& Query:
+\begin{lstlisting}
+SELECT select-list
+FROM from-list
+WHERE condition
+\end{lstlisting}
+
+		&& Equivalent to $\pi _{select-list} ( \sigma _{condition} (from\ list_1 \times list_2 \times \ldots \times list_n) )$ (see ) %TODO relational algebra reference
+			&&& SELECT performs a projection; WHERE performs a selection
+			&&& %TODO process
+		&& Returns a multiset/bag of rows
+			&&& \emph{Bag:} Collection of objects, with duplicates allowed
+			&&& The keyword DISTINCT will remove duplicates
+			&&& E.g. SELECT DISTINCT select-list FROM \ldots
+		&& select-list: Column names belonging to tables in the from-list
+			&&& Must be a candidate key
+			&&& To select all columns, use *
+				&&&& E.g. SELECT * FROM \ldots
+		&& from-list: List of table names
+		&& condition: Boolean expression
+			&&& Must also specify the equal fields
+		%TODO formatting and notes
+		&& Does not automatically remove duplicates
+		&& Select and condition statements can utilize arithmetic operations
+		&& AS keyword renames a column
+			&&& E.g. SELECT col1, col1 AS renamedcol FROM Table
+			
+		&& E.g. Rupert Giles %TODO notes
+		&& ORDER BY: ASC/DESC
+			&&& Default is ascending order
+	
+\end{easylist}
+\subsubsection{Views}
+	\label{subsubsec:sql:syntax:views}
+\begin{easylist}
+	
+	& Creating a view:
+	\begin{lstlisting}
+CREATE VIEW ViewName
+(
+	Specifier.attribute,
+	Specifier.attribute
+)
+AS
+(
+	SELECT Specifier.attribute, Specifier.attribute
+	FROM Table1Name Specifier1, Table2Name Specifier2
+	WHERE Specifier1.attribute = Specifier2.attribute
+)
+	\end{lstlisting}
+
+\end{easylist}
+\subsubsection{Invalid Transactions}
+	\label{subsubsec:sql:syntax:invalid-transactions}
+\begin{easylist}
+
+	& SQL will reject any operation which violates a constraint by deleting, modifying, or creating invalid data
+	
+	& Responses:
+		&& Can be specified as ON DELETE or ON UPDATE in the constraint declaration
+		&& Possible responses:
+			&&& Reject the transaction (NO ACTION)
+			&&& Delete/update the referencing record (CASCADE)
+			&&& Set the referencing record's foreign key attributes to null (SET NULL)
+				&&&& Only upon deletion
+				&&&& Cannot be used on an attribute with a participation constraint
+			&&& Set the referencing record's foreign key attributes to a default value (SET DEFAULT)
+				&&&& Only upon deletion
+				&&&& Default value must be specified in the foreign key
+		&& E.g.
+		\begin{lstlisting}
+CREATE TABLE table_name
+(
+	attribute INTEGER,
+	attribute_foreign_key INTEGER,
+	FOREIGN KEY (attribute_foreign_key)
+		REFERENCES other_table_name
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
+	PRIMARY KEY (attribute)
+)
+		\end{lstlisting}
+
+\end{easylist}
+\subsection{Hierarchies and Aggregation}
+	\label{subsec:sql:hierarchies-and-aggregation}
+\begin{easylist}
+
+	& Subclasses can either be represented using:
+		&& An entity with all the attributes in the superclass entity as well as all the attributes in the subclass entity
+		&& An entity with the attributes not in the superclass entity, and a foreign key referencing a superclass entity with the remaining attributes
+		
+	& Aggregation
+		&& Represented by a connection between the relationship set of the aggregated entities and the other entity
+
+\end{easylist}
+\subsection{Constraints}
+	\label{subsec:sql:syntax:constraints}
+\begin{easylist}
+			
+	& Participation constraints:
+		&& Declare foreign keys as NOT NULL (if the relationship set is not represented in its own table)
+		&& May require assertions/triggers
+		
+	& Integrity constraints:
+		&& Specified when the database schema is specified
+		&& Checked with every change to ensure that no constraints are violated
+		
+	& Primary key:
+		&& Each table has one and only one primary key
+		&& Attribute(s) must be unique and non-null
+			
+	& Table constraints are within a single table
+		&& E.g. A population greater than 0
+	
+	& Assertions may cover multiple tables
+		&& Checked whenever any of the related tables are modified
+			
+	& Weak entity sets' foreign keys referencing the owner's primary key should be specified as ON DELETE CASCADE (deletes the weak entity when the owner is deleted)
+
+	& Primary key constraint:
+		&& Can be specified in:
+			&&& CREATE TABLE statement
+			&&& ALTER TABLE statement
+		&& Clustered index is created by default (see ) %TODO ref{}
+		
+	& Foreign key constraint:
+		&& If table $R$ contains a foreign key on attributes $\{ r \}$ which references table $S$, $\{ r \}$ must... %TODO
+		&& Can be specified in:
+			&&& Separate foreign key statement
+			&&& REFERENCES statement
+		&& Action taken if referenced records are updated/deleted can be specified
+			&&& For SQL, see %TODO ref
+			&&& If any cascading deletion/update causes a violation, the entire update is rejected
+			
+	& \emph{General/Table constraint:} Constraint on a single table (but may reference other tables)
+		&& Can be specified in the CREATE TABLE statement
+		&& Keyword: CHECK (boolean\_ expression)
+			&&& Transaction is rejected if the given boolean expression evaluates to false
+			&&& SQL can only handle comparisons with scalar expressions (only one value; expressions with SQL queries are not allowed), but can use results of User Defined Functions (see %TODO \ref{}
+	
+	& \emph{Domain:} Range of possible values %TODO definition
+		&& Can be specified in:
+			&&& CREATE DOMAIN STATEMENT
+		&& %TODO stuff + syntax
+		&& Can replace a base type in a CREATE TABLE statement
+		&& Comparisons between two domains can be made in terms of their base types
+		
+	& \emph{Assertion:} Constraint on multiple tables
+		&& Can be specified in:
+			&&& %TODO
+		&& Separate statements in the database schema
+		&& Tested whenever the database is updated (therefore, may have significant overhead)
+		&& %TODO
+		&& Syntax:
+		\begin{lstlisting}
+CREATE ASSERTION name
+CHECK (boolean_expression)
+		\end{lstlisting}
+			
+	& \emph{User Defined Function (UDF)}: SQL server function which can return scalar values or tables
+		&& Can be written in T-SQL or a .NET language
+		&& Useful for:
+			&&& Modular programming
+			&&& Faster execution
+			&&& Reduced network traffic
+			
+		&& Syntax:
+		\begin{lstlisting}
+CREATE FUNCTION funcName()
+RETURNS type
+AS
+BEGIN
+	DECLARE @variable_name type
+	IF value = value  -- Can have queries
+		SET @variable_name = value
+	ELSE
+		SET @variable_name = value
+	RETURN @variable_name
+END
+		\end{lstlisting}
+
+\end{easylist}
+\section{Triggers}
+	\label{subsec:sql:triggers}
+\begin{easylist}
+
+	& \emph{Trigger:} Procedure invoked by the DBMS as a response to a specified change/condition
+		&& Can be used to... %TODO
+			&&& E.g. Sending an email
+		&& Generally will reject the transaction
+	& Components:
+		&& \emph{Event (trigger):} Specified modification to a database
+			&&& Insert/deletion/change
+		&& \emph{Condition (triggger):} %TODO
+			&&& IF/ELSE structure
+		&& \emph{Action (trigger):} %TODO
+	& \emph{Active database:} Set of triggers associated with a database
+	& Available in most database products
+	& Syntax:
+	%TODO better syntax
+	\begin{lstlisting}
+CREATE TRIGGER TR_trigger_name
+ON TableName/View
+FOR/AFTER/INSTEAD OF OPERATION -- CREATE, INSERT, UPDATE, DELETE, etc.
+AS RAISERROR(
+	\end{lstlisting}
+	& %TODO
+		
+	& Order of checks:
+		&& Check constraints
+		&& Check foreign key constraints
+		&& Create inserted/deleted tables
+		&& Execute a triggering statement
+		&& Execute the (after) trigger
+		
+\end{easylist}
+\subsection{Indexes}
+	\label{subsec:sql:indexes}
+\begin{easylist}
+
+	& \emph{Index:} Data structure which provides efficient access to records by mapping attribute values to record IDs
+		&& \emph{Record ID:} Disk address of a record
+		&& Avoids the need to read an entire table from disk into main memory
+		&& Variation on hash tables (for an arbitrary value(s)) and/or binary search trees (for a range of values)
+		&& Based on the value of an attribute(s)
+		&& Conceptually similar to a book index
+	
+	& \emph{Index search key:} Attribute used to find an index entry	
+	
+	& A table may have multiple indexes and single-attribute and/oror multi-attribute (compound) search keys
+	
+	& \emph{Hash index:} %TODO
+	& \emph{Tree index:} %TODO
+		&& Allows easier lookup of a range of values
+	
+	& \emph{Clustered index:} Index where the data is sorted by the index search key
+		&& Only one clustered index per table
+		&& Greater support for range queries
+	
+	& Cost of maintenance:
+		&& Insertions/deletions always require modification of all table indexes
+		&& Updates may require modification of all table indexes
+		&& Indexes should be chosen by analyzing usage and finding the most-used attributes
+
+\end{easylist}
+\clearpage

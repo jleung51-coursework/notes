@@ -1,0 +1,63 @@
+%
+% CMPT 354: Database Systems I - A Course Overview
+% Section: Query Optimization
+%
+% Author: Jeffrey Leung
+%
+
+\section{Query Optimization}
+	\label{sec:query-optimization}
+\begin{easylist}
+
+	& \emph{Query optmization:} Process of finding an equivalent and more efficient query
+		&& Process:
+			&&& Convert the SQL query to relational algebra
+			&&& Find equivalent queries and their estimated costs
+			&&& Choose the most efficient query
+		&& Modern DBMSes automatically optimize queries
+
+	& Process of an unoptimized query:
+		&& Read as much of the first table into main memory as possible
+		&& Scan the second table in the Cartesian product for each block of records in main memory
+		&& Output the resulting records
+	& Process of an optimized query:
+		&& Apply other operations when/before each Cartesian product/natural join is computed
+			&&& Selection and projection do not require additional reads/writes
+
+	& Example of a slow query:
+	\begin{lstlisting}
+SELECT C.customerID, C.lastName, A.balance
+FROM Customer C, Owns O, Account A
+WHERE A.accNumber = O.accNumber AND
+	C.customerID = O.customerID AND
+	A.branchName = `London' AND
+	C.firstName = `Bob'
+	\end{lstlisting}
+	
+		&& Process:
+			&&& Computes the Cartesian product of the three tables
+			&&& Selects any records which match the given conditions
+			&&& Projects all columns in the SELECT list (in the final table)
+	
+	& Example of a faster query:
+	\begin{lstlisting}
+SELECT C.customerID, C.lastName, A.balance
+FROM (SELECT accNumber, balance
+	FROM Account
+	WHERE branchName = `London' ) AS A
+	NATURAL INNER JOIN Owns
+	NATURAL INNER JOIN
+	(SELECT customerID, lastname
+	FROM Customer
+	WHERE C.firstName = `Bob') AS C
+	\end{lstlisting}
+		
+		&& Process:
+			&& Selects all records which match the given conditions
+			&& Projects all columns in the SELECT list (in each separate table)
+			&& Computes the natural join of the three resulting tables
+				
+	& Indexing may reduce the cost of a selection (see %TODO indexing, subsection~\ref{})
+
+\end{easylist}
+\clearpage

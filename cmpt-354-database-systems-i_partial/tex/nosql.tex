@@ -1,0 +1,186 @@
+%
+% CMPT 354: Database Systems I - A Course Overview
+% Section: NoSQL
+%
+% Author: Jeffrey Leung
+%
+
+\section{NoSQL}
+	\label{sec:nosql}
+\subsection{Introduction}
+	\label{subsec:nosql:introduction}
+\begin{easylist}
+
+	& For a comparison with SQL, see subsection~\ref{subsec:introduction:types-of-databases}
+
+	& Possible definitions:
+		&& No SQL
+		&& Not only SQL
+		
+	& No schema
+		&& Key-value store allows any data to be associated with the key
+		&& No restrictions on what is contained
+		&& Column family databases allow any type of data in any column
+		
+	& Common characteristics:
+		&& Does not use relational model
+		&& Runs well on clusters
+		&& Built for modern web applications
+		&& Lack a schema
+		&& Open source
+		
+	& \emph{Aggregate:} Collection of related units which is used like a single unit
+		&& Allows easier operation in clusters (see %TODO ref
+		&& Used as a unit for replication and sharding
+		&& Designed with respect to how the data is manipulated
+		&& Data related to a single aggregate should be held at a single cluster
+		&& Examples:
+			&&& A bank Branch object containing a container of associated accounts
+			&&& A bank Account object is independent of a Branch, and contains a reference to it
+			
+	& Possible properties:
+		&& BASE:
+			&&& Basically Available
+			&&& Soft state
+			&&& Eventually consistent
+				&&&& Allow temporary inconsistency until all nodes sync information
+		&& Do not follow the ACID properties
+		&& See \hyperref[subsec:nosql:issues]{Issues}
+			
+\end{easylist}
+\subsection{Distribution of Data}
+	\label{subsec:nosql:distribution-of-data}
+\begin{easylist}
+			
+	& Stored data must be distributed across the cluster
+	
+	& \emph{Sharding:} Distribution of data across several nodes
+		&& Users should be able to retrieve most or all their relevant data from a single server
+		&& Data can be sharded by:
+			&&& Physical location (e.g. Vancouver servers)
+			&&& Aggregates which are likely to be accessed together, or in sequence from the same location
+		&& Often automatically done by the database
+		&& Advantages:
+			&&& Improved read/write performance
+		&& Disadvantages:
+			&&& Decreased resilience (higher chance of failure due to many machines)
+	& \emph{Replication:} Maintenance of multiple copies of data
+		&& Advantages:
+			&&& Improved resilience and availability
+		&& Disadvantages:
+			&&& Replication schemas handle writes in different ways
+			&&& May create inconsistency
+		&& \emph{Master-slave replication:} Replication where a single copy is maintained as the `definitive' copy
+			&&& Updates are performed on the master copy and sent to the slaves
+			&&& Reads are performed on the slaves
+			&&& If the master fails, one of the slaves becomes the new master
+			&&& Advantages: %TODO
+				&&&& G
+				&&&& Master is a single point of failure
+			&&& Disadvantages:
+				&&&& Does not improve write readability
+		&& \emph{Peer-to-peer replication:} 
+			&&& %TODO
+			
+	& Combination of sharding and replication:
+		&& Each shard is replicated
+		&& Master-slave replication: One master for each shard
+		&& Peer-to-peer replication:
+			&&& Commonly used for column family databases
+		%TODO
+		
+\end{easylist}
+\subsection{Distributed Concurrency}
+	\label{subsec:nosql:distributed-concurrency}
+\begin{easylist}
+
+	& %TODO
+	& Concurrency is complex on a distributed system
+	& When any node can process updates:
+		&& Conflicts must be detected across notes
+		&& Updates are processed in the same order
+	& Aggregate-oriented databases support atomic transactions within aggregates, but not necessarily across aggregates
+		&& \emph{Inconsistency window:} Period of time when reads may be inconsistent due to updates affecting multiple aggregates
+	& %TODO
+	& Distributed systems must have partition tolerance
+	
+\end{easylist}
+\subsection{Issues}
+	\label{subsec:nosql:issues}
+\begin{easylist}
+
+	& Consistency/availability/: %TODO
+		&& Given a peer-to-peer system
+		
+\end{easylist}
+\subsection{Categories}
+	\label{subsec:nosql:categories}
+\begin{easylist}
+
+	& \emph{Key-value store:} Database which stores only one key and one value per row
+		&& Value is not usable except for direct storage/extraction (stored as binary)
+		&& Structurally simple
+		&& Uses:
+			&&& Session information
+			&&& User profiles and preferences
+			&&& Shopping carts
+		&& Consistency is... %TODO
+		&& Transactions vary between products/implementations
+		&& Queries are done on the key only
+		&& Scaling is done by sharding by the key's value
+		
+	& \emph{Document database:} Database which stores only documents
+		&& \emph{Document:} Self-describing hierarchical tree structure
+			&&& E.g. XML, JSON
+		&& Differences compared to a key-value store:
+			&&& Value can only be a document
+			&&& Document can be compared/examined
+		&& Uses master-slave replication
+		&& Level of consistency can be specified (i.e. manual specification of the number of nodes to which an update must be propagated before it is considered successful)
+		&& Availability is improved through duplicated data across nodes
+			&&& Master-slave replication allows 
+		&& Scaling:
+			&&& For reads: Adding more slaves
+			&&& For writes: Sharding
+		&& Uses:
+			&&& Event logging
+			&&& Content management systems
+			&&& Web analytics
+		&& E.g. MongoDB, CouchDB
+		
+	& \emph{Column-family store:} Database which groups column families and is a refined columnar database
+		&& \emph{Columnar database:} Database which stores each column separately
+			&&& Increased speed of aggregate operations on column data (e.g.
+			\begin{lstlisting}
+COUNT()
+			\end{lstlisting}
+			)
+			&&& Decreased speed of access on an entire row
+			&&& Similar to \hyperref{sec:normalization}{Normalization} by how the table is reduced/broken up
+		&& Multiple related columns: %TODO
+		&& Uses peer-to-peer replication
+		&& Level of consistency can be specified (i.e. manual specification of the number of nodes which must respond to an update before it is committed)
+		&& %TODO More
+		&& Queries are not as rich as SQL but are similar
+		&& Uses:
+			&&& Event logging
+			&&& Content management systems
+			&&& Blogging sites
+			&&& Counters
+		&& E.g. Cassandra, HBase, Amazon SimpleDB
+	
+	& \emph{Graph database:} Database which stores relationships between objects
+		&& Nodes map to entities
+		&& Edges:
+			&&& Map to relationships
+			&&& Can have types
+			&&& Can be bidirectional
+		&& Traversing relationships is efficient
+		&& Uses:
+			&&& Connected data such as social networks
+			&&& Location-based services
+			&&& Recommendation engines
+		&& E.g. Neo4j, Titan, OrientDB
+		
+\end{easylist}
+\clearpage

@@ -1,0 +1,55 @@
+%
+% CMPT 354: Database Systems I - A Course Overview
+% Section: Relational Model
+%
+% Author: Jeffrey Leung
+%
+
+\section{Relational Model}
+	\label{sec:relational-model}
+\begin{easylist}
+
+	& \emph{Relational database:} Collection of tables (mathematical concept of a relation
+		&& Tables have unique names; rows represent an entity or relationship
+		
+	& \emph{Tuple:} Record/row of a relational database
+		
+	& \emph{Relation:} Set of unique tuples
+		&& \emph{Relation instance:} Actual table with a particular set of rows
+			&&& \emph{Cardinality (relation instance):} Number of tuples in a given relation instance
+		&& \emph{Relation schema:} Column headings of a table
+			&&& Consists of the names of the relation, the names of the columns, and the domain of each field
+			&&& \emph{Domain:} Set of possible values
+				&&&& \emph{Relation instance:} Subset of the Cartesian product of the domains; set of distinct, valid tuples/records
+					&&&&& \emph{Cartesian product:} All elements in a set paired with all elements in another set
+					&&&&& I.e. One possible row
+			&&& E.g. Customer relation: \\
+			Customer = \{ sin, firstName, lastName, age, income \} \\
+			Domain: integer(9), char(20), char(20), integer, realNumber
+		&& Degree (arity): Number of fields of a relation
+
+\end{easylist}
+\subsection{Relational Models vs. Databases}
+	\label{subsec:relational-model:relational-models-vs-databases}
+\begin{easylist}
+
+	& For differences in terminology, see table~\ref{tab:equivalent-terms-for-relational-models-and-databases}
+	
+	\Deactivate
+	\begin{table}[!htb]
+		\centering
+		\caption{Equivalent terms for Relational Models and Databases}
+		\label{tab:equivalent-terms-for-relational-models-and-databases}
+		\begin{tabular}{ l l }
+			Relational models: & Databases: \\
+			\hline
+			Relation schema & Table schema \\
+			Relation instance / relation & Table \\
+			Field & Column/attribute \\
+			Tuple & Record/row
+		\end{tabular}
+	\end{table}
+	\Activate
+
+\end{easylist}
+\clearpage

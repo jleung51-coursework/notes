@@ -1,0 +1,153 @@
+%
+% CMPT 354: Database Systems I - A Course Overview
+% Section: Database Applications
+%
+% Author: Jeffrey Leung
+%
+
+\section{Database Applications}
+	\label{sec:database-applications}
+\begin{easylist}
+
+	& An application is built on top of the database to store, retrieve, and manipulate data as necessary
+		&& Created in a general purpose programming language
+		&& DBMS is a back-end which stores the data on a server
+		&& May include:
+			&&& Interface and presentation to provide access to data
+			&&& Business logic to ensure data consistency
+				&&&& Constraints which cannot be easily implemented in the DBMS
+			&&& Processing and computation of data
+		
+	& Application architecture:
+		&& \emph{Single-tier architecture:} 
+			&&& DBMS, application logic, business rules, and user interface in the same tier
+			&&& Run on a mainframe; accessed through dumb terminals
+				&&&& \emph{Dumb terminal:} Terminal which lacks the computational power to support a GUI
+		&& \emph{Two-tier architecture:} Used for client-server architecture
+			&&& Consist of client and server computers
+				&&&& \emph{Thin client:} Client which implements the UI
+					&&&&& Commonly used
+				&&&& \emph{Thick client:} Client which implements the UI and some of the business logic
+					&&&&& Uncommonly used
+					&&&&& More difficult to update and maintain the business logic
+					&&&&& Do not scale well
+					&&&&& %TODO
+				&&&& Server implements the business logic and data management; clients are not responsible for data processing
+		&& \emph{Three/Multi-tier architecture:} Used for web systems
+			&&& Scalable
+			&&& Presentation layer handles the user interaction with the middle? tier
+				&&& Differnent interfaces... %TODO
+			
+				&&& \emph{Style sheet:} Method to format a document in different ways depending on the context (e.g. mobile devices)
+					&&&& Display format can be standardized with the same conventions
+			&&& \emph{Business logic layer:} Runs the business logic of the application
+				&&&& Controls:
+					&&&&& %TODO
+			&&& \emph{Data management layer:} Contains the database(s)
+				&&&& Data is exchanged between the middle tier and the database servers if  multiple data sources are used
+					&&&&& XML is often used as a data exchange format between database servers and the middle tier
+			&&& State of a user's interaction must be maintained across different web pages
+				&&&& Maintained at the middle tier in... %TODO
+			&&& Advantages:
+				&&&& \emph{Heterogeneous system:} 
+					&&&&& Applications can use different platforms and software components at different tiers
+					&&&&& Ease of modifying code at any specific tier
+				&&&& %TODO
+				
+	& Database must be connected to the host language (the programming language that the application is written in)
+		&& Database connections allows communiation between a database server and client software
+		&& %TODO
+		&& Accessing database data from a host language application:
+			&&& \emph{Embedded SQL:} SQL statements identified at compile time
+				&&&& Does not allow the creation of new SQL queries
+				&&&& SQL statements are marked so the preprocessor can process them
+				&&&& Variables used to pass arguments into a SQL command are declared in SQL
+					&&&&& Data types may not match
+					&&&&& E.g. C:
+					\begin{lstlisting}[language=C]
+EXEC SQL BEGIN DECLARE SECTION;
+long sin;
+char[20] fname;
+char[20] lname;
+int age;
+EXEC SQL END DECLARE SECTION;
+					\end{lstlisting}
+					
+					\begin{lstlisting}[language=C]
+EXEC SQL
+INSERT INTO Customer VALUES
+	(:sin, :fname, :lname, :age);
+					\end{lstlisting}
+					
+				&&&& SQLSTATE: Array of 5 characters which connects the host language to... %TODO
+				&&&& \emph{Cursor:} Position in a relation which allows retrieval of a set of records
+					
+			&&& \emph{Dynamic SQL:} SQL queries constructed at runtime
+				&&&& E.g. Open DataBase Connectivity, Java DataBase Connectivity - Protocols allownig a single executable to be run on different databases without... %TODO
+				&&&& New queries can be created
+				&&&& Query is created as a string, then parsed and executed
+			&&& Mapping a database table to a host language construct
+				&&&& E.g. CRecordSet
+			&&& %TODO
+
+\end{easylist}
+\section{Object Relational Mapping}
+	\label{subsec:databse-applications:object-relational-mapping}
+\begin{easylist}
+
+	& \emph{Object relational mapping:} Process of converting data between an object/class and attributes in a database
+	
+	& \emph{Impedance mismatch:} System where inputs and outputs do not match
+	
+	& Tables are mapped to classes; columns are mapped to member variables
+	& Inheritance options:
+		&& Table for each class
+		&& Table for each concrete class
+		&& Table for each class family
+	& Mapping a subclass to a table:
+		&& If each class in an inheritance
+	
+	& Complex data types are composed of composite/multi-valued attributes
+
+\end{easylist}
+\subsection{Injection}
+	\label{subsec:database-applications:injection}
+\begin{easylist}
+
+	& \emph{SQL injection:} Code injection attack which places unwanted code into an SQL query
+	
+	& E.g. Given the following query in response to entered data:
+	\begin{lstlisting}
+SELECT attribute
+FROM table
+WHERE attribute = '$email'  -- Variable from the form
+	\end{lstlisting}
+		
+		&& If the input is:
+		\begin{lstlisting}
+X'; DROP TABLE tablename --
+		\end{lstlisting}
+		then the entire table would be deleted.
+		
+		&& If the input is:
+		\begin{lstlisting}
+anything' OR 'X' = 'X
+		\end{lstlisting}
+		then the application may display an email in the table (often the first one).
+		
+		&& If the input is:
+		\begin{lstlisting}
+X'; UPDATE members SET email = 'myemail@gmail.com' WHERE email = 'someonesemail@gmail.com' --
+		\end{lstlisting}
+		then the email for an account will be changed to another email and access to the account will be compromised.
+		
+	& Preventing injection attacks:
+		&& \emph{Sanitized input:} Data which has no invalid characters
+			&&& Difficult due to exceptions such as apostrophes and hyphens in names
+		&& \emph{Bound input:} Data which is given to the code through placeholders
+			&&& Can be done by the \emph{Prepare} statement
+		&& Limit permissions and segregate users
+		&& Use stored procedures
+
+\end{easylist}
+\clearpage

@@ -1,0 +1,133 @@
+%
+% CMPT 354: Database Systems I - A Course Overview
+% Section: Design
+%
+% Author: Jeffrey Leung
+%
+
+\section{Design}
+	\label{sec:design}
+\subsection{Structure}
+	\label{subsec:design:structure}
+\begin{easylist}
+	
+	& Conceptual database design:
+		&& Identify the entities and relationships (see subsection~\ref{sec:entity-relationship-model})
+		&& Identify the entity and relationship information
+		&& Identify the integrity constraints
+		&& Discuss the conceptual model with the client
+		
+	& Logical database design:
+		&& Decide on a data model to use
+		&& Choose a DBMS to use
+		&& Create a database schema using the conceptual schema
+			&&& Avoid redundant information or inability to record information
+
+\end{easylist}
+\subsection{Identification of Tables}
+	\label{subsec:design:identification-of-tables}
+\begin{easylist}
+
+	& \emph{Key/Superkey:} Set of attributes with values which uniquely identify an entity in an entity set
+		&& Mathematical definition: A subset $K$ of a relation $R$ is a superkey of $R$ if, for all pairs of tuples $t_1$ and $t_2$, $t_1 \neq t_2$, then $t_1[K] \neq t_2[K]$
+			&&& I.e. $K$, a set of attributes of relation $R$, is a superkey if, for all distinct pairs of tuples, there are no two tuples with the same values for $K$
+		&& \emph{Candidate key:} Superkey with no extraneous attributes
+			&&& E.g. Class number, teacher + term + meeting times
+			&&& \emph{Primary key:} Candidate key chosen to represent a tuple in the relation (rows in the table)
+				&&&& Should be chosen from an attribute(s) which never changes (e.g. Social Insurance Number)
+				&&&& Can be arbitrarily generated for easier classification
+				&&&& In an entity-relationship diagram: Attributes underlined
+				
+\end{easylist}
+\subsection{Constraints}
+	\label{subsec:design:constraints}
+\begin{easylist}
+				
+	& \emph{Integrity constraint:} Rule which restricts the data in a database
+		&& \emph{Domain constraint:} Integrity constraint on a given data column of the type of data
+		&& \emph{Key constraint (integrity constraint):} Integrity constraint which identifies primary keys and candidate keys
+		&& \emph{Foreign key constraint:} Integrity constraint which references a primary key from another tables
+			&&& \emph{Foreign key:} Attribute(s) which reference a primary key of another entities
+				&&&& References the entire primary key
+				&&&& Number of attributes and attribute types must be consistent; attribute names may be different
+
+\end{easylist}
+\subsection{Normalization}
+	\label{subsec:design:normalization}
+\begin{easylist}
+
+	& \emph{Normalization:} Minimizing redundancy of related information
+		&& Goals:
+			&&& Efficient space use
+			&&& Efficient processing of data
+			&&& Minimal possibility of inconsistent data and therefore data integrity
+	
+	& \emph{Repetition:} Data which is repeated for no use, and which obscures updating
+		&& E.g. A customer can own many accounts; accounts can have many customers. \\
+		Account = \{customerID, accNumber, balance, type\} \\
+		There will be multiple rows for each account with multiple customers, so updating the information of one customer's account will require updating multiple records.
+	
+	& OTHER:
+		&& \emph{Lossless join:} A join where only and all of the appropriate data is returned %TODO ?
+		&& \emph{Lossy join:} A join where extraneous information/records is created %TODO ?
+			&& E.g. Decomposing a table into two tables, one of which has no primary key, and joining them together will create multiple records with useless information
+			
+	& Normalized database design:
+		&& Creating the relational database schema:
+			&&& Do not use composite attributes or set valued attributes
+			&&& Do not assign attributes to relationship sets which are not descriptive
+		&& Decompose the tables and make sure they satisfy at least one normal form (see subsection~\ref{subsec:design:normal-forms})
+
+\end{easylist}
+\subsection{Normal Forms}
+	\label{subsec:design:normal-forms}
+\begin{easylist}
+
+	& \emph{First Normal Form:} Placing all data in one table while removing repeating groups
+		&& Adds rows for repeated groups
+		&& Uses a compound primary key
+		&& Creates fixed-length records
+		&& Complies with the relational model
+		&& Disadvantages:
+			&&& Redundant data due to repeated information in groups of rows
+			&&& An instance of one attribute of the compound primary key cannot be inserted without creating an instance of the other attribute(s) of the compound primary key
+			&&& Deleting the last instance of an attribute in a primary key also deletes... %TODO
+			&&& Update... %TODO
+		
+	& \emph{Second Normal Form:} Removing partial key dependencies from a First Normal Form...
+		&& %TODO
+		&& Any database in 2NF is also in 1NF
+		&& Disadvantages:
+			&&& Only considers partial key dependencies; ignores non-key dependencies
+			&&& Redundant data
+			&&& Insert/delete/update anomalies
+	
+	& \emph{Third Normal Form:} %TODO
+	
+	& See \emph{functional dependencies}, subsection %TODO \ref{}
+		&& Goals of decomposition:
+			&&& Should not result in a lossy join %TODO ref
+				&&&& %TODO notes
+			&&& \emph{Dependency preservation:} If a set of attributes depends on an attribute, the dependency should be maintained in one table
+			&&& Minimal redundancy
+			
+	& \emph{Boyce-Codd Normal Form (BCNF):} Obtained by simplifying functional dependencies from Third Normal Form
+		&& Ignores multi-valued dependencies
+		&& The only functional dependencies are those where the key of the table determines attributes (excluding trivial dependencies)
+		&& Database is in BCNF if each table is in BCNF
+		&& Strict definition: A relational schema $R$ is in BCNF with respect to a set of dependencies $F$ if, for all... %TODO notes
+	
+	
+\end{easylist}
+\subsection{Views}
+	\label{subsec:relational-model:views}
+\begin{easylist}
+
+	& \emph{View:} External schema which displays a particular set of data
+		&& Convenient for users to access data without referring to multiple tables
+		&& Ensures that users can only access specific data
+		&& Masks changes in the conceptual schema
+		&& Updates may cause problems when derived from multiple tables, and does not include the primary keys of all tables, so they are generally only allowed on views derived from a single table	
+
+\end{easylist}
+\clearpage

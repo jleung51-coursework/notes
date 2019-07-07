@@ -1,0 +1,134 @@
+%
+% CMPT 300: Operating Systems I - A Course Overview
+% Section: Synchronization
+%
+% Author: Jeffrey Leung
+%
+
+\section{Synchronization}
+	\label{sec:synchronization}
+\begin{easylist}
+
+& \textbf{Race condition:} Data inconsistency when multiple processes manipulate shared data concurrently and the result varies depending on the order of execution
+	&& To avoid, set code as the \textbf{critical section} so only one process can execute their CS at the same time
+
+& \textbf{Producer-Consumer Problem:} Two processes (threads) share a buffer where the producer thread places items into the buffer (waiting if full) and the consumer thread removes items from the buffer (waiting if empty)
+	&& Both threads should update a counter of the number of items in the buffer
+		&&& \textit{Issue:} Race condition may occur when the counter is incremented or decremented, if the CPU scheduler switches between them at that instruction
+	&& \textit{Issue:}
+
+
+
+
+
+
+
+& \textbf{Semaphore:}
+	&& Non-busy waiting semaphore: Integer value with queue
+		&&& Can block to suspend the process or %TODO
+	&& \textit{wait} and \textit{signal} are critical sections to avoid further race conditions
+		&&& Busy waiting is shortened
+	&& Value of 0 (false) means that a process is waiting; value of 1 (true) means that no process is waiting
+	&& Issue: Process may release lock and then immediately relock, which creates a problem of prioritization
+	&& If a part of a process P2 should be executed only after the execution of a part of another process P1, then there can be a \textit{signal} after the part in P1 and a \textit{wait} before the part in P2
+	&& Issue: Deadlock can occur if multiple sempahores are accessed in the incorrect order, if processes block forever and do not release resources, % TODO
+		&&& Example: When both process wait for signals from the other process, which occur after the waits
+		&&& E.g. % TODO Code
+
+& Classical synchronization problems: Abstractions which can... %TODO
+	&& \textbf{Bounded-Buffer (Producer-Consumer) Problem:} See above
+		&&& Issues are a violation of modification of the count, producing when full, and consuming when empty
+			&&&& Solution: Use 3 semaphores - mutex initialized to 1, full initialized to 0, empty initialized to N
+	&& \textbf{Readers-Writers Problem:}
+	&& \textbf{Dining-Philosophers Problem:} 5 philosphers in a circle have one chopstick in between each of them
+		&&& Solution: Use 5 semaphores (chopstick [0..5])
+			&&&& Deadlock: If every thread picks up one chopstick, then no chopsticks are available to unblock
+			&&&& Deadlock solution: Take both chopsticks only when available
+			&&&& Deadlock solution: Odd threads will take only one side first and even threads will take only right side first
+
+\end{easylist}
+\subsection{Deadlocks}
+	\label{subsec:synchronization:deadlocks}
+\begin{easylist}
+
+& \textbf{Deadlock prevention:}
+
+& \textbf{Deadlock avoidance:}
+
+& \textbf{Deadlock detection:}
+	&& Wait-for graph % TODO
+	&& Algorithm invoked when CPU utilization is less than 40\% (occurs occasionally)
+
+& \textbf{Deadlock recovery:} Removal of a deadlock situation
+	&& \textbf{Victim:} Process which is targeted in an attempt to remove a deadlock
+		&&& Determined by priority, execution time, remaining execution time, resources used, resources needed, number of processes required to be terminated, interactive/batch execution
+	&& \textit{Process termination:} A process is aborted continually until the deadlock cycle is eliminated
+		&&& At least one process for each disjoint cycle must be aborted
+	&& \textit{Resource pre-emption:} A resource is pre-empted from some processes
+		&&& \textbf{Rollback:} Returning of a process and its resources to a safe state and restarting it
+		&&& \textit{Starvation:} Same process may be continually re-chosen as victim
+
+
+
+
+& \textbf{Memory Management Unit (MMU):} Hardware component which translates logical addresses to physical addresses
+	&& Hardware, not software because of high usage (every CPU instruction requires the MMU)
+	&& Memory protection:
+		&&& If an address out of bounds is accessed, the MMU will raise a trap which is translated to a segmentation fault
+
+% Secion: Allocation
+
+& Memory has two partitions for resident OS and user processes
+& \textbf{Contiguous allocation:}
+	&& Requires management of information about allocated and free partitions
+	&& \textbf{Memory fragmentation:} Dissociation of usable memory holes across a large space
+		&&& \textbf{External fragmentation:} Situation where there exists enough memory to satisfy a request but the memory is fragmented across memory and not contiguous
+		&&& \textbf{Memory compaction:} Moving contents of memory to combine free memory into a larger block
+			&&&& Only possible if relocation is dynamic during execution time
+	&& \textbf{Internal fragmentation:} Situation in paged memory where the allocated memory is larger than the requested amount, and cannot be utilized as it is internal to the allocated partition
+& \textbf{Paging/Non-contiguous allocation:} Allocation of memory for a process wherever available
+	&& \textbf{Frame:} Fixed-size block of physical memory containing part of the data of a process, with the same size as a page
+		&&& Sized by power of 2
+		&&& OS tracks free frames
+	&& \textbf{Page:} Fixed-size block of logical memory containing part of the data of a process, with the same size as a frame
+	&& \textbf{Page table:} Translation map which maps logical addresses to physical addresses
+	&& Address transition:
+	&& \textbf{Hierarchical page table:} Page table which provides address mapping to a set of page tables which maps to process data
+		&&& Pros:
+			&&&& Process data page tables do not need to be in contiguous memory
+			&&&& Page tables can be created on-demand
+		&&& Cons:
+	&& \textbf{Hashed page table:} Page table which hashes a page number to a page table
+		&&& Collisions create linked list chain of elements which are searched for the correct value
+			&&&& Cost of searching is linear
+		&&& Common for address spaces with less than 32 bits
+	&& \textbf{Inverted page table:} Page table which contains an entry for each physical memory frame
+		&&& Table is searched for the matching page number stored in an entry, and moves to the corresponding frame
+		&&& Pros:
+			&&&& Only requires one instance for all processes
+			&&&& Less memory required to store page table
+		&&& Cons:
+			&&&& Increases search time
+				&&&&& Can be alleviated with a hash table
+
+\end{easylist}
+\subsection{Segmentation}
+	label{subsec:synchronization:segmentation}
+\begin{easylist}
+
+& \textbf{Segment:} Component of a program which is a logical unit
+	&& Example: Main program, functions/procedures/methods, objects/variables, stack, arrays
+
+& Logical address:
+	&& Denoted by (\textit{segment number}, \textit{offset})
+& \textbf{Segment table:} Table which maps a logical address to a physical address
+	&& \textbf{Base:}
+	&& \textbf{Limit:}
+	&& Processing steps:
+		&&& Add the segmentation value to the difference Value
+		&&& Check whether the combined value is greater than the limit
+		&&& If it is beyond the limit, a trap is raised
+		&&& If it is valid, the data is retrieved from the segment
+
+\end{easylist}
+\clearpage

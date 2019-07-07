@@ -1,0 +1,162 @@
+%
+% CMPT 354: Database Systems I - A Course Overview
+% Section: Introduction
+%
+% Author: Jeffrey Leung
+%
+
+\section{Introduction}
+	\label{sec:introduction}
+\subsection{Basic Terms}
+	\label{subsec:introduction:basic-terms}
+\begin{easylist}
+
+	& \emph{Database:} Collection of information
+	& \emph{Database (Computing science):} Collection of data
+		&& Composed of:
+			&&& \emph{Database Management System (DBMS):} Software which stores, manages, and retrieves information in a database
+				&&&& Uses a relational model to represent data
+				&&&& Advantages of using a DBMS to record data:
+					&&&&& Efficient access:
+						&&&&&& Index structure maps the attribute values to the address of the record
+						&&&&&& Records can be retrieved without scanning all the data
+					&&&&& Transactions (a set of actions) are processed so the integrity of the database is maintained, regardless of the number of concurrent users or a system crash
+				&&&& Diskspace manager (storage): Interacts with the OS file system and data
+					&&&&& Allows the DBMS to consider the data as a collection of pages
+				&&&& Buffer manager: Brings pages from the disk into main manager
+					&&&&& Manages policy when the main memory is full
+		
+	\medskip
+	& Databases control all interaction between the data and the application(s)
+	& Advantages of a database:
+		&& Allows synchronization of access/management/modification of data
+		&& Logical and physical data independence
+		&& Reduced application development time
+		&& Efficient access
+		&& Concurrent access/control
+		&& Data integrity and security
+		&& Crash recovery
+	
+\end{easylist}
+\subsection{History}
+	\label{subsec:introduction:history}
+\begin{easylist}
+
+	& Originally used by large organizations to store textual data
+	& 1975: 300 databases containing about 50 million records
+	& 1998: 11,000 databases holding 12 billion records
+	& Today:
+		&& Huge amounts of data processed
+			&&& E.g. Walmart handles more than 1 million transactions per hour
+		&& 2.7 zettabytes of data in the world
+			&&& Facebook stores over 30 petabytes of user-generated data
+			
+\end{easylist}
+\subsection{Data Abstraction}
+	\label{subsec:introduction:data-abstraction}
+\begin{easylist}
+
+	& \emph{Data model:} Formal language for describing data
+		&& \emph{Schema:} Description of a particular collection of data using a particular data model
+		&& \emph{Relational data model:} %TODO definition
+			&&& See section~\ref{sec:relational-model}
+
+	& 3 levels of abstraction (from lowest-level to highest-level):
+		&& \emph{Physical schema:} Description of how the data is stored and indexed
+			&&& Connects the database with the contextual/logical schema
+			&&& E.g. Relational databases, document-store databases
+		&& \emph{Contextual/logical schema:} Description of what type of data is stored in terms of the data model
+			&&& Connects the physical schema and the external/view schema
+			&&& E.g. Attributes of a table
+		&& \emph{External/view schema:} Description of how the data is displayed and accessed
+			&&& Displays select information from the contextual/logical schema for the client
+			&&& \emph{View:} A selective display of data
+				&&&& Different users may see different views of the same data
+		\smallskip
+		&& Allows:
+			&&& Modification of one level without affecting the other levels
+			&&& Data independence:
+				&&&& \emph{Physical data independence:} Ability to modify the physical schema without rewriting the application programs
+					&&&&& Useful for performance improvements (e.g. moving a file, or adding or removing an index)
+				&&&& \emph{Logical data independence:} Ability to modify the logical schema without rewriting the application programs or modifying the views
+					&&&&& E.g. Adding an attribute to a relation
+	
+	& \emph{Transaction:} Single execution of a user program in a DBMS
+		&& E.g. Transferring money between accounts, looking up balance
+		&& May result in multiple modifications/actions
+			&&& May be interleaved with actions from another transaction
+		&& Properties:
+			&&& (Being) \emph{Atomic:} Either none or all of a transaction's actions are executed
+				&&&& Transactions are considered in their entirety
+				&&&& Avoids leaving the database in an inconsistent state due to interrupted transactions
+			&&& (Having) \emph{Consistency:} Transactions should preserve the rules of the database
+				&&&& E.g. Entering a patient record with a duplicate number would leave the database inconsistent, so the database should reject the transaction
+				&&&& E.g. Customers require an account; accounts require a customer - database cannot maintain the circular logic, so an application program must maintain this
+				&&&& E.g. Employers cannot be customers
+				&&&& Databases remain consistent if transactions are:
+					&&&&& Consistent
+					&&&&& Processed equivalently to some serial order
+					&&&&& Atomic
+				&&&& Must satisfy all constraints of the database (e.g. example key constraints, foreign key constraints)
+				&&&& Generally cannot be detected by the DBMS; inconsistencies may relate to domain-specific information
+				&&&& Users and programs which access the database are responsible for transaction consistency
+					&&&&& Casual users should only use programs which preserve consistency in the database
+			&&& (Makes sense in) \emph{Isolation:} Transactions should stand on their own and be protected from the effects of other concurrent transactions
+				&&&& End result should be equivalent to processing the transactions in serial order
+			&&& (Being) \emph{Durable:} Effects of a transaction should persist afterwards even in the event of a crash
+				&&&& Transactions are processed in main memory and later written to the disk
+				&&&& Log is maintained which records information about database writes
+					&&&&& Used to restore transactions not written to disk if a system crashes
+				&&&& Backups must be maintained
+			
+\end{easylist}
+\subsection{Languages}
+	\label{subsec:introduction:languages}
+\begin{easylist}
+
+	& Database languages are divided into two parts:
+		&& \emph{Data definition language (DDL):} Programming language used to create a database and its integrity constraints, and modify external/conceptual schema
+			&&& Used to create:
+				&&&& Databases
+				&&&& Specification of integrity constraints
+					&&&&& E.g. Domain constraints, assertions, authorizations
+		&& \emph{Data manipulation language (DML):} Programming language used to access/change data in a database
+			&&& Modifies database schema such as:
+				&&&& Adding new tables
+				&&&& Deleting tables
+				&&&& Adding attributes
+			&&& \emph{Procedural:} Data manipulation language in which users specify what data is required and its method of retrieval
+			&&& \emph{Declarative (nonprocedural):} Data manipulation language in which users specify what data is required, but not its method of retrieval
+			
+\end{easylist}
+\subsection{Types of Databases}
+	\label{subsec:introduction:types-of-databases}
+\begin{easylist}
+
+	& Relational database management systems:
+		&& Expresses relationships using foreign keys
+		&& Advantages:
+			&&& Access to persistent data
+			&&& Concurrent access
+			&&& %TODO
+		&& Disadvantages:
+			&&& Mismatch with object-oriented programming (partially mitigated by object-relational mapping frameworks)
+			&&& Not designed to run on clusters (see %TODO ~\ref{})
+			
+	& Alternatives to RDBMSes which do not use SQL: Amazon Dynamo, Google BigTable
+			
+	& Separate application databases:
+		&& Integration with web services
+		&& See section~\ref{sec:nosql}
+		&& Advantages:
+			&&& Flexible
+				&&&& Data can be added as required
+				&&&& Un-needed columns do not have to be deleted
+			&&& Ease of manipulating non-uniform data
+		&& Disadvantages
+			&&& Most programs rely on schemata
+				&&&& Implicit schema must be deduced
+				&&&& Essentially, the schema is moved from the database to the application
+			
+\end{easylist}
+\clearpage

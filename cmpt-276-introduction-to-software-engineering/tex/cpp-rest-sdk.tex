@@ -1,0 +1,55 @@
+%
+% CMPT 276: Introduction to Software Engineering - A Course Overview
+% Section: C++ REST SDK
+%
+% Author: Jeffrey Leung
+%
+
+\section{C++ REST SDK}
+	\label{sec:cpp-rest-sdk}
+\subsection{Overview}
+	\label{subsec:cpp-rest-sdk:overview}
+\begin{easylist}
+
+	& \href{https://github.com/Microsoft/cpprestsdk}{C++ REST SDK}: Microsoft library which allows for client-server asynchronous communication
+	
+	& \href{https://github.com/Azure/azure-storage-cpp}{Microsoft Azure Storage Library}: Microsoft library which interfaces with Microsoft Azure Storage Tables
+		&& \emph{Microsoft Azure Storage Tables:} Key-value cloud database
+			&&& \emph{Key-value store:} Database consisting of a collection of arbitrary keys which are mapped to data values
+			&&& Each key in the database consists of a partition name and a row name, and the entity mapped to by a key contains the values for the specific row
+				&&&& Values for the specific row are a set of properties, each of which consists of a name and value
+
+	& \emph{Uniform Resource Identifier (URI):} Name of a specific resource on a network
+		&& URL path structure:
+			&&& Consists of:
+			\textit{protocol://address:port/parameter/parameter[/...]}
+				&&&& E.g. \\
+\textit{http://localhost:34568/Operation/TableName/PartitionName/RowName} \\
+\textit{http://localhost:34568/Operation/TableName/AuthenticationToken\\/PartitionName/RowName}
+			&&& \textbf{web::http::uri::decode()} converts from HTTP encoding to readable format
+			&&& \textbf{web::http::uri::split\_path()} converts from readable format to a vector of strings containing the necessary information
+	
+\end{easylist}
+\subsection{HTTP Requests}
+	\label{subsec:cpp-rest-sdk:http-requests}
+\begin{easylist}
+
+	& HTTP request is represented by the class \textbf{web::http::http\_request}
+		&& Components:
+			&&& HTTP method: \textbf{http\_request.method()}
+			&&& URI: \textbf{http\_request.relative\_uri().path()}
+		&& Alteration methods:
+			&&& Decoding URI from HTTP to internal format: \textbf{utility::string\_t web::http::uri::decode()}
+			&&& Splitting paths at \textbf{/} characters: \textbf{utility::string\_t web::http::uri::split\_path()}
+		&& Reply method: \textbf{http\_request.reply(http::status\_code)}
+			&&& A JSON body may also be returned: \\
+			\href{http://microsoft.github.io/cpprestsdk/classweb_1_1http_1_1http__request.html#a31d1463151d1b65f150ae03b2dca447f}
+			{
+				\textbf{http\_request.reply(http::status\_code, web::json::value)}
+			}
+				&&&& \href{http://microsoft.github.io/cpprestsdk/classweb_1_1json_1_1value.html#ad2073edb60952ef04d352906114c2b70}
+				{
+					Documentation for creating a JSON body
+				}
+
+\end{easylist}

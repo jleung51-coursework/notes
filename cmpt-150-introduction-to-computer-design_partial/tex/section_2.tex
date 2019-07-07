@@ -1,0 +1,38 @@
+%
+%% Author: Jeffrey Leung
+%% Last edited: 2015-07-05
+%%
+%% This document contains section 2 (digital systems) of a course overview of CMPT 150.
+%
+
+\section{Digital Systems}
+
+\begin{easylist}[itemize]
+
+& \emph{Digital system:} Electronic circuit which processes discrete signals representing logic values
+& Computer design:
+	&& Instruction set architecture involves the selection, design, and representation of a set of instructions and of some basic data types
+	&& Construction of a circuit that can:
+		&&& Interpret binary sequences representing instructions
+		&&& Perform computations on binary sequences as directed by instructions
+		&&& Express results as binary encoded data
+		
+& \emph{Register:} Component which stores one binary sequence
+	&& \emph{Memory:} A 1-dimensional array of registers
+& \emph{Bus:} Component which transmits one binary sequence
+	&& \emph{Signal line:} A bus of size 1
+	
+& \emph{Registry Transfer Notation:} Convention for naming registers
+	&& Register names begin with an uppercase letter \\
+	   Bus names begin with a lowercase letter
+	&& Bit positions are specified by a number in parenthesis after the name
+		&&& E.g. RNG(MSB), abc(12)
+	&& \emph{Field:} Sequence of bits within a binary sequence written as \\ NAME(start:end) where the bit positions include the start and end positions
+		&&& E.g. For INST = 0110 1101 0100 0000, \\
+		INST(15:8) = 0110 1101
+		&&& E.g. For $R = 10010.011_{2}$, \\
+		R(INT) = R(8:3) and R(FRAC) = R(2:0)
+		
+%TODO CMPT 150 lecture notes, page 6
+
+\end{easylist}

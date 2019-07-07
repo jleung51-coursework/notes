@@ -1,0 +1,171 @@
+%
+% CMPT 300: Operating Systems I - A Course Overview
+% Section: Virtual Memory
+%
+% Author: Jeffrey Leung
+%
+
+\section{Virtual Memory}
+	\label{sec:virtual-memory}
+\begin{easylist}
+
+& \textbf{Virtual memory:} Abstraction of memory management where logical memory can be conceptually larger than the physical address space
+	&& Only part of a program is in memory at any given time
+
+& \textbf{Demand paging:} Making pages available in virtual memory only as needed
+	&& Decreases I/O requirements and waiting time, and increases number of potential concurrent processes
+	&& Indicated by valid-invalid bit in page table (if invalid, the memory access is either illegal or not yet in memory)
+
+\end{easylist}
+\subsection{Page Faults}
+	\label{subsec:virtual-memory:page-faults}
+\begin{easylist}
+
+& \textbf{Page fault:} Legal memory access of a page which is not currently in memory which triggers retrieval
+	&& \textbf{Major page fault:} Page is brought from disk
+	&& \textbf{Minor page fault:} Page table is updated (e.g. linking shared pages)
+	&& If no free pages are available, a page will be removed from memory to make room
+	&& To preserve atomicity of instructions which modify data, previous register values are saved and hardware accesses both ends of the data before execution to trigger page faults
+	&& Effective Access Time:
+	\end{easylist}
+	\begin{align*}
+		\textrm{Let } p &= \textrm{ page fault rate, } 0 \leq p \leq 1 \\
+		& \textrm{ where 0 is no faults, 1 is every reference is a fault} \\
+		\textrm{Let } t_m &= \textrm{ memory access time} \\
+		\textrm{Let } t_p &= \textrm{ page fault time} \\
+		& \textrm{(including interrupt, page read, restart)} \\
+		\textrm{Effective access time }
+		&= p \times t_p + (1 - p) \times t_m \\
+	\end{align*}
+	\begin{easylist}
+
+		&&& Example:
+		\end{easylist}
+		\begin{align*}
+			p &= 0.001 \textrm{ 1 fault per 1,000 memory accesses} \\
+			t_m &= 200 \textrm{ ns} \\
+			t_p &= 8 \textrm{ ms} = 8,000,000 \textrm{ ns}\\
+			\textrm{Effective access time }
+			&= p \times t_p + (1 - p) \times t_m \\
+			&= 0.001 \times 8,000,000 + (1 - 0.001) \times 200 \\
+			&= 8,000 + 199.8 \\
+			&= 8,200 \textrm{ ns} \\
+			\textrm{Slowdown } &= \frac{8200 \textrm{ ns}}{200 \textrm{ ns}} = 40 \textrm{ times slower}
+		\end{align*}
+		\begin{easylist}
+		
+	&& Process:
+		&&& Send a trap to the OS
+		&&& Save the user registers and process states
+		&&& Determine that the interrupt was a page fault
+		&&& Check legality of the page access and determine the location of the page
+		&&& Issue a read from the disk to a free frame
+		&&& Wait until the read request is serviced, with seek and/or latency time
+		&&& Transfer the page to a free frame
+		&&& While waiting, allocate the CPU to some other process
+		&&& Receive a completion interrupt from the disk I/O subsystem
+		&&& Save the registers and process state for the other process
+		&&& Determine that the interrupt was from the disk
+		&&& Correct the page tables to show page is now in memory
+		&&& Wait for the CPU to be allocated to this process again
+		&&& Restore the user registers, process state, and new page table
+		&&& Resume the interrupted instruction
+
+& \textbf{Copy-on-Write (COW):} Method of quickly/efficiently creating a child process by sharing the pages of the parent process in memory and copying the data only when a shared page is modified
+
+& \textbf{Pre-paging:} Bringing pages into memory before they are referenced to decrease page faults
+	&& May waste memory and I/O if the page is not used
+
+\end{easylist}
+\subsection{Page Replacement}
+	\label{subsec:virtual-memory:page-replacement}
+\begin{easylist}
+
+& \textbf{Page replacement algorithm:} Method of selecting a victim page to be removed from memory which is designed to minimize fault rate
+	&& Dirty/modified bit in page table entries to save swap-out overhead if the victim page was not modified
+	&& \textbf{I/O interlock:} Page currently used for I/O is locked in memory and cannot be replaced during a fault
+
+& \textbf{First-In-First-Out (FIFO) page replacement algorithm:} Removing from memory the oldest page upon a fault
+	&& Could consistently remove a heavily-used page
+	&& \textbf{Bélády's anomaly:} Phenomenon in the FIFO page replacement algorithm where increasing available frames may potentially result in greater page faults
+	
+& \textbf{Least Recently Used (LRU) page replacement algorithm:} Removing from memory the page which has not been used for the longest period, upon a page fault
+	&& Counter tracking: Using a data field to store CPU clock of the last memory access and searching for the oldest page
+		&&& Search is time-consuming, many memory writes, potential clock overflow, requires hardware
+	&& Stack tracking: Using a stack created from a doubly-linked list for which each page access moves the page to the top
+		&&& Memory reference updating is expensive, requires hardware
+		&&& No search is required
+
+& \textbf{Second-chance/clock replacement:} Using a set of reference bits which are set when a page is referenced and reset when a page is replaced, and removing a page which was not used since the last replacement
+
+& \textbf{Least Frequently Used (LRU) page replacement algorithm:} Removing from memory the page which has been used the least
+	&& Removes pages which are not used often
+	&& Early heavily-used pages will stay in memory
+& \textbf{Most Frequently Used (MRU) page replacement algorithm:} Removing from memory the page which has been used the most
+	&& Pages with smaller counts are estimated to be newer and kept
+	&& Heavily-used pages may be removed more frequently
+
+& \textbf{Optimal page replacement algorithm:} Removing from memory the page which will not be used for the longest period of time, upon a fault
+	&& Only possible in theory or when analyzing a past set of page accesses
+	&& Used to benchmark existing algorithms
+
+\end{easylist}
+\subsection{Frame Allocation}
+	\label{subsec:virtual-memory:frame-allocation}
+\begin{easylist}
+
+& \textbf{Equal allocation:}
+
+& \textbf{Proportional allocation:} Allocating frames per process relative to the size of the process
+	&& Formula:
+	\end{easylist}
+	\begin{align*}
+		\textrm{Let } m &= \textrm{ total number of frames} \\
+		\textrm{Let } p_i & \textrm{ be a given process} \\
+		\textrm{Let } s_i &= \textrm{ size of process } p_i \\
+		\textrm{Page allocation } a_i \textrm{ for } p_i
+		&= \frac{s_i}{\sum s_i} \times m
+	\end{align*}
+	\begin{easylist}
+	
+		&&& Example:
+		\end{easylist}
+		\begin{align*}
+			m &= 64 \textrm{ frames} \\
+			s_1 \textrm{ for process } p_1 &= 10 \\
+			s_2 \textrm{ for process } p_2 &= 127 \\
+			\textrm{Page allocation } a_1
+			&= \frac{s_1}{\sum s_1} \times m \\
+			&= \frac{10}{10+127} \times 64 \\
+			&\approx 5
+		\end{align*}
+		\begin{easylist}
+
+& \textbf{Priority allocation:} Allocating frames per process relative to the priority of the process
+
+& \textbf{Global replacement:}
+& \textbf{Local replacement:}
+
+& \textbf{Locality model:} Keeping in memory the pages necessary for the current segment of code
+
+& \textbf{Working set:}
+	&& Managed with an interval timer and set of reference bits (per page in memory), which is set when a page is referenced
+
+& \textbf{Thrashing:} Situation where a process is starved of necessary frame allocations and must constantly swap pages
+
+\end{easylist}
+\subsection{Kernel Memory Allocation}
+	\label{subsec:virtual-memory:kernel-memory-allocation}
+\begin{easylist}
+
+& \textbf{Buddy system:} Allocating memory from fixed-size contiguous segments with size to the power of 2
+	&& May have up to 50\% internal fragmentation
+& \textbf{Slab allocator:} Allocating memory from precreated spaces for kernel data structures
+	&& \textbf{Cache:} Paged instantiation space in memory for an object
+	&& \textbf{Slab:} Contiguous memory which contains multiple caches
+	&& Memory allocation is fast and has no fragmentation
+
+& \textbf{Memory mapping:} Mapping a file to a memory address space so modifications have the behaviour of ordinary memory accesses
+
+\end{easylist}
+\clearpage

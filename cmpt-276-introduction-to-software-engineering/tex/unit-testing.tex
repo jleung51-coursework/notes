@@ -1,0 +1,36 @@
+%
+% CMPT 276: Introduction to Software Engineering - A Course Overview
+% Section: Unit Testing
+%
+% Author: Jeffrey Leung
+%
+
+\section{Unit Testing}
+	\label{sec:unit-testing}
+\begin{easylist}
+
+	& \emph{Unit test:} Method of software programming in which the smallest dividable groups of modules are tested
+	
+	& Structure:
+		&& Suites are a collection of fixture(s) and test fixture(s)
+		&& Fixture classes provide setup and cleanup for testing an operation
+		&& Test fixtures are a collection of tests, before which a specified fixture is created and after which the fixture is deleted
+		
+		&& After each test case, the expected results are compared with the actual results
+	
+	& Types of tests:
+		&& Correct usages
+		&& Repeated usages
+		&& Incorrect usages (e.g. too many/few parameters)
+		&& Edge cases (e.g. out-of-bounds, 0, invalid characters)
+		&& Exploits (e.g. database injections)
+
+	& Characteristics to test:
+		&& Input validation
+		&& Input sanitation
+		&& States after an operation
+		&& Usability
+		&& Performance
+
+\end{easylist}
+\clearpage

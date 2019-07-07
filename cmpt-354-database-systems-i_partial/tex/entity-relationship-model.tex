@@ -1,0 +1,313 @@
+%
+% CMPT 354: Database Systems I - A Course Overview
+% Section: Entity-Relationship Model
+%
+% Author: Jeffrey Leung
+%
+
+\section{Entity-Relationship Model}
+	\label{sec:entity-relationship-model}
+\begin{easylist}
+
+	& \emph{Entity-relationship model:} Conceptual visualization of a database' structure through the use of entities and their relationships
+		&& Used to create a high-level description of the data
+	& \emph{Entity-relationship diagram:} Visual representation of an entity-relationship model
+		&& Many alternative ways to be designed
+
+\end{easylist}
+\subsection{Components}
+	\label{subsec:entity-relationship-model:components}
+\begin{easylist}	
+	
+	& \emph{Entity:} Distinguishable, distinct object
+		&& Concrete or abstract
+		&& Described by a set of attributes
+		&& \emph{Attribute:} Information about an entity
+			&&& \emph{Composite:} Attribute composed of multiple different sub-attributes
+				&&&& E.g. An address is composed of a number, street name, and city
+			&&& \emph{Multi-valued:} Attribute with multiple sub-attributes of the same type
+				&&&& E.g. Phone numbers for home, work, cell
+				&&&& Should be replaced with an entity set, with relationships used to connect with its entity
+			&&& \emph{Derived:} Attribute which contains information from related attribute(s)
+				&&&& E.g. Total number of employees
+				&&&& Do not need to be stored in the database; can be immediately derived when necessary
+			&&& \emph{Foreign key:} Attribute which references a (primary) attribute from another table
+				&&&& Can be explicitly declared as non-null
+			&&& May have a null value
+			&&& Has a domain (set of possible attribute values)
+		&& \emph{Entity set:} Collection of entities under some categorization
+			&&& Not necessarily disjoint (multiple entity sets may contain the same entity)
+			&&& Cannot contain multiple of the same entity
+
+
+	& \emph{Relationship:} Association between entities
+		&& E.g. Student \emph{enrolled} in a course
+		&& Constraint: Rule or policy which restricts a relationship
+		&& \emph{Relationship set:} Set of related relationships
+			&&& Often represented with a verb/action
+			&&& Attributes:
+				&&&& Primary key depends on the key constraints of the relationship and the primary keys of its connected entities (not shown in an entity-relationship diagram)
+				&&&& \emph{Descriptive attribute:} Detail of a relationship set
+					&&&&& Not usable to identify the relationship set with
+					&&&&& Cannot be part of the relationship set's primary key
+			&&& Used for properties which cannot be associated with any of the entity sets
+			&&& An $n$-ary relationship set $R$ is an association between $n$ entity sets $E_{1} \cdots E_{n}$
+				&&&& $R$ is a subset of $\{ (e_{1}, \ldots, e_{n}) | e_{1} \in E_{1}, \ldots, e_{n} \in E_{n}\}$
+			&&& Role of an entity is the function it plays in the relationship
+			&&& E.g. Employee (entity) works (relationship) on a project (entity). \\
+			`Working on' is a relationship set, as it can be applied to to many employees working on projects. \\
+			The start date of the employee working on the project is a descriptive attribute.
+			&&& E.g. Manager (entity) manages (relationship) an employee. \\
+			`Manages' is a relationship set, as it can be applied to many managers managing employees. \\
+			The superiority of the manager over the employee is a descriptive attribute.
+			
+			&&& Mapping cardinalities:
+				&&&& Specify how many of each entity may be related to another entity
+				&&&& Types of mapping between sets:
+					&&&&& \emph{One-to-one:} Each entity in A maps to at most one entity in B; each entity in B maps to at most one entity in A
+						&&&&&& E.g. One employee is only assigned one office; one office can only hold one employee
+					&&&&& \emph{One-to-many:} Each entity in A may map to any number of entities in B; each entity in B maps to at most one entity in A
+						&&&&&& E.g. A person can own many bank accounts; a bank account can only be owned by one person
+					&&&&& \emph{Many-to-one:} Each entity in A maps to at most one entity in B; each entity in B may map to any number of entities in A
+						&&&&&& E.g. A player can be in only one soccer team; a soccer team can contain many players
+					&&&&& \emph{Many-to-many:} Each entity in A may map to any number of entities in B; each entity in B may map to any number of entities in A
+						&&&&&& E.g. A person can be enrolled in many courses; a course can contain many students
+				&&&& In an entity-relationship diagram: directed lines
+					&&&&& A directed line from an entity set to a relationship set indicates that the entities in the set can only be involved in one relationship in the set
+			&&& \emph{Participation constraint:} Rule that any entity in some entity set must be involved in a relationship(s)
+				&&&& Examples:
+					&&&&& An account must be owned by at least one customer; a customer does not have to have an account
+					&&&&& A child must attend a single pre-school, which must have at least one child
+					&&&&& A branch of a bank must contain at least one account; each account must be at only one branch
+				&&&& \emph{Total participation:} A participation constraint exists
+				&&&& \emph{Partial participation:} A participation constraint does not exist
+				&&&& In an entity-relationship diagram: Double line between the relationship and entity
+			&&& \emph{Key constraint (entity-relationship model):} An entity can participate in only one relationship
+		
+		&& Does not have to be binary
+			&&& Ternary relationship example: A branch purchases a part from a supplier 
+	
+\end{easylist}
+\subsection{Additional Features}
+	\label{subsec:entity-relationship-model:additional-features}
+\begin{easylist}
+		
+	& \emph{Weak entity set:} Entity set containing entities which cannot be identified using only their own attributes
+		&& Identification: Compound key of its partial key with the primary key of another entity set
+		&& Total participation and key constraint in the identifying relationship
+		&& \emph{Owner entity set:} Entity set containing a primary key which is combined with a partial key of a weak entity set to identify a weak entity
+		&& In an entity-relationship diagram: Double-line from the weak entity set to the relationship set; double-border around the relationship set
+		
+	& \emph{Subclass/Superclass:} Hierarchy of entity sets which are contained within other entity sets, and vice versa
+		&& Used to:
+			&&& Avoid redefining common attributes
+			&&& Add additional descriptive attributes
+			&&& Identify the set of entities which participate in a particular relationship
+		&& Subclasses are defined by its attributes and the attributes of its superclass(es)
+		&& May have its own additional attributes
+		&& `is a' relationship
+			&&& E.g. A (subclass) is a B (superclass); A specializes/generalizes B
+		&& \emph{Specialization:} Identification of subsets with additional attributes from an existing entity set
+		&& \emph{Generalization:} Identification of common attributes of entity sets and creating a new entity set with the attributes
+		&& \emph{Condition-defined participation:} A given entity is in a subclass if it meets a specific condition
+		&& \emph{User-defined participation:} A given entity is in a subclass if it is assigned as such by the user
+			&&& E.g. Employees must be manually promoted to manager
+		
+		&& \emph{Disjoint:} Subclass whose entities cannot appear in another subclass
+			&&& E.g. Birds and mammals
+			&&& Assumed if unlabeled
+		&& \emph{Overlapping:} Subclass whose entities may appear in another subclass
+			&&& E.g. Customer and employee
+			&&& Must be labeled
+		
+		&& \emph{Coverage constraint:} Each superclass entity must belong to a subclass
+			&&& E.g. Animals must belong to a kingdom
+		
+	& \emph{Aggregation:} Using a relationship set as an entity set to assign it to another relationship
+		&& Used when there is a relationship between an entity set and another relationship
+		&& E.g. A branch can only buy the same part from the same supplier; the aggregate entity is the branch buying the part, and there is the relationship where the aggregate entity buys from the supplier
+	
+\end{easylist}
+\subsection{Design Principles}
+	\label{subsec:entity-relationship-model:design-principles}
+\begin{easylist}
+
+	& Faithfulness:
+		&& Design must be accurate to the specification and the enterprise
+		&& All relevant aspects must be represented
+	& Simplicity:
+		&& Redundancy confuses understanding, wastes storage, creates inconsistency
+		&& Use attributes over entity sets or relationships
+		&& Specify as many constraints as possible
+	& Element choices:
+		&& Entity set vs attribute
+		&& Entity set vs relationship set
+		&& Type of relationship:
+			&&& Multiple binary relationships
+			&&& n-ary relationship
+			&&& Aggregation
+	& Relationship sets' attributes must be descriptive (i.e. cannot be a part of the primary key)
+	
+\end{easylist}
+\subsection{Converting Entity-Relationship Diagrams to a Database}
+	\label{subsec:entity-relationship-model:converting-entity-relationship-diagrams-to-a-database}
+\begin{easylist}
+
+	& Each entity and relationship set is represented by a unique relation
+	& Constraints in the database should be created to match constraints in the model
+	& Primary keys are implicitly NOT NULL
+	
+	& Table representing an entity set:
+		&& A column for each attribute
+		&& The domain of each attribute should be specified
+		&& Primary key should be specified
+	& Relationship sets:
+		&& Attributes:
+			&&& Primary keys of the entity sets (declared as foreign keys)
+			&&& Descriptive attributes
+		&& Mapping cardinalities determine the primary key of the relationship, as well as whether the relationship set requires a separate table or just foreign keys with constraints
+			&&& No cardinality constraint (many-to-many) (n-ary relationship set):
+				&&&& Requires a separate table
+				&&&& Primary key: Compound key; union of the attributes from the entity sets (declared as foreign keys)
+				&&&& Descriptive attributes declared as non-foreign keys
+			&&& Many-to-one constraint (n-ary relationship set):
+				&&&& Represented with either a table or an attribute of an entity set
+				&&&& Primary key: Primary key of (one of) the entity from the `many' entity set(s)
+			&&& One-to-one constraint:
+				&&&& Primary key: One and only one primary key of the entity sets
+		&& Participation constraint:
+			&&& Declare the attribute on which a foreign key exists to be NOT NULL
+				&&&& Does not work if a relationship set is not represented in a separate table
+			&&& May require assertions/triggers
+		
+	& Weak entity set:
+		&& Must have a foreign key referencing its owner's primary key
+		
+	& Class hierarchy: (two ways)
+		&& Create separate tables for the superclass and subclasses; make both a superclass and subclass tuple for a given subclass instances
+			&&& Subclass tables only have the attributes which the superclasses do not have
+			&&& Subclass tables have a foreign key referencing the superclass entity
+			&&& Deletion should cascade from superclass records to subclass records
+		&& Create tables for subclasses only
+			&&& Coverage constraint must exist (all superclass entities must be also subclass entities)
+			&&& Subclass tables contain all attributes of the superclass
+	
+	& Aggregation:
+		&& Defined by the relationship set connecting the aggregate entities, as well as another relationship set connected to another entity which references the aggregate entities
+		&& Relationship between the aggregate entities contains:
+			&&& Primary key of the participating entity set
+			&&& Primary key of the relationship defining the aggregation
+			&&& Descriptive attributes
+		&& If there is total participation between the aggregate entity and its relationship, and there are no descriptive attributes: \\
+			Move the aggregate entities' relationship attributes into the table representing the relationship with the aggregate entity
+	
+\end{easylist}
+\subsection{Entity-Relationship Diagrams in CMPT 354}
+	\label{subsec:entity-relationship-model:entity-relationship-diagrams-in-cmpt-354}
+\begin{easylist}
+
+	& Entity: Rectangle
+		&& Attribute: Oval
+			&&& Linked to their entity with a line
+			&&& Derived attribute: Oval with a broken outline
+			&&& Attribute of a primary key is underlined
+	& Relationship: Line
+		&& Relationship set: Line with a description in a diamond
+			&&& X-to-one relationship: Directed line pointing from the entity with restrictions to the relationship set
+		&& Participation constraint: Double/thick line
+		&& Subclass/superclass: Triangle with the words `is a', the superclass connected above, and the subclass(es) connected below
+			&&& Disjoint: Default, unmarked
+			&&& Overlapping: Labeled as `OVERLAP'
+			&&& Coverage constraint: Labeled as `COVER'
+	& Aggregation: Rectangle around the entity sets and relationship set; rectangle as a whole is treated as an entity set
+
+\end{easylist}
+\subsection{Example Diagram}
+	\label{subsec:entity-relationship-model:example-diagram}
+
+See figure~\ref{fig:example-entity-relationship-diagram}.
+
+	\begin{landscape}
+		\begin{figure}[!htb]
+			\centering
+			\caption{Example Entity-Relationship Diagram}
+			\label{fig:example-entity-relationship-diagram}
+			
+			\begin{tikzpicture}
+				[
+					node distance = 1.5cm
+				]
+				
+				\node[entity]
+					(entity-1)
+					{Entity};
+					
+					\node[attribute]
+						(attribute-1)
+						[above=of entity-1]
+						{\key{Primary key attribute}}
+						edge(entity-1);
+					
+					\node[attribute]
+						(attribute-2)
+						[left=of entity-1]
+						{Attribute}
+						edge(entity-1);
+					
+				\node[relationship]
+					(r-e1-e2)
+					[below=of entity-1]
+					{Relationship}
+					edge(entity-1);
+					
+				\node[entity]
+					(entity-2)
+					[below=of r-e1-e2]
+					{Entity}
+					edge(r-e1-e2);
+					
+				% Aggregation
+				\node
+					[
+						rectangle,
+						draw=gray,
+						fit=(entity-1)(r-e1-e2)(entity-2),
+						inner xsep=0.5cm
+					]
+					{};
+					
+				\node[relationship]
+					(r-e1-e3)
+					[right=of entity-1]
+					{Relationship}
+					edge[total](entity-1);
+					
+				\node[entity]
+					(entity-3)
+					[right=of r-e1-e3]
+					{Superclass entity}
+					edge[<-](r-e1-e3);
+					
+					\node[derived attribute]
+						(attribute-3)
+						[right=of entity-3]
+						{Derived attribute}
+						edge(entity-3);
+					
+				\node[isa]
+					(isa-1)
+					[below=of entity-3]
+					{is a}
+					edge(entity-3);
+					
+				\node[entity]
+					(entity-4)
+					[below=of isa-1]
+					{Subclass entity}
+					edge(isa-1);
+				
+			\end{tikzpicture}
+		\end{figure}
+	\end{landscape}
+
+\clearpage

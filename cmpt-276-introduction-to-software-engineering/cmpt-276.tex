@@ -1,0 +1,66 @@
+%
+% CMPT 276: Introduction to Software Engineering - A Course Overview
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[10pt, oneside, letterpaper, titlepage]{article}
+
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\textperiodcentered\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\textperiodcentered\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage[T1]{fontenc} % For braces
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{listings}
+	\lstset
+	{
+		language=C++,
+		breaklines=true,
+		showstringspaces=false
+	}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{CMPT 276: Introduction to Software Engineering \\\medskip \Large A Course Overview}
+\author{Jeffrey Leung \\ Simon Fraser University}
+\date{Spring 2016}
+
+\begin{document}
+
+	\maketitle
+	\tableofcontents
+	\clearpage
+
+	\input{./tex/introduction.tex}
+	\input{./tex/version-control.tex}
+	\input{./tex/unit-testing.tex}
+	\input{./tex/cpp.tex}
+	\input{./tex/cpp-rest-sdk.tex}
+
+\end{document}

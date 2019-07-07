@@ -1,0 +1,91 @@
+%
+% CMPT 354: Database Systems I - A Course Overview
+% Section: Functional Dependencies
+%
+% Author: Jeffrey Leung
+%
+
+\section{Functional Dependencies}
+	\label{sec:functional-dependencies}
+\begin{easylist}
+
+	& \emph{Functional dependency:} For any given value of an attribute(s), there can only be a single value for a set of attributes
+		&& Similar to the notion of a \hyperref[subsec:design:identification-of-tables]{superkey} for a set of attributes
+		&& $x$ functionally determines $y$ and $y$ is functionally determined by $x$ if there can only be one $y$ value for a given $x$ value
+		&& Mathematical definition: If $R$ is a relation and $\alpha \subseteq R$ and $\beta \subseteq R$, then $\alpha \rightarrow \beta$
+		&& E.g. All of the same car models have the same capacity; therefore, capacity is functionally determined by the model. \\
+		model $\rightarrow$ capacity
+		&& Used to:
+			&&& Specify additional constraints
+			&&& Decompose tables to reduce repeated data
+		&& Statement about all possible legal instances of a relation
+			&&& Relation $R$ satisfies the set of functional dependencies $F$ if $R$ is legal under $F$
+			
+	& %TODO Functional dependencies notes in NORMALIZATION
+	& Primary key is a special case of a functional dependency
+		&& If X $\rightarrow$ Y on R...
+	
+	& Set of functional dependencies can be used to identify additional functional dependencies
+		&& F implies the additional functional dependencies
+		
+\end{easylist}
+\subsection{Armstrong's Axioms}
+	\label{subsec:functional-dependencies:armstrongs-axioms}
+\begin{easylist}
+
+	& Named after William Armstrong
+	
+	& Axioms:
+		&& Where X and Y are sets of attributes
+		&& \emph{Reflexivity (A-Axioms):} If X $\supseteq$ Y, then X $\rightarrow$ Y
+			&&& E.g. sin, firstName $\rightarrow$ sin
+			&&& E.g. sin $\rightarrow$ sin
+			&&& \emph{Trivial functional dependency:} X $\rightarrow$ Y where X $\supseteq$ Y
+		&& \emph{Augmentation (A-Axioms):} If X $\rightarrow$ Y, then XZ $\rightarrow$ Y, Z for any Z
+			&&& E.g. If sin $\rightarrow$ firstName, then sin, lastName $\rightarrow$ firstName, lastName
+		&& \emph{Transitivity (A-Axioms):} If X $\rightarrow$ Y and Y $\rightarrow$ Z, then X $\rightarrow$ Z %TODO
+			&&& E.g. If sin $\rightarrow$ age and age $\rightarrow$ seniority, then sin $\rightarrow$ seniority
+			
+	& Derivable axioms:
+		&& \emph{Union:} %TODO
+		&& \emph{Decomposition (A-Axioms):} If X $\rightarrow$ YZ, then X $\rightarrow$ Y and X $\rightarrow$ Z
+			&&& Proof: %TODO
+		&& \emph{Pseudo-transitivity (A-Axioms):} If X $\rightarrow$ Y and WY $\rightarrow$ Z, then XW $\rightarrow$ Z
+			&&& Proof: See... %TODO ref? don't use tabular?
+			
+			\begin{tabular}{ l }
+			Assume X $\rightarrow$ Y. \\
+			By the axiom of augmentation, XW $\rightarrow$ WY. \\
+			Assume WY $\rightarrow$ Z. \\
+			By the axiom of transitivity, XW $\rightarrow$ Z.
+			\end{tabular}
+
+	& \emph{F:} Set of identified functional dependencies
+	& \emph{F\textsuperscript{+}:} Closure of \emph{F}; all functional dependencies implied by \emph{F}
+	& \emph{X\textsuperscript{+}:} Attribute closure of the set of attributes in X; list of attributes containing all attributes that are functionally dependent on X
+
+	& \emph{Sound:} Axioms which do not generate incorrect functional dependencies
+	& \emph{Complete:} Axioms which allow F\textsuperscript{+} to be generated from a given F
+
+\end{easylist}
+\subsection{Removing Redundant Functional Dependencies}
+	\label{subsec:functional-dependencies:removing-redundant-functional-dependencies}
+\begin{easylist}
+	
+	& \emph{Extraneous attribute:} Attribute \
+		&& Attribute $a$ is extraneous in $X$ if $a \in X$ %TODO notes
+	
+	& Testing if attribute $a \in X$ is extraneous in $X$, compute $(\{X\} - a)^{+}$ with... %TODO
+	
+	& \emph{Canonical cover (of F):} Minimal set of functional dependencies equivalent to \emph{F} without redundant or partial dependencies
+		&& F logically implies all dependencies in F\textsubscript{c}; \\
+		F\textsubscript{c} logically implies all dependencies in F; \\
+		no functional dependency in F\textsubscript{c} contains an extraneous attribute; \\
+		each left side of a dependency in F\textsubscript{c} is unique
+		
+		&& Denoted by \emph{F\textsubscript{c}}
+	%TODO more notes
+	
+
+\end{easylist}
+\clearpage

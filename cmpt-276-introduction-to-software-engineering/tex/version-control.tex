@@ -1,0 +1,94 @@
+%
+% CMPT 276: Introduction to Software Engineering - A Course Overview
+% Section: Version Control
+%
+% Author: Jeffrey Leung
+%
+
+\section{Version Control}
+	\label{sec:version-control}
+\subsection{Introduction}
+	\label{subsec:version-control:introduction}
+\begin{easylist}
+
+	& \emph{Version control:} Flow of software development in which changes to the code are modular and documented, allowing for clear revision history and simple reversion of changes
+
+	& Repositories are hosted on a central website
+		&& Reasons:
+			&&& Developers can access the code
+			&&& The project can be documented (e.g. issuse, merge/pull requests, features, bugs, code review)
+		&& E.g. GitHub, Bitbucket, GitLab
+
+	& Allows specification of:
+		&& Which changes constitute a unique version
+		&& Who has authority to accept changes
+
+	& \emph{Workflow:} Convention for how changes move from the developer's repository into the centralized system
+	& \emph{Development process:} Convention for how software development is handled
+
+\end{easylist}
+\subsection{Types of Systems}
+	\label{subsec:version-control:types-of-systems}
+\begin{easylist}
+
+	& \emph{Centralized:} Version control which uses a single central repository to which users can contribute
+		&& E.g. SVN
+
+	& \emph{Distributed:} Version control which allows for multiple repositories, both for the individual programmers and original developers
+		&& E.g. Git, Mercurial, Bazaar
+
+\end{easylist}
+\subsection{Workflow}
+	\label{subsec:version-control:workflow}
+\begin{easylist}
+
+	& Requires Git and a hosting service
+	& \emph{Issue:} Possible change to a project
+		&& E.g. New features, bugs, performance enhancements
+
+	& Process:
+		&& An issue is opened
+		&& Contributors discuss the issue
+		&& Issue may be:
+			&&& Closed (if it is determined to be impossible, unfeasible, etc.)
+			&&& Altered
+			&&& Divided into multiple, smaller issues
+			&&& Allowed to be implemented through consensus
+		&& A contributor is assigned the issue
+		&& The contributor implements the change on a new branch and sends a pull/merge request
+		&& Issue may be:
+			&&& Altered further and the change revised
+			&&& Accepted and merged into the main branch
+
+\end{easylist}
+\subsection{Commits}
+	\label{subsec:version-control:commits}
+\subsubsection{Overview}
+	\label{subsubsec:version-control:commits:overview}
+\begin{easylist}
+
+	& Keep a commit focused on one independent change
+
+\end{easylist}
+\subsubsection{Messages}
+	\label{subsubsec:version-control:commits:commit-messages}
+\begin{easylist}
+
+	& First word:
+		&& Capitalized
+		&& Verb
+		&& Present tense
+
+	& Describes the problem/change/behaviour
+	& Under 50 characters (commit messages longer than 50 characters are often cut off on the online version control system)
+	& No end-of-sentence punctuation
+
+	& Other sources:
+		&& \href
+		{http://rakeroutes.com/blog/deliberate-git/}
+		{
+			\emph{Deliberate Git} by Stephen Ball
+		}
+
+\end{easylist}
+\clearpage

@@ -1,0 +1,385 @@
+%
+%% Author: Jeffrey Leung
+%% Last edited: 2015-07-05
+%%
+%% This document contains section 1 (encoding) of a course overview of CMPT 150.
+%
+
+\section{Encoding}
+
+\subsection{Introduction}
+\begin{easylist}[itemize]
+
+& \emph{Alphabet:} Finite set of symbols
+	&& E.g. $\{0, 1\}, \{T, F\}, \{0, 1, 2, ... , 9\}, \{A, B, C, ... , Z\}$
+		
+& \emph{Message:} Meaningful sequence of symbols from an alphabet
+	&& E.g. "CMPT 150", "XYZ-AB2", 0110101 (a binary sequence)
+		
+& \emph{Encoding:} Representation of the symbols of one alphabet by sequences of symbols from a second alphabet
+	&& \emph{Codeword:} Meaningful sequence of symbols which translates into a sequence of symbols of another alphabet
+		&&& \emph{Uniquely decipherable:} Each codeword has only one meaning
+		&&& \emph{Fixed-length:} Each codeword has the same length
+			&&&& Number of different codewords of length $k$ where there are $j$ elements in the alphabet is $j^k$ (e.g. 4-bit binary has $2^4 = 16$ different possibilities)
+
+\end{easylist}
+\subsection{Binary, Hexadecimal, and BCD}
+\begin{easylist}[itemize]
+
+& Codewords: See \hyperref[bin_hex_encoding_scheme]{Table~\ref*{bin_hex_encoding_scheme}}
+
+& Binary:
+	&& Computers interpret voltage levels of cells as 0 or 1
+	&& \emph{Little Endian notation:} The rightmost bit is numbered as the least significant bit (0) and the leftmost bit is numbered as the most significant bit (n-1 where n = length of sequence)
+	&& Integer field: Digits to the left of the decimal point
+	&& Fractional field: Digits to the right of the decimal point
+& Hexadecimal:
+	&& Add additional leading 0s if necessary for conversion
+
+	&& E.g. Base 2 to base 16:
+	\Deactivate
+	\begin{center}
+		$001 1111 0010 1011_{2} = x_{16}$
+	
+		\bigskip
+		\centering
+		\begin{tabular}{ c | c | c | c }
+			0001 & 1111 & 0010 & 1011 \\
+			1 & F & 2 & B \\
+		\end{tabular}
+		\bigskip \\
+		$001 1111 0010 1011_{2} =$ 1F2B$_{16}$
+	\end{center}
+	\Activate
+
+\pagebreak
+
+\Deactivate
+\begin{table}[!htp]
+	\caption{Binary/Decimal/Hexadecimal encoding scheme}
+	\label{bin_hex_encoding_scheme}
+	\centering
+	\begin{tabular}{ c | c | c }
+		Binary: & Decimal: & Hexadecimal: \\
+		\hline
+		0000 &  0 & 0 \\
+		0001 &  1 & 1 \\
+		0010 &  2 & 2 \\
+		0011 &  3 & 3 \\
+		0100 &  4 & 4 \\
+		0101 &  5 & 5 \\
+		0110 &  6 & 6 \\
+		0111 &  7 & 7 \\
+		1000 &  8 & 8 \\
+		1001 &  9 & 9 \\
+		1010 & 10 & A \\
+		1011 & 11 & B \\
+		1100 & 12 & C \\
+		1101 & 13 & D \\
+		1110 & 14 & E \\
+		1111 & 15 & F \\
+	\end{tabular}
+\end{table}
+\Activate
+
+\bigskip
+& \emph{Binary Coded Decimal (BCD):} Encoding scheme where each decimal digit is encoded as 4 binary bits
+%&& Codewords: See \hyperref[bcd_encoding_scheme]{Table~\ref*{bcd_encoding_scheme}}
+
+\Deactivate
+\begin{table}[!htb]
+	\caption{BCD encoding scheme}
+	\label{bcd_encoding_scheme}
+	\centering
+	\begin{tabular}{ c | c }
+		Decimal: & BCD: \\
+		\hline
+		0 & 0000 \\
+		1 & 0001 \\
+		2 & 0010 \\
+		3 & 0011 \\
+		4 & 0100 \\
+		5 & 0101 \\
+		6 & 0110 \\
+		7 & 0111 \\
+		8 & 1000 \\
+		9 & 1001 \\
+	\end{tabular}
+\end{table}
+\Activate
+
+\pagebreak
+
+	&& E.g. BCD encoding:
+	\Deactivate
+	\begin{center}
+		$169_{10} = x_{BCD}$
+		\begin{table}[!htb]
+			\centering
+			\begin{tabular}{ c | c | c }
+				1 & 6 & 9 \\
+				0001 & 0110 & 1001 \\
+			\end{tabular}
+		\end{table}
+		
+		$169_{10} = 0001 \ 0110 \ 1001_{BCD}$
+	\end{center}
+	\Activate
+
+	&& E.g. BCD decoding:
+	\Deactivate
+	\begin{center}
+		$1010 \ 0001 \ 0110_{BCD} = x_{10}$
+		\begin{table}[!htb]
+			\centering
+			\begin{tabular}{ c | c | c }
+				1010 & 0001 & 0110 \\
+				? & 1 & 6 \\
+			\end{tabular}
+		\end{table}
+		
+		$1010 \ 0001 \ 0110_{BCD}$ is meaningless.
+	\end{center}
+	\Activate
+
+\end{easylist}
+\subsection{Positional Number System Conversions}
+\subsubsection{Base 10 to Base X}
+\begin{easylist}[itemize]
+
+& Integer: Divide the base 10 number by $x$ and write the remainder to the right. The number in base $x$ is the sequence of remainders from bottom to top.
+
+	&& E.g. Base 10 to base 2:
+	\Deactivate % Deactivates easylist; allows usage of &
+	\begin{center}
+		$13_{10} = x_{2}$
+	
+		\begin{table}[!hb]
+			\centering
+			\begin{tabular}{ r | r l }
+				            2 & 13 &   \\
+				\cline{2-2} 2 &  6 & 1 \\
+				\cline{2-2} 2 &  3 & 0 \\
+				\cline{2-2} 2 &  1 & 1 \\
+				\cline{2-2} \multicolumn{2}{r}{0} & 1 \\
+			\end{tabular}
+		\end{table}
+		
+		$13_{10} = 1101_{2}$
+	\end{center}
+	\Activate
+	
+	&& E.g. Base 10 to base 16:
+	\Deactivate
+	\begin{center}
+		$38_{10} = x_{16}$
+	
+		\begin{table}[!hb]
+			\centering
+			\begin{tabular}{ r | r l }
+				            16 & 38 &   \\
+				\cline{2-2} 16 &  2 & 6 \\
+				\cline{2-2} \multicolumn{2}{r}{0} & 2 \\
+			\end{tabular}
+		\end{table}
+	
+		$38_{10} = 26_{16}$
+	\end{center}
+	\Activate
+
+& Fractional: Draw a line down from the decimal point. While the right side is greater than 0, multiply the right side by 2 and write the result below. The fraction in binary is the sequence of 0s and 1s on the left side from top to bottom.
+
+	&& E.g. Base 10 to base 2:
+	\Deactivate
+	\begin{center}
+		$0.625_{10} = x_{2}$
+		
+		\begin{table}[!htb]
+			\centering
+			\begin{tabular}{ r : l } % ':' creates a dashed vertical line (from package arydshln)
+				. & 625 \\
+				1 & 25 \\
+				0 & 5 \\
+				1 & 0 \\
+			\end{tabular}
+		\end{table}
+		
+		$0.625_{10} = 0.101_{2}$
+	\end{center}
+	\Activate
+
+& E.g. Base 10 to base 2:
+\Deactivate
+\begin{center}
+	$18.375_{10} = x_{2}$
+	
+	\begin{table}[!htb]
+		\begin{minipage}{.5\linewidth}
+			\centering
+			\begin{tabular}{ r | r l }
+				            2 & 18 &   \\
+				\cline{2-2} 2 &  9 & 0 \\
+				\cline{2-2} 2 &  4 & 1 \\
+				\cline{2-2} 2 &  2 & 0 \\
+				\cline{2-2} 2 &  1 & 0 \\
+				\cline{2-2} \multicolumn{2}{r}{0} & 2 \\
+			\end{tabular}
+		\end{minipage}%
+		\begin{minipage}{.5\linewidth}
+			\centering
+			\begin{tabular}{ r : l }
+				. & 375 \\
+				0 & 75 \\
+				1 & 5 \\
+				1 & 0 \\
+			\end{tabular}
+		\end{minipage} 
+	\end{table}
+
+	$18.375_{10} = 1 \ 0010.011_{2}$
+\end{center}
+\Activate
+
+\end{easylist}
+\subsubsection{Base X to Base 10}
+\begin{easylist}[itemize]
+
+& Write the position values underneath each digit, then add the position values of all digits with 1s.
+
+& E.g. Base 2 to base 10:
+\Deactivate
+\begin{center}
+	$10 \ 1010 \ 0111_{2} = x_{10}$
+	
+	\begin{table}[!htb]
+		\centering
+		\begin{tabular}{ c | c | c | c | c | c | c | c | c | c }
+			   1  &    0  &    1  &    0  &    1  &    0  &    0  &    1  &    1  &    1  \\
+			$2^9$ & $2^8$ & $2^7$ & $2^6$ & $2^5$ & $2^4$ & $2^3$ & $2^2$ & $2^1$ & $2^0$ \\
+		\end{tabular}
+	\end{table}
+
+	$2^9 + 2^7 + 2^5 + 2^2 + 2^1 + 2^0 = 679$ \\
+	\medskip
+	$10 \ 1010 \ 0111_{2} = 679_{10}$
+\end{center}
+\Activate
+
+\pagebreak
+
+& E.g. Base 16 to base 10:
+\Deactivate
+\begin{center}
+	$26_{16} = x_{10}$
+	
+	\begin{table}[!htb]
+		\centering
+		\begin{tabular}{ c | c }
+			    2  &     6  \\
+			$16^1$ & $16^0$ \\
+		\end{tabular}
+	\end{table}
+
+	$(2 \times 16^1) + (6 \times 16^0) = 32 + 6 = 38$ \\
+	\medskip
+	$26_{16} = 38_{10}$
+\end{center}
+\Activate
+
+& E.g. Base 2 to base 10:
+\Deactivate
+\begin{center}
+	$0.101_{2} = x_{10}$
+	
+	\begin{table}[!htb]
+		\centering
+		\begin{tabular}{ c c c | c | c }
+			   0  & . &       1  &       0  &      1  \\
+			$2^0$ &   & $2^{-1}$ & $2^{-2}$ & $2^{-3}$ \\
+		\end{tabular}
+	\end{table}
+	
+	$2^{-1} + 2^{-3} = 0.5 + 0.125 + 0.625$ \\
+	\medskip
+	$0.101_{2} = 0.625_{10}$
+\end{center}
+\Activate
+
+\subsection{Signed Arithmetic}
+
+& \emph{Signed arithmetic:} Binary encoding which represents both positive and negative numbers
+	&& Codewords: See \hyperref[binary_representations]{Table~\ref*{binary_representations}}
+	&& Rules:
+		&&& 0 is always represented
+		&&& For any positive number which is represented, its corresponding negative number must also be represented
+	&& $2^{k}-1$ codewords where $k$ is the number of bits
+		&&& Greatest number which can be represented: $\frac{2^{k} - 1}{2} = 2^{k-1}-1$
+		&&& Least number which can be represented: $-2^{k-1}-1$
+		&&& E.g. 4 bits can represent:
+			&&&& In signed magnitude encoding: \\ $\{-7, -6, \dots , -1, 0, 1, \dots , 6, 7\}$ = 15 numbers
+			&&&& In 2's complement encoding: \\ $\{-8, -7, -6, \dots , -1, 0, 1, \dots , 6, 7\}$ = 16 numbers
+
+\Deactivate
+\begin{table}[!hbp]
+	\caption{Binary representations}
+	\label{binary_representations}
+	\centering
+	\begin{tabular}{ | c | c | c | }
+		\hline
+		Codeword & Sign-magnitude decoding & 2's complement decoding \\
+		\hline
+		0000 &  0 &  0 \\
+		0001 &  1 &  1 \\
+		0010 &  2 &  2 \\
+		0011 &  3 &  3 \\
+		0100 &  4 &  4 \\
+		0101 &  5 &  5 \\
+		0110 &  6 &  6 \\
+		0111 &  7 &  7 \\
+		\hline
+		1000 & -0 & -8 \\
+		1001 & -1 & -7 \\
+		1010 & -2 & -6 \\
+		1011 & -3 & -5 \\
+		1100 & -4 & -4 \\
+		1101 & -5 & -3 \\
+		1110 & -6 & -2 \\
+		1111 & -7 & -1 \\
+		\hline
+	\end{tabular}
+\end{table}
+\Activate
+
+\pagebreak
+
+& \emph{Signed magnitude:} Binary encoding where the most significant bit represents whether the number is positive/negative (0 for positive, 1 for negative) and the other bits represent the value
+	&& Conversion: Interpret the sign and value separately, then combine them
+		&&& E.g. $-13_{10} = x_{2\ \text{(signed magnitude)}}$
+		\medskip \\
+		Sign = - = 1 \\
+		Magnitude = $13_{10} = 1101_{2}$
+		\medskip \\
+		$\therefore -13_{10} = 1\ 1101_{2\ \text{(signed magnitude)}}$
+		
+		\bigskip
+		
+		&&& E.g. $100\ 1001_{2\ \text{(signed magnitude)}} = x_{10}$
+		\medskip \\
+		Sign = 1 = - \\
+		Magnitude = $1001_{2} = 9_{10}$
+		\medskip \\
+		$\therefore 100\ 1001_{2\ \text{(signed magnitude)}} = -9_{10}$
+		
+		\bigskip
+		
+		&&& E.g. $1000_{2\ \text{(signed magnitude)}} = x_{10}$
+		\medskip \\
+		Sign = 1 = - \\
+		Magnitude = $0$
+		\medskip \\
+		$\therefore 1000_{2\ \text{(signed magnitude)}} = -0_{10}$
+		
+%TODO CMPT 150 lecture notes, page 5
+
+
+\end{easylist}

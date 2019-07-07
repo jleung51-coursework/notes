@@ -1,0 +1,37 @@
+%
+% CMPT 300: Operating Systems I - A Course Overview
+% Section: 
+%
+% Author: Jeffrey Leung
+%
+
+\section{Deadlocks}
+	\label{sec:deadlocks}
+\begin{easylist}
+
+& \textbf{Resource:} Limited-quantity component which is needed by a process (e.g. CPU time, memory space, I/O device access)
+	&& Processes request (and block if resource is not free), use, and release a resource
+
+& \textbf{Deadlock:} Situation where a set of blocked processes hold a resource and each needs to acquire a resource held by another process in the set
+	&& Fundamental conditions:
+		&&& \textbf{Mutual exclusion:} Natural condition where a single resource can be held by no more than one process
+		&&& \textbf{Hold and wait:} Condition where a process holds a resource and waits to acquire another
+		&&& \textbf{No preemption:} Condition where a process cannot be preempted during execution to release its resources
+		&&& \textbf{Circular wait:} Condition where there exists a set of processes ${P_0, P_1, \ldots, P_n}$ such that $P_m$ is waiting for a resource held by $P_{m+1}$ where $m \neq n$, and $P_n$ is waiting for a resource held by $P_0$
+
+& Resource Allocation Graph (RAG) %TODO
+
+& Safety condition: There exists a sequence of all processes ${P_1, P_2, \ldots, P_n}$ such that each $P_i, 1 \leq i \leq n$, the resources that $P_i$ will request can be satisfied by the currently available resources in addition to the resources held by all $P_j, 1 \leq j < i$.
+
+& \textbf{Deadlock prevention:} Strategies to prevent deadlocks through disallowing a specific process behaviour to disable one of the deadlock conditions
+	&& Preventing hold and wait: A process may only hold one resource at a time (results in low resource utilization)
+	&& Preventing hold and wait: A process is allocated all its resources before execution (results in starvation)
+	&& Allowing preemption: A process may be preempted to lose its resources if the next resource request will not be satisfied, or if another process requires its resources (results in failure to maintain atomicity of operations due to resources which cannot easily save states)
+	&& Preventing circular wait: All resource types have a total ordering and enforce process requests in a relative order
+	
+& \textbf{Deadlock avoidance:} Strategy to prevent deadlocks through forcing a process to wait if its resource allocation will create a deadlock
+
+& \textbf{Deadlock detection and recovery:} Strategy to detect the occurrence of a deadlock in the system and eliminate processes until the deadlock is removed
+
+\end{easylist}
+\clearpage

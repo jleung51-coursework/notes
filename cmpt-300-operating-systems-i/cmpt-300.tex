@@ -1,0 +1,68 @@
+%
+% CMPT 300: Operating Systems I - A Course Overview
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[10pt, oneside, letterpaper, titlepage]{article}
+
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{listings}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{tikz}
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.5}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{CMPT 300: Operating Systems I \\\medskip \Large A Course Overview}
+\author{Jeffrey Leung \\ Simon Fraser University}
+\date{Fall 2018}
+
+\begin{document}
+
+	\maketitle
+	\tableofcontents
+	\clearpage
+
+	\input{./tex/introduction.tex}
+	\input{./tex/processes.tex}
+	\input{./tex/scheduling.tex}
+	\input{./tex/interprocess-communication.tex}
+	\input{./tex/synchronization.tex}
+
+	\input{./tex/deadlocks.tex}
+	\input{./tex/memory-management.tex}
+	\input{./tex/virtual-memory.tex}
+
+	\input{./tex/filesystems.tex}
+
+\end{document}
