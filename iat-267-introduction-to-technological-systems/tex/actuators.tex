@@ -1,0 +1,53 @@
+%
+% IAT 267: Introduction to Technological Systems - A Course Overview
+% Section: Actuators
+%
+% Author: Jeffrey Leung
+%
+
+\section{Actuators}
+	\label{sec:actuators}
+\begin{easylist}
+
+	& \emph{Pulse-width modulation:} Emulation of analog output using digital-only actuators by pulsing the output on and off repeatedly
+		&& The magnitude of the analog output is proportional to the amount of time the output is on relative to the amount of time the output is off
+
+\end{easylist}
+\subsection{Light and Display}
+	\label{subsec:actuators:light-and-display}
+\begin{easylist}
+
+	& \hyperref[subsubsec:electricity-and-circuit-design:circuits:components]{LEDs}:
+		&& LED driver chip regulates the power to a matrix (grid) of LEDs
+
+	& \emph{Liquid Crystal Display (LCD):} Display which allows for detailed display on a screen
+		&& Generally use 4 or 8 pins to input data and 3 pins for communication synchronization
+
+\end{easylist}
+\subsection{Motion}
+	\label{subsec:actuators:motion}
+\begin{easylist}
+
+	& Characteristics of motors:
+		&& Voltage
+		&& Critical current values:
+			&&& \emph{Stall current:} Amount of current used when the motor is applying maximum torque due to being held in place during operation
+				&&&& Highest possible current during normal operation
+			&&& \emph{Running current:} Amount of current used when the motor is activated normally
+		&& Speed
+		&& Torque
+		&& Position (servos/steppers only)
+	& Types of motors:
+		&& \emph{DC motor:} Motor which has a controllable speed
+		&& \emph{Servo/stepper motor:} Motor which outputs a controllable position with constant, preset speed
+			&&& Controlled by the amount of time of an input pulse
+
+\end{easylist}
+\subsection{Sound}
+	\label{subsec:actuators:sound}
+\begin{easylist}
+
+	& \emph{Piezospeaker:} A speaker which uses \hyperref[sec:actuators]{pulse-width modulation} and \hyperref[subsec:electricity-and-circuit-design:types-of-electricity]{piezoelectricity} to output a sound
+
+\end{easylist}
+\clearpage

@@ -1,0 +1,490 @@
+%
+% IAT 267: Introduction to Technological Systems - A Course Overview
+% Section: Electricity and Circuit Design
+%
+% Author: Jeffrey Leung
+%
+\section{Electricity and Circuit Design}
+	\label{sec:electricity-and-circuit-design}
+\subsection{Electricity}
+	\label{subsec:electricity-and-circuit-design:electricity}
+\begin{easylist}
+
+	& \emph{Voltage:} Relative level of electrical energy between any two given points in a circuit
+		&& Denoted by \si{\volt}
+		&& SI unit: Volts (\si{\volt})
+		&& Totals 0 over the entire circuit
+			&&& Power sources add to the voltage; components subtract from the voltage
+	& \emph{Current:} Amount of electrical energy passing through any given point in a circuit
+		&& Denoted by I
+		&& SI unit: Amperes/amps (\si{\ampere})
+		&& Constant throughout the circuit
+		&& Follows the path of least resistance
+
+	& \emph{Resistance:} Amount of difficulty in moving an electric current through a given component
+		&& Denoted by R
+		&& SI unit: Ohms (\si{\ohm})
+		&& Inherent property of a material
+		&& \emph{Conductor:} Material which has a low resistance
+		&& \emph{Insulator:} Material which has a high resistance
+		&& Calculating resistance:
+			&&& \hyperref[subsec:electricity-and-circuit-design:circuits]{Series circuit}: Add the individual resistances
+
+			&&&& Formula:
+
+			\begin{displaymath}
+				R_{T}
+				= \sum_{i=0}^{n} R_{i}
+			\end{displaymath}
+
+			&&&& E.g. For the circuit in figure~\ref{fig:series-circuit-total-resistance-example},
+
+			\begin{figure}[!htb]
+				\begin{center}
+					\begin{circuitikz}
+						\draw (0,0)
+						to [battery] (0, 3)
+						to [R, l=R1 (820\ \si{\ohm})] (3, 3)
+						to [R, l=R2 (1200\ \si{\ohm})] (3, 0)
+						to [R, l=R3 (150\ \si{\ohm})] (0, 0);
+					\end{circuitikz}
+				\end{center}
+					\caption{Series circuit with resistors 820 \si{\ohm}, 1200 \si{\ohm}, 150 \si{\ohm}}
+					\label{fig:series-circuit-total-resistance-example}
+			\end{figure}
+
+			The total resistance is:
+			\Deactivate
+			\begin{IEEEeqnarray}{ r C l }
+				R_{T}
+				& = & \sum_{i=0}^{n} R_{i} \\
+				& = & R_{1} + R_{2} + R_{3} \\
+				& = & 820\ \si{\ohm} + 1200\ \si{\ohm} + 150\ \si{\ohm} \\
+				& = & 2170\ \si{\ohm}
+			\end{IEEEeqnarray}
+			\Activate
+
+			&&& \hyperref[subsec:electricity-and-circuit-design:circuits]{Parallel circuit}: Find the current of each individual path (see \emph{Ohm's Law} below) (voltage is constant throughout the circuit), and divide the voltage by the sum of the resulting currents
+
+				&&&& Formula:
+
+				\begin{displaymath}
+					R_{T}
+					= \frac{V}{\sum^{n}_{i=0} \frac{V}{R_{i}}}
+					= \frac{1}{\sum^{n}_{i=0} \frac{1}{R_{i}}}
+				\end{displaymath}
+
+				&&&& E.g. For the circuit in figure~\ref{fig:parallel-circuit-total-resistance-example-1},
+
+				\begin{figure}[!htb]
+					\begin{center}
+						\begin{circuitikz}
+							\draw (0,0)
+							to [battery, l=60\ \si{\volt}] (0,3)
+							to [short] (9,3)
+							to [R, l_=R3 (20 \si{\ohm})] (9,0)
+							to [short] (0,0);
+
+							\draw (6,3)
+							to [R, l_=R2 (12 \si{\ohm})] (6,0);
+
+							\draw (3,3)
+							to [R, l_=R1 (6 \si{\ohm})] (3,0);
+						\end{circuitikz}
+					\end{center}
+					\caption{Parallel circuit with resistors 6 \si{\ohm}, 12 \si{\ohm}, 20 \si{\ohm}}
+					\label{fig:parallel-circuit-total-resistance-example-1}
+				\end{figure}
+
+				The currents are:
+
+				\begin{displaymath}
+					I_{1}
+					= \frac{V_{1}}{R_{1}}
+					= \frac{60\ \si{\volt}}{6\ \si{\ohm}}
+					= 10\ \si{\ampere}
+				\end{displaymath}
+
+				\begin{displaymath}
+					I_{2}
+					= \frac{V_{2}}{R_{2}}
+					= \frac{60\ \si{\volt}}{12\ \si{\ohm}}
+					= 5\ \si{\ampere}
+				\end{displaymath}
+
+				\begin{displaymath}
+					I_{3}
+					= \frac{V_{3}}{R_{3}}
+					= \frac{60\ \si{\volt}}{20\ \si{\ohm}}
+					= 3\ \si{\ampere}
+				\end{displaymath}
+
+				\begin{displaymath}
+					I_{T}
+					= \sum_{i=0}^{n} I_{i}
+					= I_{1} + I_{2} + I_{3}
+					= 10\ \si{\ampere} + 5\ \si{\ampere} + 3\ \si{\ampere}
+					= 18\ \si{\ampere}
+				\end{displaymath}
+
+				Therefore, the total resistance is:
+
+				\begin{displaymath}
+					R_{T}
+					= \frac{\si{\volt}_{T}}{I_{T}}
+					= \frac{60\ \si{\volt}}{18\ \si{\ampere}}
+					= 3.\overline{3}\ \si{\ohm}
+				\end{displaymath}
+
+				&&&& E.g. For the circuit in figure~\ref{fig:parallel-circuit-total-resistance-example-2},
+
+				\begin{figure}[!htb]
+					\begin{center}
+						\begin{circuitikz}
+							\draw (0,0)
+							to [battery, l=60\ \si{\volt}] (0,3)
+							to [short] (9,3)
+							to [R, l_=R3 (10 \si{\ohm})] (9,0)
+							to [short] (0,0);
+
+							\draw (6,3)
+							to [R, l_=R2 (15 \si{\ohm})] (6,0);
+
+							\draw (3,3)
+							to [R, l_=R1 (5 \si{\ohm})] (3,0);
+						\end{circuitikz}
+					\end{center}
+					\caption{Parallel circuit with resistors 5 \si{\ohm}, 15 \si{\ohm}, 10 \si{\ohm}}
+					\label{fig:parallel-circuit-total-resistance-example-2}
+				\end{figure}
+
+				The total resistance is:
+
+				\Deactivate
+				\begin{IEEEeqnarray}{ r C l }
+					R_{T}
+					& = & \frac{1}{ \sum_{i=0}^{n} \frac{1}{R_{i}} } \\
+					& = & \frac{1}{ \frac{1}{R_{1}} + \frac{1}{R_{2}} + \frac{1}{R_{3}} } \\
+					& = & \frac{1}{ \frac{1}{5} + \frac{1}{15} + \frac{1}{10} } \\
+					& = & \frac{1}{ \frac{6}{30} + \frac{2}{30} + \frac{3}{30} } \\
+					& = & \frac{1}{ \frac{11}{30} } \\
+					& = & \frac{30}{11}\ \si{\ohm}
+				\end{IEEEeqnarray}
+				\Activate
+
+	& \emph{Ohm's Law:} Formula relating voltage, current, and resistance
+		&& Formula:
+
+		\begin{displaymath}
+			V = I \cdot R
+		\end{displaymath}
+
+		\medskip
+
+		\begin{center}
+			\Deactivate
+			\begin{tabular}{ l r @{ = } l }
+				where
+				& $V$ & Voltage \\
+				& $I$ & Current \\
+				& $R$ & Resistance
+			\end{tabular}
+			\Activate
+		\end{center}
+
+		&& \emph{Short-circuit:} Insufficient resistance which creates too much current (as voltage is constant), damaging the circuit
+
+	\bigskip
+
+	& \emph{Power:} Rate at which electrical energy is transferred
+		&& Denoted by P
+		&& SI unit: Watt (\si{\watt})
+		&& Formula:
+
+		\begin{displaymath}
+			P = V \cdot I
+		\end{displaymath}
+
+		\begin{center}
+			\Deactivate
+			\begin{tabular}{ l r @{ = } l }
+				where
+				& $P$ & Power \\
+				& $V$ & Voltage \\
+				& $I$ & Current
+			\end{tabular}
+			\Activate
+		\end{center}
+
+	& Electron flow:
+		&& From greater electrical energy to lesser electrical energy
+		&& From the negative terminal to the positive terminal
+
+\end{easylist}
+\subsection{Types of Electricity}
+	\label{subsec:electricity-and-circuit-design:types-of-electricity}
+\begin{easylist}
+
+	& \emph{Piezoelectricity:} Electrical potential created from pressure energy exerted upon a polarized crystal
+		&& Discovered in 1880s by the Curies
+		&& Explanation:
+			&&& Piezoelectric crystals are permanently electrically polarized, aligning the dipoles and attracting excess surface charge to electrically neutralize the crystal
+			&&& Applying force to the piezoelectric crystal disrupts the orientation of electric dipoles which creates temporary excess charge
+		&& E.g. Quartz is compressed to create a consistent electrical signal in a watch
+		&& For applications, see \hyperref[sec:sensors]{Sensors} and \hyperref[sec:actuators]{Actuators}
+
+\end{easylist}
+\subsection{Circuits}
+	\label{subsec:electricity-and-circuit-design:circuits}
+\subsubsection{Introduction}
+	\label{subsubsec:electricity-and-circuit-design:circuits:introduction}
+\begin{easylist}
+
+	& \emph{Circuit:} Loop of electronic components with a power source and a load
+
+	& Input pins not grounded or connected to power may exhibit variable capacitance (electrical energy)
+		&& Example of proper grounding: See figure~\ref{fig:example-input-pin-grounding}
+
+		\begin{figure}[!htb]
+			\begin{center}
+				\begin{circuitikz}
+					\draw (0, 6)
+					to [closing switch] (0, 4)
+					to [R, l_=10k\ \si{\ohm}] (0, 2)
+					to (0, 2) node[ground]{};
+
+					\draw (0, 4)
+					to [short, l=Input\ pin] (2, 4);
+				\end{circuitikz}
+			\end{center}
+				\caption{Example of Input Pin Grounding}
+				\label{fig:example-input-pin-grounding}
+		\end{figure}
+
+	& \emph{Schematic:} Visual representation of a system using standardized symbols
+
+\end{easylist}
+\subsubsection{Components}
+	\label{subsubsec:electricity-and-circuit-design:circuits:components}
+\begin{easylist}
+
+	& \emph{Power source:} Provider of electrical energy
+		&& Denoted by:
+
+			&&& Voltage source (American):
+			\begin{center}
+				\begin{circuitikz}
+					\draw (0,0)
+					to [american voltage source] (2,0);
+				\end{circuitikz}
+			\end{center}
+
+			&&& Battery:
+			\begin{center}
+				\begin{circuitikz}
+					\draw (0,0)
+					to [battery] (2,0);
+				\end{circuitikz}
+			\end{center}
+
+				&&&& Longer line is the positive terminal; shorter line is the negative terminal
+
+		&& E.g. Battery, wall plug
+
+	& \emph{Electrical load:} Component which consumes electrical energy
+		&& E.g. Light bulb
+
+	& \emph{Resistor:} Electrical component which limits the current in a circuit
+		&& Denoted by:
+		\begin{center}
+			\begin{circuitikz}
+				\draw (0,0)
+				to [R] (2,0);
+			\end{circuitikz}
+		\end{center}
+
+		&& \emph{Potentiometer:} Resistor which has adjustable/variable resistance
+			&&& Denoted by:
+			\begin{center}
+				\begin{circuitikz}
+					\draw (0,0)
+					to [pR] (2,0);
+				\end{circuitikz}
+			\end{center}
+			&&& Connections:
+				&&&& Side prong to positive
+				&&&& Middle prong to output
+				&&&& (Other) side prong to ground
+				&&&& Turning the knob moves the middle prong along a resistor, closer/farther to the side prong, forcing the current to move through greater resistance
+
+	& \emph{Polarization:} Characteristic of an electrical component which only operates when the current flows in a specific direction
+		&& Anode (longer prong) is connected to the positive terminal
+		&& Cathode (shorter prong) is connected to the negative terminal
+
+		\medskip
+
+		&& \emph{Diode:} Electrical component which limits the flow of electricity to only one direction
+			&&& Denoted by:
+			\begin{center}
+				\begin{circuitikz}
+					\draw (0,0)
+					to [Do] (2,0);
+				\end{circuitikz}
+			\end{center}
+
+			&&& \emph{Light Emitting Diode (LED):} Diode which emits light when current flows through with the correct voltage
+				&&&& Denoted by:
+				\begin{center}
+					\begin{circuitikz}
+						\draw (0,0)
+						to [D*] (2,0);
+					\end{circuitikz}
+
+					\medskip
+					or
+					\medskip
+
+					\begin{circuitikz}
+						\draw (0,0)
+						to [leDo] (2,0);
+					\end{circuitikz}
+				\end{center}
+
+
+	& \emph{Capacitor:} Electrical component which stores then releases electrical energy in intervals
+		&& May be polarized
+		&& Denoted by:
+
+			&&& Unpolarized:
+				\begin{center}
+					\begin{circuitikz}
+						\draw (0,0)
+						to [capacitor] (2,0);
+					\end{circuitikz}
+				\end{center}
+
+			&&& Polarized:
+				\begin{center}
+					\begin{circuitikz}
+						\draw (0,0)
+						to [polar capacitor] (2,0);
+					\end{circuitikz}
+				\end{center}
+
+
+	& \emph{Switch:} Electrical component which controls a break in a circuit and therefore electrical energy flow
+		&& Denoted by:
+		\begin{center}
+			\begin{circuitikz}
+				\draw (0,0)
+				to [closing switch] (2,0);
+			\end{circuitikz}
+		\end{center}
+
+		&& Closing a switch completes the circuit; opening a switch breaks the circuit
+
+	& \emph{(Solderless) Breadboard:} Base on which circuits can be built
+		&& Useful for prototyping or designing a circuit
+		&& Components should not be added or removed while the circuit is live to avoid short circuits or shocks
+
+	& \emph{Microcontroller:} Small computer with a processor, memory, and programmable inputs/outputs
+
+	& \emph{Analog-to-digital converter}: Device which converts an analog voltage to a digital value
+
+\end{easylist}
+\subsubsection{Types of Circuits}
+	\label{subsubsec:electricity-and-circuit-design:circuits:types-of-circuits}
+\begin{easylist}
+
+	& \emph{Serial circuit:} Circuit in which all components are connected in-line
+		&& I.e. Only one path exists from the positive terminal to the negative terminal for the electrons to flow through
+		&& E.g. See figure~\ref{fig:series-circuit-example}.
+
+		\begin{figure}[!htb]
+			\begin{center}
+				\begin{circuitikz}
+					\draw (0,0)
+					to [battery] (0,2)
+					to [lamp] (4,2)
+					to [short] (4,0)
+					to [lamp] (0,0);
+				\end{circuitikz}
+				\caption{Example of a series circuit}
+				\label{fig:series-circuit-example}
+			\end{center}
+		\end{figure}
+
+		&& To find the total resistance, see \hyperref[subsec:electricity-and-circuit-design:electricity]{Calculating resistance}
+
+	& \emph{Parallel circuit:} Circuit in which not all components are placed in-line with each other
+		&& I.e. Multiple paths exist from the positive terminal to the negative terminal for the electrons to flow through
+		&& E.g. See figure~\ref{fig:parallel-circuit-example}.
+
+		\begin{figure}[!htb]
+			\begin{center}
+				\begin{circuitikz}
+					\draw (0,0)
+					to [battery] (0,2)
+					to [short] (4,2)
+					to [lamp] (4,0)
+					to [short] (0,0);
+
+					\draw (2,0)
+					to [lamp] (2,2);
+				\end{circuitikz}
+				\caption{Example of a parallel circuit}
+				\label{fig:parallel-circuit-example}
+			\end{center}
+		\end{figure}
+
+		&& To find the total resistance, see \hyperref[subsec:electricity-and-circuit-design:electricity]{Calculating resistance}
+
+	& \emph{Voltage divider:} Portion of a circuit which connects to the ground, using a variable resisitance from a sensor to manipulate the voltage outputted to a component
+		&& For an example schematic, see figure~\ref{fig:example-voltage-divider}
+
+		\begin{figure}[!htb]
+			\begin{center}
+				\begin{circuitikz}
+					\draw (0, 6)
+					to [short, l^=$V_{in}$] (2, 6)
+					to [R, l_=$R_{1}$] (2, 4)
+					to [short, l^=$V_{out}$] (4, 4);
+
+					\draw (2, 4)
+					to [R, l_=$R_{2}$] (2, 2)
+					to (2, 2) node[ground]{};
+				\end{circuitikz}
+			\end{center}
+				\caption{Example of a Voltage Divider}
+				\label{fig:example-voltage-divider}
+		\end{figure}
+
+		&& Formula for output voltage:
+
+		\begin{displaymath}
+			V_{out} = \frac{R_{2}}{R_{1} + R_{2}} \cdot V_{in}
+		\end{displaymath}
+
+			&&& Explanation:
+
+			\Deactivate
+			\begin{IEEEeqnarray}{ r C l }
+				V_{in}
+				& = & I \cdot R \\
+				& = & I \cdot (R_{1} + R_{2}) \rule[-1.5em]{0pt}{1em} \\
+				I
+				& = & \frac{V_{in}}{R_{1} + R_{2}} \rule[-1.5em]{0pt}{1em} \\
+				V_{out}
+				& = & I \cdot R \\
+				& = & I \cdot R_{2} \\
+				& = & \frac{V_{in}}{R_{1} + R_{2}} \cdot R_{2} \\
+				& = & \frac{R_{2}}{R_{1} + R_{2}} \cdot V_{in}
+			\end{IEEEeqnarray}
+			\Activate
+
+			Reminders: \\
+			Voltage is the potential difference between a component in the circuit and the ground. \\
+			Current ($I$) is constant throughout the circuit.
+
+\end{easylist}
+\clearpage

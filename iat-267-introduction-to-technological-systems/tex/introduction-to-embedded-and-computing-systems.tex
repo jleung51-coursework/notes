@@ -1,0 +1,68 @@
+%
+% IAT 267: Introduction to Technological Systems - A Course Overview
+% Section: Introduction to Embedded and Computing Systems
+%
+% Author: Jeffrey Leung
+%
+
+\section{Introduction to Embedded and Computing Systems}
+	\label{sec:introduction-to-embedded-and-computing-systems}
+\begin{easylist}
+
+	& \emph{Hardware:} Physical components of a digital system
+	& \emph{Software:} Electronically stored instructions of a digital system
+
+	& \emph{Embedded system:} System which interacts with another system and/or other components
+		&& Components:
+			&&& \emph{Microprocessor:} CPU combined with an integrated circuit
+			&&& \emph{Sensor:} Device which converts a measured physical quantity into a signal
+			&&& \emph{Actuator:} Mechanical device for moving/controlling a mechanism/systems
+
+	& \emph{Computing system:}
+		&& Purpose is to convert data to information
+
+		&& Operations:
+			&&& Input/output
+				&&&& Communication to send/receive data
+			&&& Storage (permanent/temporary)
+			&&& Processing to transform data to information
+
+		&& Main concepts:
+
+			&&& \emph{Theory of the Universal Computing Device:} Given enough time and memory, all computers are capable of computing the same operations
+			
+			&&& \emph{Turing machine:} Mathematical model of a device which can perform any computation using discrete states and transitions between states
+				&&&& Idea created by Alan Turing
+				&&&& Ability to read and write symbols on an infinite `tape' (memory)
+				&&&& \emph{Universal Turing Machine:} Machine which can implement all Turing machines
+					&&&&& Programmable; instructions may be part of the input data
+					&&&&& Can be emulated by a computer
+				&&& E.g. Two computers A and B which have instructions which can add two values or produce the negative of a value, but B alone can subtract two values. A and B can compute the same operations.
+
+			&&& Break-down of the levels of a computing system:
+				&&&& Levels (high-level to low-level):
+					&&&&& Natural language:
+						&&&&&& May be ambiguous and imprecise
+					&&&&& Algorithm:
+						&&&&&& Step-by-step procedure
+						&&&&&& Well-defined
+						&&&&&& Finite
+						&&&&&& Effective computability
+					&&&&& Programming language:
+						&&&&&& Expression of a program using a defined language
+					&&&&& Instruction set architecture (ISA)
+					&&&&& Microarchitecture:
+						&&&&&& Organization of a processor implementation
+						&&&&&& Implements a single ISA
+					&&&&& Circuit:
+						&&&&&& Combination of different structures to represent microarchitecture
+					&&&&& Device:
+						&&&&&& E.g. Capacitors, resistors, transistors
+				&&&& Transformations between levels:
+					&&&&& \emph{Software design:} Expression of a problem in a natural language with algorithms and data structures
+					&&&&& \emph{Programming:} Implementation of algorithms and data structures using a programming language(s)
+					&&&&& \emph{Compilation/interpretation:} Transformation of a program in a programming language into the instructions (in machine language) of a given instruction set
+					&&&&& Circuits are created with small components such as gates
+
+\end{easylist}
+\clearpage

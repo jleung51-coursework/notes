@@ -1,0 +1,130 @@
+%
+% IAT 267: Introduction to Technological Systems - A Course Overview
+% Section: Technological Systems
+%
+% Author: Jeffrey Leung
+%
+
+\section{Technological Systems}
+	\label{sec:technological-systems}
+\subsection{Concepts and Components}
+	\label{subsec:technological-systems:concepts-and-components}
+\begin{easylist}
+
+	& Iterative design:
+		&& General process:
+			&&& Imagine
+			&&& Design
+			&&& Build
+			&&& Analyze product
+		&& Loop of design and redesign is repeated to improve upon the product
+
+	& Trade-offs:
+		&& Due to multiple interacting domains and subsystems (e.g. mechanical system and code system), solving one problem may cause another
+		&& \emph{Space/time trade-off:} Compression of images results in reduced transmission time/costs, lower quality, increased time necessary to compress/decompress the file
+		&& There is no correct solution; all solutions come with benefits and drawbacks
+
+	& Real-world constraints:
+		&& Design of a system involves multiple parts and domains
+		&& E.g. Sorting physical marbles into different bins will have the following issues:
+			&&& Sensor system which differentiates marbles interacting with the mechanical system which moves them
+			&&& Transportation of marbles:
+				&&&& Regardless of mass/volume
+				&&&& From one location to the correct bin
+
+	& Feedback:
+		&& \emph{Negative feedback:} Reaction based on a tendency to return to the original state and stabilize the system
+			&&& E.g. When placing a ball at the bottom of a bowl, moving the ball will cause it to roll back to the bottom
+			&&& E.g. When using a spring, applying and releasing pressure on the spring will cause it to uncompress to its original shape
+		&& \emph{Positive feedback:} Reaction based on a tendency to change to another state and destabilize the system
+			&&& E.g. When placing a ball at the top of a hill, moving the ball will cause it to roll away from the top of the hill
+			&&& E.g. In a speaker and microphone system, if the microphone picks up sound from the speaker, the sound will be amplified in a loop and the sound will continually become louder
+
+	& Complexity management:
+		&& \emph{Abstraction:} Hiding a complex system behind a simple interface
+			&&& E.g. Programmed devices can be used effectively without knowledge of how they are designed
+		&& \emph{Modularity:} Composition of a system from several independent, reusable partitions
+			&&& E.g. A circuit which detects temperature and turns it into a value can be used in a car system, a thermostat, a weather balloon, etc.
+
+\end{easylist}
+\subsection{Categories}
+	\label{subsec:technological-systems:categories}
+\begin{easylist}
+
+	& \emph{Digital:} System with a limited amount of states
+		&& E.g. Whether or not brakes are activated
+	& \emph{Analog:} System with a continuous range of possible states
+		&& E.g. Speed of a car
+
+	& \emph{Series:} System in which events happen in order
+	& \emph{Parallel:} System in which events happen concurrently
+
+\end{easylist}
+\subsection{Interaction}
+	\label{subsec:technological-systems:interaction}
+\begin{easylist}
+
+	& Interaction: Communication between multiple entities
+
+	& In a technological system:
+		&& Input:
+			&&& Often requires less energy than output
+			&&& See section \hyperref[sec:sensors]{Sensors}
+		&& Processing of information
+			&&& Requires programming
+		&& Output
+			&&& Often requires more energy than input
+			&&& See section \hyperref[sec:actuators]{Actuators}
+
+	& \emph{Transduction:} Transformation of energy from one form to another
+		&& Necessary for interaction in technological systems
+		&& E.g. Heat energy is transformed into sensor signals for a thermostat to interpret
+
+		&& \emph{Transducer:} Device which changes energy from physical to electrical, or vice versa
+			&&& Generally, input transducers require less energy than output transducers
+			&&& Input transducers:
+				&&&& E.g. Switches, levers, sliders
+				&&&& See section \hyperref[sec:sensors]{Sensors}
+			&&& Output transducer:
+				&&&& E.g. Motors, servos, speakers, lights
+				&&&& See section \hyperref[sec:actuators]{Actuators}
+
+	& Communication between devices:
+		&& \emph{Serial communication:} Transmission and receiving of data at a set rate of digital pulses
+			&&& Data bits are sent in serial - i.e. one after another
+		&& \emph{Communication protocol:} Standard of data transmission and reception shared by two communicating devices
+			&&& Specifies characteristics such as physical configuration, timing, electrical connection, and package size
+			&&& \emph{Data rate:} Frequency of data transmission
+				&&&& Unit of pulses per second: Baud (Bd)
+			&&& \emph{Asynchronous communication:} Communication between devices which run on their own independent clocks
+			&&& Electrical connection is the interpretation of values (e.g. 0V maps to 0, 5V maps to 1)
+			&&& Package size is the grouping of values (e.g. discrete values of 8 bits)
+		&& See section \hyperref[sec:networking]{Networking}
+
+\end{easylist}
+\subsection{Haptic Technology}
+	\label{subsec:technological-systems:haptic-technology}
+\begin{easylist}
+
+	& \emph{Haptic technology:} Technology which simulates the sensation of touch interaction using vibration, movement, or temperature
+
+	& Possible ways of sensing input:
+		&& Capacitance
+		&& Force
+		&& Flex
+		&& Pressure
+		&& Heat (using a thermistor)
+
+\end{easylist}
+\subsection{Building a System}
+	\label{subsec:technological-systems:building-a-system}
+\begin{easylist}
+
+	& Process:
+		&& Describe the end product from the user's point of view (i.e. end-user sensory input/output)
+		&& Separate tasks into input, processing, and output
+		&& Determine each input/output as \hyperref[subsec:technological-systems:categories]{digital or analog} (and, therefore, what kind of transducers are necessary)
+		&& Determine whether each event should be processed in serial or parallel
+
+\end{easylist}
+\clearpage

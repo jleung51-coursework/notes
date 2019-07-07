@@ -1,0 +1,59 @@
+%
+% IAT 210: Introduction to Game Studies - A Course Overview
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[10pt, oneside, letterpaper, titlepage]{article}
+
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\textperiodcentered\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\textperiodcentered\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{IAT 210: Introduction to Game Studies \\\medskip \Large A Course Overview}
+\author{Jeffrey Leung \\ Simon Fraser University}
+\date{Summer 2015}
+
+\begin{document}
+
+	\maketitle
+	\tableofcontents
+	\clearpage
+	
+	\input{./tex/history-of-play-and-games.tex}
+	\input{./tex/properties-of-games.tex}
+	\input{./tex/types-of-games.tex}
+	\input{./tex/narrative.tex}
+	\input{./tex/participatory-gaming.tex}
+	\input{./tex/designing-games.tex}
+	\input{./tex/reasons-for-game-design.tex}
+	\input{./tex/business.tex}
+	\input{./tex/the-audience.tex}
+	\input{./tex/the-players-perspective.tex}
+	
+\end{document}
