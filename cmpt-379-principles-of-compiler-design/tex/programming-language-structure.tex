@@ -1,0 +1,23 @@
+%
+% CMPT 379: Principles of Compiler Design - A Course Overview
+% Section: Programming Language Structure
+%
+% Author: Jeffrey Leung
+%
+
+\section{Programming Language Structure}
+	\label{sec:programming-language-structure}
+\begin{easylist}
+
+& \textbf{Procedure:} Series of computational steps to be executed
+	&& Assumption that execution is sequential (which can be violated by concurrency)
+	&& Assumption that control is returned to the caller after execution (which can be violated by exceptions)
+	&& \textbf{Activation:} Invocation of a given procedure
+		&&& \textbf{Activation tree:} Tree of invoked procedures where each child node was invoked by its parent node
+	&& \textbf{Lifetime (procedure):} Set of all the steps required to execute the associated procedure and its subprocedures
+	&& Stack is used to keep track of all procedures which are currently active
+
+& \textbf{Control Flow Graph (CFG):} Diagram showing logic flow of code, with branching on conditional commands such as if/for/while loops
+
+\end{easylist}
+\clearpage

@@ -1,0 +1,23 @@
+%
+% CMPT 379: Principles of Compiler Design - A Course Overview
+% Section: Optimization
+%
+% Author: Jeffrey Leung
+%
+
+\section{Optimization}
+	\label{sec:optimization}
+\begin{easylist}
+
+& \textbf{Constant folding:} Compile-time preprocessing of constant values to avoid predictable runtime computation
+& \textbf{Constant propagation:} If a variable is set to a constant, then replace all future variable uses with the constant (until the variable is reassigned)
+& \textbf{Copy propagation:} Simplification of multiple computations of the same values
+& \textbf{Dead code elimination:} Removal of code which will never be executed, used, or have any side effects
+
+& \textbf{Algebraic simplification:} Basic arithmetic and algebraic simplifications which are computed during compile-time such as addition by 0 or multiplication by 0 or 1
+& \textbf{Reduction of strength:} Replacement of exponentiation with multiplication
+
+& Correctness: Optimizations must not change the meaning of a performance
+
+\end{easylist}
+\clearpage

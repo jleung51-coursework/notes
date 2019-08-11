@@ -1,0 +1,174 @@
+%
+% CMPT 379: Principles of Compiler Design - A Course Overview
+% Section: Syntax Analysis (Parsing)
+%
+% Author: Jeffrey Leung
+%
+
+\section{Syntax Analysis (Parsing)}
+	\label{sec:syntax-analysis}
+\begin{easylist}
+
+& \textbf{Syntax analysis (parsing):} Translation of a set of strings into a valid structure using a grammar
+	&& \textbf{Language:} Description of a valid string of tokens
+
+& Symbols and rules:
+	&& \textbf{Terminal symbol:} Token or base symbol which does not represent any other symbols
+	&& \textbf{Non-terminal symbol:} Set of strings potentially consisting of one or more terminal or non-terminal symbols
+	&& \textbf{Production/Rule/Production rule:} Function on a non-terminal symbol which generates a sequence of terminal and/or non-terminal symbols
+		&&& \textbf{Expansion:} Sequence of symbols resulting from the application of a production rule
+
+\end{easylist}
+\subsection{Context-Free Grammars}
+	\label{subsec:syntax-analysis:context-free-grammars}
+\begin{easylist}
+
+& \textbf{Context-Free Grammar (CFG):} Recursive notation for the structure of a valid syntax; subset of regular grammars
+	&& Generates a \textit{Context-Free Language (CFL)}
+	&& Defined by a set of non-terminal states $N$, a start state $S \in N$, a set of terminal states $T$, and a set of productions to create a set of states
+		&&& Each state is a string consisting of non-terminal and/or terminal symbols
+		&&& If multiple productions exist from the start state, then in order to backtrack from a terminal state to the start state, create a new start state $S'$ which has a single production to the original state state
+		&&& Productions can be implemented using a transition matrix
+	&& E.g. Given grammar $\bigg\{ (^i)^i | i \geq 0 \bigg\}$ (i.e. The number of opening brackets must match the number of closing brackets) the productions are:
+		&&& $S \rightarrow \epsilon$
+		&&& $S \rightarrow (S)$
+		&&& $N = \{ S \}$
+		&&& $T = \big\{ (, ) \big\}$
+	&& E.g. Given language $\bigg\{ wcw^R | w \in (a|b)* \bigg\}$, a CFG which produces this language is $S \rightarrow aSa | bSb | c$
+	&& E.g. Given language $\bigg\{ a^n b^m c^m d^n | n \geq 1, m \geq 1 \bigg\}$, a CFG which produces this language is $S \rightarrow aSd | aAd; A \rightarrow bAc | bc$
+	&& \textbf{Ambiguous:} CFG which can produce multiple unique parse trees
+		&&& Unacceptable for programming languages
+		&&& Prevention techniques:
+			&&&& Rewriting grammar unambiguously
+			&&&& Separating non-terminal states by different precedence levels
+				&&&&& E.g. $E \rightarrow E - E; E \rightarrow T; T \rightarrow T / T$
+				&&&&& E.g. $A \rightarrow A - B; A \rightarrow B$
+			&&&& \textbf{Left/Right associative:} Property of an operator specifying which of multiple operations with the same precedence should be evaluated first
+	&& \textbf{Recursive in non-terminal $X$:} CFG where, in one or more productions, $X$ can derive a sequence of symbols including $X$
+		&&& \textbf{Left recursive in non-terminal $X$:} CFG where, in one or more productions, $X$ can derive a sequence of symbols which begins with $X$
+		&&& \textbf{Right recursive in non-terminal $X$:} CFG where, in one or more productions, $X$ can derive a sequence of symbols which ends with $X$
+
+\end{easylist}
+\subsection{Parsing}
+	\label{subsec:syntax-analysis:parsing}
+\begin{easylist}
+
+& \textbf{Parse tree:} Tree-shaped sequence of CFG productions used to generate a valid derivation of symbols, with the root being the start symbol and children being productions of the parent (i.e. for a given production $X \rightarrow Y_1 \dotsc Y_n$, the children of $X$ are $Y_1 \dotsc Y_n$)
+	&& \textbf{Leftmost derivation:} Sequence of CFG productions to create a parse tree by continually processing the leftmost non-terminal state
+	&& \textbf{Rightmost derivation:} Sequence of CFG productions to create a parse tree by continually processing the rightmost non-terminal state
+	&& E.g. For the production rules in table~\ref{tab:parse-tree-example-1-prod-rules}, the parse tree of $id + id * id$ is shown in figure~\ref{fig:parse-tree-example-1}
+	&& E.g. For the production rules in table~\ref{tab:parse-tree-example-2-prod-rules}, the parse tree of $id + id * id$ is shown in figure~\ref{fig:parse-tree-example-2}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Parse Tree Example 1: Production Rules}
+	\label{tab:parse-tree-example-1-prod-rules}
+	\begin{center}
+		\begin{tabular}{ l }
+			$E \rightarrow E + E$ \\
+			$E \rightarrow E * E$ \\
+			$E \rightarrow id$
+		\end{tabular}
+	\end{center}
+\end{figure}
+\begin{easylist}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Parse Tree Example 1}
+	\label{fig:parse-tree-example-1}
+	\begin{center}
+		String: $id + id * id$ \\[1em]
+		\begin{forest}
+			[$E$
+				[$E$
+					[$E$[$id$]]
+					[$+$]
+					[$E$[$id$]]
+				]
+				[$*$]
+				[$E$
+					[$id$]
+				]
+			]
+		\end{forest}
+	\end{center}
+\end{figure}
+\begin{easylist}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Parse Tree Example 2: Production Rules}
+	\label{tab:parse-tree-example-2-prod-rules}
+	\begin{center}
+		\begin{tabular}{ l }
+			$E \rightarrow T + E$ \\
+			$E \rightarrow T$ \\
+			$T \rightarrow int$ \\
+			$T \rightarrow int * T$ \\
+			$T \rightarrow (E)$
+		\end{tabular}
+	\end{center}
+\end{figure}
+\begin{easylist}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Parse Tree Example 2}
+	\label{fig:parse-tree-example-2}
+	\begin{center}
+		String: $int * int + int$ \\[1em]
+		\begin{forest}
+			[$E$
+				[$T$
+					[$int$]
+					[$*$]
+					[$T$[$int$]]
+				]
+				[$+$]
+				[$E$[$T$[$int$]]]
+			]
+		\end{forest}
+	\end{center}
+\end{figure}
+\begin{easylist}
+
+& \textbf{Pushdown automaton (PDA):} \hyperref[subsec:finite-state-automata]{Finite State Automata} system which utilizes a stack to parse a CFL
+	&& Notations:
+		&&& Finite set of states: $S$
+		&&& Start state: Outlined
+		&&& Final/accepting state: Double-outlined
+		&&& Production rules: $P$
+	&& Uses a stack structure to hold symbols
+	&& For each CFG, there exists an equivalent PDA
+
+& \textbf{Shift-reduce parsing:} Method of bottom-up parsing which reduces a string to a start symbol, using reversed production rules
+	&& Uses a left substring containing terminal or non-terminal symbols, and a right substring containing as-of-yet unprocessed symbols
+	&& Starts with the entire string in the right substring
+	&& Right substring utilizes a stack with the following options:
+		&&& \textbf{Shift:} Retrieving a symbol from the stack (right substring) and placing it on the left substring
+		&&& \textbf{Reduce:} Removing one or more symbols from the stack (right substring), processing them with a reversed production rule, and returning the result to the stack
+	&& Example:
+	\end{easylist}
+	\begin{align*}
+		\textrm{Stack} & | \textrm{Input} & \textrm{Action} \\
+		\hline
+		& | x_1 x_2 x_3 x_4 & \textrm{Begin}\\
+		x_1 & | x_2 x_3 x_4 & \textrm{Shift } x_1 \\
+		x_1 & | y_1 x_4 & \textrm{Reduce } x_2 x_3 \textrm{ to } y_1 \\
+		x_1 y_1 & | x_4 & \textrm{Shift } y_1 1\\
+		x_1 y_1 & | y_2 & \textrm{Reduce } x_4 \textrm{ to } y_2 \\
+		x_1 y_1 y_2 & | & \textrm{Shift } y_2
+	\end{align*}
+	\begin{easylist}
+
+	&& \textbf{Shift-reduce conflict:} Situation in shift-reduce parsing where either a shift or reduce can create valid parses
+		&&& Solution: Precedence/associativity declarations
+	&& \textbf{Reduce-reduce conflict:} Situation in shift-reduce parsing where multiple different reduces can create valid parses
+		&&& Solution: Rewrite grammar to no longer be ambiguous
+	&& \textbf{Handle:} Sequence of symbol(s) at the top of the stack which is a valid reduction allowing further reductions towards the start symbol
+		&&& \textbf{Prune:} Action of reducing a handle and pushing the result onto the stack
+		&&& To find a handle, heuristics are used; no efficient algorithms exist
+
+\end{easylist}
+\clearpage

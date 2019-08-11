@@ -1,0 +1,164 @@
+%
+% CMPT 379: Principles of Compiler Design - A Course Overview
+% Section: Parsing Algorithms: Top-Down
+%
+% Author: Jeffrey Leung
+%
+
+\section{Parsing Algorithms: Top-Down}
+	\label{sec:parsing-algorithms-top-down}
+\subsection{Introduction}
+	\label{subsec:parsing-algorithms-top-down:introduction}
+\begin{easylist}
+
+& \textbf{Top-down/leftmost parsing:} Deterministic creation of a string beginning from a start symbol and continuously expanding the leftmost non-terminal symbol
+	&& Similarly efficient to bottom-up parsing
+	&& Constructs a parse tree by expanding symbols from the top to the bottom, left to right
+	&& As shifts and reduces are not valid actions, neither shift-reduce nor reduce-reduce conflicts are possible
+
+\end{easylist}
+\subsection{Recursive Descent Parsing}
+	\label{subsec:parsing-algorithms-top-down:recursive-descent-parsing}
+\begin{easylist}
+
+& \textbf{Recursive descent parser:} Top-down parser which applies any valid production rule to the leftmost non-terminal symbol and, when no option are valid, backtracks in a brute-force manner until a valid construction is parsed (i.e. backtracking search)
+	&& Efficient when using a grammar which is:
+		&&& Unambiguous
+		&&& Left-factored
+		&&& Free of left-recursion
+
+& \textbf{Left-recursive grammar:} Grammar which recurses using a symbol on the left of the production rule string
+	&& E.g. $A \rightarrow Ab | c$ is left-recursive
+	&& Causes top-down parsers to create infinite loops
+	&& E.g. Given left-recursive grammar $A \rightarrow A * B | B; B \rightarrow a$, an equivalent non-left-recursive grammar would be $X \rightarrow BA; A \rightarrow *BA | \epsilon; B \rightarrow a$
+	&& E.g. Given a set of production rules, figure~\ref{tab:left-recursion-example} shows the steps to remove left-recursion
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Elimination of Left-Recursion: Example}
+	\label{tab:left-recursion-example}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Production Rules
+			& $S \rightarrow Aa|b$ \\
+			& $A \rightarrow Ac | Sd | \epsilon$ \\
+			\hline
+			Remove $A \rightarrow S$ recursion
+			& $S \rightarrow Aa|b$ \\
+			& $A \rightarrow bd A' | A'$ \\
+			& $A' \rightarrow A'c | A' ad$ \\
+			\hline
+			Remove $A'$ left-recursion
+			& $S \rightarrow Aa|b$ \\
+			& $A \rightarrow bd A' | A'$ \\
+			& $A' \rightarrow cA' | adA'$
+		\end{tabular}
+	\end{center}
+\end{figure}
+\begin{easylist}
+
+& \textbf{Left-factoring:} Operation on a grammar which combines all common strings on the leftmost of a production rule string
+	&& Left-factored grammars create ambiguous rule expansions as a given terminal can expand to multiple potential states
+	&& E.g. Given grammar $A \rightarrow Bc | D; B \rightarrow ef; D \rightarrow e$, left-factoring would create the grammar $A \rightarrow eB; B \rightarrow fc | \epsilon$
+
+\end{easylist}
+\subsection{LL(1) Parsing}
+	\label{subsec:parsing-algorithms-top-down:ll1-parsing}
+\begin{easylist}
+
+& \textbf{LL(1) parsing:} Top-down parsing algorithm which creates a left-to-right leftmost derivation requiring only 1 symbol of lookahead
+	&& Requires a grammar which is:
+		&&& Unambiguous
+		&&& Left-factored
+		&&& Free of left-recursion
+	&& Only one possible production can exist given the next token
+
+& \textbf{Predictive parsing table:} Table which correlates the leftmost non-terminal symbol and the next terminal symbol with the only possible production
+	&& No cell can have more than one string as the expansion to the rule
+	&& Empty cells mean parsing errors
+	&& Uses lookahead to resolve conflicts between multiple possible production rule applications for the same symbol
+	&& Layout: See figure~\ref{tab:predictive-parsing-table-layout}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Predictive Parsing Table Layout}
+	\label{tab:predictive-parsing-table-layout}
+	\begin{center}
+		\begin{tabular}{ r r | l l }
+			& & \textbf{Terminal symbols} & \$ \\
+			\hline
+			\textbf{Non-terminal Symbols} & \textit{Symbol} & \textit{Production result}
+		\end{tabular}
+	\end{center}
+\end{figure}
+\begin{easylist}
+
+& To create a predictive parsing table:
+	&& For each non-terminal symbol $X$ on the left column:
+		&&& If there is a production rule where $X$ expands to epsilon ($\epsilon$), then:
+			&&&& For each terminal symbol which is in the $FOLLOW$ of symbol $X$, write $\epsilon$
+		&&& If there is a production rule where $X$ expands to a string which is not epsilon ($\epsilon$), then:
+			&&&& For each terminal symbol which is in the $FIRST$ of symbol $X$, write the expansion of the valid production rule
+
+& E.g. In figure~\ref{tab:ll1-conflict-resolution}, $Y \rightarrow \epsilon$ is the valid production rule to be chosen when $+, ),$ or $\$$ are the lookahead symbol
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{LL(1) Conflict Resolution with $FOLLOW$}
+	\label{tab:ll1-conflict-resolution}
+	\begin{center}
+		\begin{tabular}{ r l }
+			Production Rules
+			& $E \rightarrow TX$ \\
+			& $X \rightarrow \epsilon$ \\
+			& $X \rightarrow +E$ \\
+			& $T \rightarrow (E)$ \\
+			& $T \rightarrow id Y$ \\
+			& $Y \rightarrow *T$ \\
+			& $Y \rightarrow \epsilon $ \\
+			\hline
+			$FOLLOW(Y)$
+			& $= FOLLOW(T)$ \\
+			& $= ( FIRST(X) - \{\epsilon\} ) + FOLLOW(E)$ \\
+			& $= \{ +, ), \$ \}$
+		\end{tabular}
+	\end{center}
+\end{figure}
+\begin{easylist}
+	
+& LL(1) parsing trace:
+	&& Stack is used to keep track of non-terminal symbols
+	&& Stack and input strings are terminated with the end of input symbol (\$)
+	&& Layout: See figure~\ref{tab:ll1-parsing-trace-example}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{LL(1) Parsing Trace Example}
+	\label{tab:ll1-parsing-trace-example}
+	\begin{center}
+		\begin{tabular}{ l | l | l }
+			\textbf{Stack} & \textbf{Input} & \textbf{Action} \\
+			\hline
+			\textit{string \$} & \textit{string \$} & \textit{Production rule to expand OR} \\
+			&& \textit{$\epsilon$ OR} \\
+			&& \textit{Terminal $\alpha$ OR} \\
+			&& \textit{acc}
+		\end{tabular}
+	\end{center}
+\end{figure}
+\begin{easylist}
+
+	&& To create an LL(1) parsing trace:
+		&&& For the leftmost input symbol and the leftmost stack symbol:
+			&&&& If the leftmost stack symbol is a non-terminal symbol, then use the leftmost input and stack symbols to find the corresponding production rule expansion from the predictive parsing table, and:
+				&&&&& If the expansion is not an epsilon, then replace the leftmost stack symbol with the expansion
+				&&&&& If the expansion is an epsilon ($\epsilon$), then remove the leftmost stack symbol
+			&&&& If the leftmost stack symbol is a terminal symbol and the leftmost stack and input symbols match, then consume both of them with the action \textit{Terminal}
+			&&&& If the leftmost stack and input symbols are the end of input (\$), then accept the parse
+
+& Grammar validity:
+	&& A grammar is LL(1) if and only if, for each pairing of a non-terminal symbol with a terminal symbol, only one possible production rule can be applied
+	&& A grammar is not LL(1) if and only if there exists at least one pairing of a non-terminal symbol and a terminal symbol which can expand to multiple production rules (e.g. $A \rightarrow bc; A \rightarrow bd$)
+
+\end{easylist}
+\clearpage

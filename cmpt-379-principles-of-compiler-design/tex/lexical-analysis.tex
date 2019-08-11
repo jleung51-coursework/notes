@@ -1,0 +1,95 @@
+%
+% CMPT 379: Principles of Compiler Design - A Course Overview
+% Section: Lexical Analysis (Scanning)
+%
+% Author: Jeffrey Leung
+%
+
+\section{Lexical Analysis (Scanning)}
+	\label{sec:lexical-analysis}
+\begin{easylist}
+
+& \textbf{Lexical analysis (scanning):} Transforming an input program string into tokens
+	&& Does not validate, simply transforms
+	&& Challenges:
+		&&& Prove that the implementation captures all tokens specified by the language definition
+		&&& Prove correctness of transformations
+
+& \textbf{Token:} Symbol which represents a specific composable section of code
+	&& E.g. Open bracket, number
+	&& Can be denoted as \lstinline{T_IDENT}, \lstinline{T_LPAREN}, etc.
+	&& \textbf{Lexeme/token attribute:} Value of a token
+		&&& Not all tokens have values
+		&&& E.g. For \lstinline{T_INTCONSTANT}, a possible value is 1
+	&& The same character should only represent a single token (e.g. \lstinline{-} should be represented by the same token whether it is a unary or binary operator)
+
+& \textbf{Loop and switch scanner:} Lexical analyzer which loops over each character sequentially and categorizes it based on context
+
+\end{easylist}
+\subsection{Regular Expressions}
+	\label{subsec:reg-ex}
+\begin{easylist}
+
+& \textbf{Formal language:} A valid set of strings from a given alphabet of symbols
+	&& \textbf{Symbol:} Single distinct character
+		&&& \textbf{Alphabet:} The finite set of symbols
+			&&&& Denoted by $\sum$ or $\{\textrm{symbol}\}$
+	&& \textbf{String:} Sequence of symbols
+		&&& \textbf{Empty string:} $\varepsilon$
+		&&& Set of all strings: $\sum *$
+
+& \textbf{Formal grammar:} Concise description of a formal language
+
+& \textbf{Regular language:} A formal language which can be expressed through specific operations (i.e. any regular expression)
+	&& For each regular language, there is an equivalent finite-state automaton
+	&& The set of all regular languages includes:
+		&&& The empty set
+		&&& $\{a\}$ for all $a$ in $\sum \varepsilon$
+		&&& For $L_1, L_2, L$ which are regular languages:
+			&&&& Concatenation of $L_1 \cdot L_2$ where $\{xy | x \in L_1 \textrm{ and } y \in L_2\}$
+			&&&& Union of $L_1 \cup L_2$
+			&&&& Kleene closure as $L^* = \bigcup_{i=0}^{\infty} L^i$
+		&&& No other regular languages
+
+& \textbf{Regular expression:} Concise description of a regular language
+	&& E.g. The set of all strings over the alphabet $\{a, b\}$ which end in $abb$ is expressed by $(a|b)*abb$
+	&& Used to define tokens
+	&& Core operators:
+		&&& \textbf{Alternation:} One of several options
+			&&&& E.g. $a|b = a \textrm{ or } b$ is a regular expression where $a, b$ are regular expressions
+		&&& \textbf{Concatenation:} Combination of multiple regular expressions
+			&&&& E.g. $ab$, a concatenation of $a$ and $b$, is a regular expression where $a, b$ are regular expressions
+		&&& \textbf{Repetition:} An arbitrary amount of a regular expression
+			&&&& E.g. $a*$, any number of $a$ regular expressions, is a regular expression
+	&& Used in lexical analysis to match the largest valid string
+	&& Can be expressed as a recursive tree structure or as a finite state automaton
+
+\end{easylist}
+\subsection{Finite State Automata}
+\label{subsec:finite-state-automata}
+\begin{easylist}
+
+& \textbf{Finite State Automaton:} System consisting of a finite set of states and a transition function between states
+	&& Notations:
+		&&& Alphabet of symbols: $\Sigma$
+		&&& Finite set of states: $S$
+		&&& Start state: Outlined
+		&&& Final/accepting state: Double-outlined
+		&&& Transition function: $\sigma: S \times \Sigma = S$
+	&& Equivalent to a unique regular language
+  	&& Transition of $\epsilon$ refers to no input from the string corresponding to a transition in state
+		&&&& Non-deterministic
+
+& \textbf{Deterministic Finite Automata (DFA):} Finite State Automata where no state has more than one transition per input, and no $\epsilon$ moves exist
+	&& For any given string, only one path exists from the start state to the final state
+	&& Runtime complexity: $O(r^s)$
+& \textbf{Nondeterministic Finite Automata (NFA):} Finite State Automata where at least one state has more than one transition per input, or an $\epsilon$ move exists
+	&& For any given string, multiple paths may exist from the state state to the final state
+	&& Usually larger than DFA
+	&& Runtime complexity: $O(2^r)$ where $r$ is the initial cost of creating the automaton
+	&& \textbf{Subset Construction:} Process to convert an NFA into a DFA
+		&&& From the set of start states, given any input in the alphabet, output the set of potential resulting states. Repeat until no new sets of states are generated. Use each of the unique potential sets of states as a single DFA state.
+		&&& Runtime complexity: Can convert regex of size $r$ to a $2^r$ state DFA
+
+\end{easylist}
+\clearpage

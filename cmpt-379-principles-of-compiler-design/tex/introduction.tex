@@ -1,0 +1,30 @@
+%
+% CMPT 379: Principles of Compiler Design - A Course Overview
+% Section: Introduction
+%
+% Author: Jeffrey Leung
+%
+
+\section{Introduction}
+	\label{sec:introduction}
+\begin{easylist}
+
+& \textbf{Compiler:} Program which translates a source program from user intention in text form into target in machine code
+	&& \textbf{Interpreter:} Program which dynamically executes code
+
+& \textbf{Bootstrapping:} Creating a compiler for a language by building a compiler for a simple subset of the language, then using the subset for the rest of the language definition
+	&& Can be done with a different language
+
+& \textbf{Intermediate representation:} Machine code representation of the program which may be modified and optimized before outputting
+
+& Challenges:
+	&& Differing architectures, memory hierarchies, memory sizes
+	&& Instruction and algorithm parallelism
+	&& Branch prediction
+
+& Stages:
+	&& \textbf{Analysis (front-end):} Stage of compiling code which reviews and understands the code in lexical, syntax/parsing, and semantic/type-checking contexts
+	&& \textbf{Synthesis (back-end):} Stage of compiling code which generates and optimizes code
+
+\end{easylist}
+\clearpage

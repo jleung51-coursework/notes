@@ -1,0 +1,29 @@
+%
+% CMPT 379: Principles of Compiler Design - A Course Overview
+% Section: Syntax-Directed Transmission
+%
+% Author: Jeffrey Leung
+%
+
+\section{Syntax-Directed Transmission}
+	\label{sec:syntax-directed-translation}
+\begin{easylist}
+
+& \textbf{Syntax-Directed Transmission:} Compiler implementation where the parser conveys and passes information between syntax trees
+	&& Generalization of a CFG where each symbol includes an additional attribute
+
+& \textbf{Attribute grammar:} Set of syntax-directed rules which construct a meaning from a set of strings
+	&& Addition to a parse tree
+	&& \textbf{Decorate/annotate:} Description of the effect of an attribute grammar on a parse tree
+
+& \textbf{Attribute:} Arbitrary value assigned to each symbol representation
+	&& \textbf{Synthesized attribute:} Parse tree attribute which is determined by the attribute value(s) of the child nodes
+	&& \textbf{Inherited attribute:} Parse tree attribute which is determined by the attribute value(s) of the parent and/or sibling nodes
+		&&& E.g. Parent action \lstinline|{ $$.in = 3; }|, child action \lstinline|{ print($0.in); }|
+
+& \textbf{S-attributed definition:} Semantic-action grammar with only synthesized attributes
+& \textbf{L-attributed definition:} Semantic-action grammar where, for each production \\ $A \rightarrow B_1 \ldots B_{j-1} B_{j} \ldots B_{n}$, for each $j = 1 \ldots n$, each inherited attribute of $B_j$ depends on the inherited attributes of $A$ and the attributes of $B_1 \ldots B_{j-1}$
+	&& Superset of S-attributed definitions
+
+\end{easylist}
+\clearpage

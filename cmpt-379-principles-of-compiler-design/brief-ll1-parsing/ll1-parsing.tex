@@ -1,0 +1,153 @@
+\documentclass[10pt, oneside, letterpaper, titlepage]{article}
+
+\usepackage{amsmath}
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage[T1]{fontenc}
+\usepackage{forest}
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{listings}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{multirow}
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\begin{document}
+
+\section{LL(1) Parsing}
+\subsection{Introduction}
+\begin{easylist}
+
+& \textbf{LL(1) parsing:} Top-down parsing algorithm which creates a left-to-right leftmost derivation requiring only 1 symbol of lookahead
+	&& Requires a grammar which is:
+		&&& Unambiguous
+		&&& Left-factored
+		&&& Free of left-recursion
+	&& Only one possible production can exist given the next token
+
+& Grammar validity:
+	&& A grammar is LL(1) if and only if, for each pairing of a non-terminal symbol with a terminal symbol, only one possible production rule can be applied
+	&& A grammar is not LL(1) if and only if there exists at least one pairing of a non-terminal symbol and a terminal symbol which can expand to multiple production rules (e.g. $A \rightarrow bc; A \rightarrow bd$)
+	
+\end{easylist}
+\subsection{Predictive Parsing Tables}
+\begin{easylist}
+
+& \textbf{Predictive parsing table:} Table which correlates the leftmost non-terminal symbol and the next terminal symbol with the only possible production
+	&& No cell can have more than one string as the expansion to the rule
+	&& Empty cells mean parsing errors
+	&& Uses lookahead to resolve conflicts between multiple possible production rule applications for the same symbol
+	&& Layout: See figure~\ref{tab:predictive-parsing-table-layout}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{Predictive Parsing Table Layout}
+	\label{tab:predictive-parsing-table-layout}
+	\begin{center}
+		\begin{tabular}{ r r | l l }
+			& & \textbf{Terminal symbols} & \$ \\
+			\hline
+			\textbf{Non-terminal Symbols} & \textit{Symbol} & \textit{Production result}
+		\end{tabular}
+	\end{center}
+\end{figure}
+\begin{easylist}
+
+& To create a predictive parsing table:
+	&& For each non-terminal symbol $X$ on the left column:
+		&&& If there is a production rule where $X$ expands to epsilon ($\epsilon$), then:
+			&&&& For each terminal symbol which is in the $FOLLOW$ of symbol $X$, write $\epsilon$
+		&&& If there is a production rule where $X$ expands to a string which is not epsilon ($\epsilon$), then:
+			&&&& For each terminal symbol which is in the $FIRST$ of symbol $X$, write the expansion of the valid production rule
+
+& E.g. In figure~\ref{tab:ll1-conflict-resolution}, $Y \rightarrow \epsilon$ is the valid production rule to be chosen when $+, ),$ or $\$$ are the lookahead symbol
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{LL(1) Conflict Resolution with $FOLLOW$}
+	\label{tab:ll1-conflict-resolution}
+	\begin{center}
+		\begin{tabular}{ r l }
+			Production Rules
+			& $E \rightarrow TX$ \\
+			& $X \rightarrow \epsilon$ \\
+			& $X \rightarrow +E$ \\
+			& $T \rightarrow (E)$ \\
+			& $T \rightarrow id Y$ \\
+			& $Y \rightarrow *T$ \\
+			& $Y \rightarrow \epsilon $ \\
+			\hline
+			$FOLLOW(Y)$
+			& $= FOLLOW(T)$ \\
+			& $= ( FIRST(X) - \{\epsilon\} ) + FOLLOW(E)$ \\
+			& $= \{ +, ), \$ \}$
+		\end{tabular}
+	\end{center}
+\end{figure}
+\begin{easylist}
+
+\clearpage
+
+\end{easylist}
+\subsection{LL(1) Parsing Trace}
+\begin{easylist}
+
+& LL(1) parsing trace:
+	&& Stack is used to keep track of non-terminal symbols
+	&& Stack and input strings are terminated with the end of input symbol (\$)
+	&& Layout: See figure~\ref{tab:ll1-parsing-trace-example}
+
+\end{easylist}
+\begin{figure}[!htb]
+	\caption{LL(1) Parsing Trace Example}
+	\label{tab:ll1-parsing-trace-example}
+	\begin{center}
+		\begin{tabular}{ l | l | l }
+			\textbf{Stack} & \textbf{Input} & \textbf{Action} \\
+			\hline
+			\textit{string \$} & \textit{string \$} & \textit{Production rule to expand OR} \\
+			&& \textit{$\epsilon$ OR} \\
+			&& \textit{Terminal $\alpha$ OR} \\
+			&& \textit{acc}
+		\end{tabular}
+	\end{center}
+\end{figure}
+\begin{easylist}
+
+& To create an LL(1) parsing trace:
+	&& For the leftmost input symbol and the leftmost stack symbol:
+		&&& If the leftmost stack symbol is a non-terminal symbol, then use the leftmost input and stack symbols to find the corresponding production rule expansion from the predictive parsing table, and:
+			&&&& If the expansion is not an epsilon, then replace the leftmost stack symbol with the expansion
+			&&&& If the expansion is an epsilon ($\epsilon$), then remove the leftmost stack symbol
+		&&& If the leftmost stack symbol is a terminal symbol and the leftmost stack and input symbols match, then consume both of them with the action \textit{Terminal}
+		&&& If the leftmost stack and input symbols are the end of input (\$), then accept the parse
+
+\end{easylist}
+
+\end{document}
