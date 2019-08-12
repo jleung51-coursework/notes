@@ -1,0 +1,91 @@
+%
+% CMPT 379: Principles of Compiler Design - Lexical Analysis Worksheet
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[10pt, oneside, letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{listings}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{multirow}
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{CMPT 379: Principles of Compiler Design \\\medskip \Large Lexical Analysis Worksheet (Answers)}
+\author{}
+\date{}
+
+\begin{document}
+
+	\maketitle
+	
+	Given the following token definitions as regular expressions:
+\begin{lstlisting}
+TOKEN_A cda*
+TOKEN_B c*a*c
+TOKEN_C c*b
+\end{lstlisting}
+			
+	Provide the tokenized output for the following input strings using the greedy longest match lexical analysis method. Provide the list of tokens and the lexeme values.
+	
+	\begin{enumerate}
+		\item cdaaab
+\begin{lstlisting}
+TOKEN_A cdaaa
+TOKEN_C b
+\end{lstlisting}
+		
+		\item cdccc
+\begin{lstlisting}
+TOKEN_A cd
+TOKEN_B ccc
+\end{lstlisting}
+		
+		\item ccc
+\begin{lstlisting}
+TOKEN_B ccc
+\end{lstlisting}
+		
+		\item cdccd
+\begin{lstlisting}
+TOKEN_A cd
+TOKEN_B cc
+ERROR
+\end{lstlisting}
+
+	\end{enumerate}
+		
+	\vspace{2cm}
+
+\end{document}

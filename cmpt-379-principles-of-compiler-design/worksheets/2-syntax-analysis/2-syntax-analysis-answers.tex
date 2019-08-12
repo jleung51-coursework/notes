@@ -1,0 +1,482 @@
+%
+% CMPT 379: Principles of Compiler Design - Syntax Analysis Worksheet
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[10pt, oneside, letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage{forest}
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{listings}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{multirow}
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{CMPT 379: Principles of Compiler Design \\\medskip \Large Syntax Analysis Worksheet (Answers)}
+\author{}
+\date{}
+
+\begin{document}
+
+	\maketitle
+
+	\begin{enumerate}
+	
+		\item Given language $\bigg\{ wcw^R | w \in (a|b)* \bigg\}$ ($w^R$ is $w$ in reverse), write a CFG which produces this language.
+	
+		Answer: $S \rightarrow aSa | bSb | c$
+		
+		\item Given language $\bigg\{ a^n b^m c^m d^n | n \geq 1, m \geq 1 \bigg\}$, write a CFG which produces this language.
+		
+		Answer: $S \rightarrow aSd | aAd; A \rightarrow bAc | bc$
+		
+		\item Does bottom-up parsing create a rightmost or leftmost derivation?
+		
+		Answer: Rightmost derivation (reversed).
+		
+		\item Where is a handle located?
+		
+		Answer: At the top of the stack (as a sequence of symbols).
+		
+		\clearpage
+		
+		\item Given the production rules in table~\ref{tab:q5-prod-rules}, write out the parse tree for the string $id + id * id$.
+
+\begin{figure}[!htb]
+	\caption{Question 5: Production Rules}
+	\label{tab:q5-prod-rules}
+	\begin{center}
+		\begin{tabular}{ l }
+			$E \rightarrow E + E$ \\
+			$E \rightarrow E * E$ \\
+			$E \rightarrow id$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		Answer: See figure~\ref{fig:q5-parse-tree}.
+
+\begin{figure}[!htb]
+	\caption{Question 5: Parse Tree}
+	\label{fig:q5-parse-tree}
+	\begin{center}
+		\begin{forest}
+			[$E$
+				[$E$
+					[$E$[$id$]]
+					[$+$]
+					[$E$[$id$]]
+				]
+				[$*$]
+				[$E$
+					[$id$]
+				]
+			]
+		\end{forest}
+	\end{center}
+\end{figure}
+		
+		\clearpage
+		
+		\item Given the production rules in table~\ref{tab:q6-prod-rules}, write out the parse tree for the string $int * int + int$.
+
+\begin{figure}[!htb]
+	\caption{Question 6: Production Rules}
+	\label{tab:q6-prod-rules}
+	\begin{center}
+		\begin{tabular}{ l }
+			$E \rightarrow T + E$ \\
+			$E \rightarrow T$ \\
+			$T \rightarrow int$ \\
+			$T \rightarrow int * T$ \\
+			$T \rightarrow (E)$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+	Answer: See figure~\ref{fig:q6-parse-tree}.
+
+\begin{figure}[!htb]
+	\caption{Question 6: Parse Tree}
+	\label{fig:q6-parse-tree}
+	\begin{center}
+		\begin{forest}
+			[$E$
+				[$T$
+					[$int$]
+					[$*$]
+					[$T$[$int$]]
+				]
+				[$+$]
+				[$E$[$T$[$int$]]]
+			]
+		\end{forest}
+	\end{center}
+\end{figure}
+		
+		\clearpage
+		
+		\item Given the production rules and action/goto table in figure~\ref{tab:q7-productions-table}, write the trace of the LR(0) parse.
+
+		Answer: See figure~\ref{tab:q7-trace}.
+
+\begin{figure}[!htb]
+	\caption{Question 7: Production Rules and Action/Goto Table}
+	\label{tab:q7-productions-table}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			& Production Rules \\
+			\hline
+			1 & $T \rightarrow F$ \\ 
+			2 & $T \rightarrow T*F$ \\
+			3 & $F \rightarrow id$ \\
+			4 & $F \rightarrow (T)$
+		\end{tabular}
+		
+		\begin{tabular}{ r | c | c | c | c | c || c | c }
+			\multirow{2}{*}{\textbf{States}} & \multicolumn{5}{ c || }{\textbf{Actions}} & \multicolumn{2}{c}{\textbf{Gotos}} \\
+			& * & ( & ) & id & \$ & T & F \\
+			\hline
+			0 & & S5 & & S8 & 2 & 1 \\
+			1 & R1 & R1 & R1 & R1 & R1 & \\
+			2 & S3 & & & & ACC & \\
+			3 & & S5 & & S8 & & 4 \\
+			4 & R2 & R2 & R2 & R2 & R2 & \\
+			5 & & S5 & & S8 & & 6 & 1 \\
+			6 & S3 & & S7 & & & \\
+			7 & R4 & R4 & R4 & R4 & R4 & \\
+			8 & R3 & R3 & R3 & R3 & R3 &
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\caption{Question 7: Answer}
+	\label{tab:q7-trace}
+	\begin{center}
+		\begin{tabular}{ l | r | l }
+			Stack & Input & Action \\
+			\hline
+			0 & (id)*id & Shift 5 \\
+			0, 5 & id)*id & Shift 8 \\
+			0, 5, 8 & )*id & Reduce using production rule 3: $F \rightarrow id$ \\
+			&& Pop 1 symbol from the stack (8) \\
+			&& Push $goto[5, F] = 1$ onto the stack \\
+			0, 5, 1 & )*id & R1: $T \rightarrow F$ \\
+			&& Pop 1 \\
+			&& $goto[5, T] = 6$ \\
+			0, 5, 6 & )*id & S7 \\
+			0, 5, 6, 7 & *id & R4, $F \rightarrow (T)$ \\
+			&& Pop 6, 7, 5 \\
+			&& $goto[0, T] = 1$ \\
+			0, 1 & *id & R1: $T \rightarrow F$ \\
+			&& Pop 1 \\
+			&& $goto[0, T] = 2$ \\
+			0, 2 & *id & S3 \\
+			0, 2, 3 & id & S8 \\
+			0, 2, 3, 8 & \$ & R3: $F \rightarrow id$ \\
+			&& Pop 8 \\
+			&& $goto]3, F] = 4$ \\
+			0, 2, 3, 4 & \$ & R2: $T \rightarrow T*F$ \\
+			&& Pop 4, 3, 2 \\
+			&& $goto[0, T] = 2$ \\
+			0, 2 & \$ & ACCEPT
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		\clearpage
+
+		\item Given the set of production rules and dotted rule in figure~\ref{tab:q8-closure}, find the configuration set resulting from the closure of the dotted rule.
+
+\begin{figure}[!htb]
+	\caption{Question 8: Closure}
+	\label{tab:q8-closure}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Production Rules
+			& $T \rightarrow F$ \\
+			& $T \rightarrow T*F$ \\
+			& $F \rightarrow id$ \\
+			& $F \rightarrow (T)$ \\
+			\hline
+			Dotted Rule
+			& $T \rightarrow T * \bullet F$ \\
+			\hline
+			\hline
+			$closure(T \rightarrow T * \bullet F)$
+			& $T \rightarrow T * \bullet F$ \\
+			& $F \rightarrow \bullet (T)$ \\
+			& $F \rightarrow \bullet id$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		\clearpage
+
+		\item Given a set of production rules, a configuration set, and a successive character in figure~\ref{tab:q9-successor}, apply the successor function to create a new configuration set.
+
+\begin{figure}[!htb]
+	\caption{Question 9: Successor}
+	\label{tab:q9-successor}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Production Rules
+			& $S' \rightarrow T$ \\
+			& $T \rightarrow F$ \\
+			& $T \rightarrow T*F$ \\
+			& $F \rightarrow id$ \\
+			& $F \rightarrow (T)$ \\
+			\hline
+			Configuration set $I$
+			& $S'\rightarrow \bullet T$ \\
+			& $T \rightarrow \bullet F$ \\
+			& $T \rightarrow \bullet T * F$ \\
+			& $F \rightarrow \bullet id$ \\
+			& $F \rightarrow \bullet (T)$ \\
+			\hline
+			\hline
+			$successor(I, \textrm{``(''})$
+			& $F \rightarrow (\bullet T)$ \\
+			& $T \rightarrow \bullet F$ \\
+			& $T \rightarrow \bullet T * F$ \\
+			& $F \rightarrow \bullet id$ \\
+			& $F \rightarrow \bullet (T)$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		\clearpage
+	
+		\item Given a set of production rules in figure~\ref{tab:q10-first-follow}, find the First and Follow sets of the non-terminal symbols.
+
+\begin{figure}[!htb]
+	\caption{Question 10: First/Follow}
+	\label{tab:q10-first-follow}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Production Rules:
+			& $A \rightarrow Bc | d$ \\
+			& $B \rightarrow e$ \\
+			\hline
+			First sets
+			& $FIRST(A) = \{d, e\}$ \\
+			& $FIRST(B) = \{e\}$ \\
+			\hline
+			Follow sets
+			& $FOLLOW(A) = \{\$\}$ \\
+			& $FOLLOW(B) = \{c\}$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		\clearpage
+	
+		\item Given the set of production rules in figure~\ref{tab:q11-first-follow}, find the First and Follow sets of the non-terminal symbols.
+
+\begin{figure}[!htb]
+	\caption{Question 11: First/Follow}
+	\label{tab:q11-first-follow}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Production Rules:
+			& $A \rightarrow Bc$ \\
+			& $B \rightarrow d | BC | Be $ \\
+			& $C \rightarrow f$ \\
+			\hline
+			First sets
+			& $FIRST(A) = \{d\}$ \\
+			& $FIRST(B) = \{d\}$ \\
+			& $FIRST(C) = \{f\}$ \\
+			\hline
+			Follow sets
+			& $FOLLOW(A) = \{ \$ \}$ \\
+			& $FOLLOW(B) = \{c, e, f\}$ \\
+			& $FOLLOW(C) = \{c\}$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		\clearpage
+	
+		\item Given a set of production rules in figure~\ref{tab:q12-first-follow}, find the First and Follow sets of the non-terminal symbols.
+		
+\begin{figure}[!htb]
+	\caption{Question 12: First/Follow}
+	\label{tab:q12-first-follow}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Production Rules
+			& $S \rightarrow AB$ \\
+			& $A \rightarrow c | \epsilon$ \\
+			& $B \rightarrow cbB | a$ \\
+			\hline
+			First sets
+			& $FIRST(A) = \{c, \epsilon\}$ \\
+			& $FIRST(B) = \{c, a\}$ \\
+			& $FIRST(S) = FIRST(A) = \{c, \epsilon\}$ \\
+			\hline
+			Follow sets
+			& $FOLLOW(A) = FIRST(B) = \{c, a\}$ \\
+			& $FOLLOW(B) = \{\$\}$ \\
+			& $FOLLOW(S) = \{\$\}$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		\clearpage
+	
+		\item Given a set of production rules in figure~\ref{tab:q13-first-follow}, find the First and Follow sets of the non-terminal symbols.
+
+\begin{figure}[!htb]
+	\caption{Question 13: First/Follow}
+	\label{tab:q13-first-follow}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Production Rules
+			& $S \rightarrow cAa$ \\
+			& $A \rightarrow cB | B$ \\
+			& $B \rightarrow bcB | \epsilon$ \\
+			\hline
+			First sets
+			& $FIRST(A) = \{c, b, \epsilon\}$ \\
+			& $FIRST(B) = \{b, \epsilon\}$ \\
+			& $FIRST(S) = \{c\}$ \\
+			\hline
+			Follow sets
+			& $FOLLOW(A) = \{a\}$ \\
+			& $FOLLOW(B) = FOLLOW(A) = \{a\}$ \\
+			& $FOLLOW(S) = \{\$\}$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		\clearpage
+		
+		\item Given left-recursive grammar $A \rightarrow A * B | B; B \rightarrow a$, create an equivalent grammar which is no longer left-recursive.
+
+\begin{figure}[!htb]
+	\caption{Question 14: Answer}
+	\label{tab:q14-production-rules}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Production Rules
+			& $X \rightarrow BA$ \\
+			& $A \rightarrow *BA | \epsilon$ \\
+			& $B \rightarrow a$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		\clearpage
+		
+		\item Given grammar $A \rightarrow Bc | D; B \rightarrow ef; D \rightarrow e$, left-factor this grammar.
+
+\begin{figure}[!htb]
+	\caption{Question 15: Answer}
+	\label{tab:q15-production-rules}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Production Rules
+			& $A \rightarrow eB$ \\
+			& $B \rightarrow fc | \epsilon$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		\clearpage
+		
+		\item Given the set of production rules in figure~\ref{tab:q16-production-rules}, remove left-recursion from the grammar.
+
+\begin{figure}[!htb]
+	\caption{Question 16: Production Rules}
+	\label{tab:q16-production-rules}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Production Rules
+			& $S \rightarrow Aa | b$ \\
+			& $A \rightarrow Ac | Sd | \epsilon$ \\
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!htb]
+	\caption{Question 16: Answer}
+	\label{tab:q16-answer}
+	\begin{center}
+		\begin{tabular}{ r | l }
+			Remove $A \rightarrow S$ recursion
+			& $S \rightarrow Aa|b$ \\
+			& $A \rightarrow bd A' | A'$ \\
+			& $A' \rightarrow A'c | A' ad$ \\
+			\hline
+			Remove $A'$ left-recursion
+			& $S \rightarrow Aa|b$ \\
+			& $A \rightarrow bd A' | A'$ \\
+			& $A' \rightarrow cA' | adA'$
+		\end{tabular}
+	\end{center}
+\end{figure}
+
+		\clearpage
+		
+		\item Given the set of production rules in table~\ref{tab:q-ll1-conflict-resolution}) which form an $LL(1)$ grammar, find the following symbols upon which the production rule $Y \rightarrow \epsilon$ is the valid option.
+
+\begin{figure}[!htb]
+	\caption{Question 17: LL(1) Conflict Resolution}
+	\label{tab:q-ll1-conflict-resolution}
+	\begin{center}
+		\begin{tabular}{ r l }
+			Production Rules
+			& $E \rightarrow TX$ \\
+			& $X \rightarrow \epsilon$ \\
+			& $X \rightarrow +E$ \\
+			& $T \rightarrow (E)$ \\
+			& $T \rightarrow id Y$ \\
+			& $Y \rightarrow *T$ \\
+			& $Y \rightarrow \epsilon $ \\
+			\hline
+			$FOLLOW(Y)$
+			& $= FOLLOW(T)$ \\
+			& $= ( FIRST(X) - \{\epsilon\} ) + FOLLOW(E)$ \\
+			& $= \{ +, ), \$ \}$
+		\end{tabular}
+	\end{center}
+\end{figure}
+		
+	\end{enumerate}
+		
+	\vspace{2cm}
+
+\end{document}
