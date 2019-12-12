@@ -1,0 +1,167 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Timer Calculation Worksheet
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[10pt, oneside, letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage{forest}
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{listings}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{multirow}
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{CMPT 433: Embedded Systems \\\medskip \Large Timer Calculation Worksheet (Answers)}
+\author{}
+\date{}
+
+\begin{document}
+
+	\maketitle
+	
+	\textit{Equation for calculating period of time and timer clock frequency:}
+	
+	\begin{equation}
+		\textrm{Period} = \frac{0xFFFF\ FFFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N
+	\end{equation}
+		
+	\vspace{1cm}
+
+	\begin{enumerate}
+
+		\item \textbf{Given an 8-bit timer with a 32Hz clock and no divider, find the maximum timer duration.}
+	
+		An 8-bit timer has maximum value $0xFF$.
+	
+		To achieve the maximum timer duration, set $TLDR$ to $0$.
+	
+		The frequency is 32.
+	
+		The equation is:
+
+		\begin{align}
+			\textrm{Period}
+			&= \frac{0xFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N \\
+			&= \frac{0xFF - 0 + 1}{32} * 2^0 \\
+			&= \frac{2^8}{2^5} \\
+			&= 2^3 \\
+			&= 8s
+		\end{align}
+	
+		Answer: The maximum timer duration is 8s.
+	
+		\clearpage
+		
+		
+
+		\item \textbf{Given an 8-bit timer with a 32Hz clock, calculate the necessary divider and TLDR for a 200s period.}
+	
+		To change the period to 1s, divide the 32Hz clock by $N = 5$ to multiply the period by $2^5 = 32$.
+	
+		The equation is:
+		\begin{align}
+			\textrm{Period}
+			&= \frac{0xFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N \\
+			&= \frac{2^8 - TLDR}{32} * 2^5 \\
+			&= 2^8 - TLDR \\
+			&= 256 - TLDR \\
+			TLDR = 256-200 \\
+			&= 56
+		\end{align}
+	
+		Answer: $N = 0$, $TLDR = 56$
+	
+		\vspace{1cm}
+		
+		
+
+		\item \textbf{Given a 32-bit timer with a 25MHz clock and no divider, find the maximum timer period.}
+	
+		A 32-bit timer has maximum value $0xFFFF\ FFFF$.
+
+		Let $TLDR = 0$ for the maximum amount of time.
+	
+		The equation is:
+	
+		\begin{align}
+			\textrm{Period}
+			&= \frac{0xFFFF\ FFFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N \\
+			&= \frac{0xFFFF\ FFFF - 0 + 1}{25MHz} * 2^0 \\
+			&= \frac{2^{32}}{25,000,000} \\
+			&\approx 170s \\
+			&\approx 2.8 min
+		\end{align}
+	
+		Answer: The maximum timer duration is about 2.8 minutes.
+		
+		\vspace{1cm}
+		\clearpage
+		
+		
+
+		\item \textbf{Given a 32-bit timer with a 25MHz clock, calculate the necessary divider and TLDR for a 2s period.}
+	
+		Since the maximum timer period is greater than 2s (see previous question), no divider is necessary. Let $N = 0$.
+	
+		The equation is:
+		\begin{align}
+			\textrm{Period } = 2s
+			&= \frac{0xFFFF\ FFFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N \\
+			&= \frac{2^{32} - TLDR}{25,000,000} * 2^0 \\
+			50,000,000
+			&= 2^{32} - TLDR \\
+			TLDR
+			&= 2^{32} - 50,000,000 \\
+			&= 0xFD05\ 0F80 \\
+		\end{align}
+
+		Answer: $N = 0$, $TLDR = 0xFD05\ 0F80$
+		
+		\vspace{1cm}
+		
+		
+		
+		\item \textbf{Given the same parameters and TLDR from the previous question but with $N = 2$, how long will the period be?}
+	
+		If $N = 2$, the period is multiplied by $2^N = 2^2 = 4$.
+		
+		Period = $2s \times 4 = 8s$
+	
+		Answer: The period will be $8s$.
+
+	\end{enumerate}
+
+\end{document}

@@ -1,0 +1,94 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Timer Calculation Worksheet
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[10pt, oneside, letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage{forest}
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{listings}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{multirow}
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{CMPT 433: Embedded Systems \\\medskip \Large Timer Calculation Worksheet}
+\author{}
+\date{}
+
+\begin{document}
+
+	\maketitle
+	
+	\textit{Equation for calculating period of time and timer clock frequency:}
+	
+	\begin{equation}
+		\textrm{Period} = \frac{0xFFFF\ FFFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N
+	\end{equation}
+		
+	\vspace{1cm}
+
+	\begin{enumerate}
+
+		\item \textbf{Given an 8-bit timer with a 32Hz clock and no divider, find the maximum timer duration.}
+		
+		\vspace{6cm}
+		
+		
+
+		\item \textbf{Given an 8-bit timer with a 32Hz clock, calculate the necessary divider and TLDR for a 200s period.}
+		
+		\vspace{6cm}
+		\clearpage
+		
+		
+
+		\item \textbf{Given a 32-bit timer with a 25MHz clock and no divider, find the maximum timer period.}
+		
+		\vspace{6cm}
+		
+		
+
+		\item \textbf{Given a 32-bit timer with a 25MHz clock, calculate the necessary divider and TLDR for a 2s period.}
+		
+		\vspace{6cm}
+		
+		
+		
+		\item \textbf{Given the same parameters and TLDR from the previous question but with $N = 2$, how long will the period be?}
+
+	\end{enumerate}
+
+\end{document}

@@ -1,0 +1,151 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Bitwise Operations Worksheet
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[11pt, oneside, letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage[T1]{fontenc}
+\usepackage{forest}
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{listings}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{multirow}
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{CMPT 433: Embedded Systems \\\medskip \Large Bitwise Operations Worksheet (Answers)}
+\author{}
+\date{}
+
+\begin{document}
+
+	\maketitle
+	
+	\textbf{Given the following predefined values where LEDs are active high and buttons are active low:}
+
+\begin{lstlisting}[language=C, columns=fixed]
+VALUE
+
+LED0_BIT
+LED1_BIT
+LED2_BIT
+LED_MASK = (1 << LED0_BIT) | (1 << LED3_BIT) | (1 << LED2_BIT) 
+
+BTN0_BIT
+BTN1_BIT
+BTN_MASK = (1 << BTN0_BIT) | (1 << BTN1_BIT)
+
+SPD_BIT_BEGIN
+SPD_MASK
+\end{lstlisting}
+
+\vspace{1cm}
+
+\textbf{Complete the following calculations.}
+
+\begin{lstlisting}[language=C, columns=fixed]
+_Bool isLed0On = (VALUE & (1 << LED0_BIT)) != 0;
+
+_Bool isAnyLEDOn = ((VALUE & LED_MASK) != 0);
+
+_Bool areAllLEDsOn = (VALUE & LED_MASK) == LED_MASK;
+
+// If (VALUE & BTN_MASK) == BTN_MASK,
+// then because buttons are active low, no buttons are pressed.
+_Bool isAnyButtonPressed = (VALUE & BTN_MASK) != BTN_MASK;
+
+_Bool areAllButtonsPressed = (VALUE & BTN_MASK) == 0;
+\end{lstlisting}
+
+\clearpage
+
+\begin{lstlisting}[language=C, columns=fixed]
+void turnOnLed0() {
+	VALUE |= (1 << LED0_BIT);
+}
+
+void turnOnAllLeds() {
+	VALUE |= LED_MASK;
+}
+
+void turnOffLed() {
+	// ~(1 << LED_BIT) sets the LED0 bit to 0, and all
+	// other bits to 1.
+	// ANDing it changes the LED0 bit to 0, and does not
+	// change other bits.
+	VALUE &= ~(1 << LED_BIT);
+}
+
+void turnOffLeds1And2() {
+	VALUE &= ~(1 << LED1_BIT | 1 << LED2_BIT);
+}
+
+void turnOffAllLeds() {
+	VALUE &= ~LED_MASK;
+}
+
+void turnOffAllLedsExcept2() {
+	// Remove the LED2 bit from the inverted LED mask
+	VALUE &= (~LED_MASK | (1 << LED2_BIT));
+}
+
+void toggleLed0() {
+	VALUE ^= (1 << LED0_BIT);
+}
+
+void toggleAllLeds() {
+	VALUE ^= LED_MASK;
+}
+
+// Assume ints are in the correct format and do not need 
+// to be converted to/from binary.
+int getSpeed() {
+	// Mask the correct bits
+	// Bitshift the value so that the speed is at the least
+	// significant (rightmost) bit
+	return (VALUE & SPD_MASK) >> SPD_BIT;
+}
+
+int setSpeed(int speed) {
+	// Shift speed to the correct location
+	// Remove excess bits outside the speed bits
+	int newSpeedBits = (speed << SPD_BIT) & SPD_MASK;
+	// Create the value with cleared speed bits
+	// Add the new speed bit
+	VALUE = (VALUE & ~SPD_MASK) | newSpeedBits;
+}
+\end{lstlisting}
+
+\end{document}

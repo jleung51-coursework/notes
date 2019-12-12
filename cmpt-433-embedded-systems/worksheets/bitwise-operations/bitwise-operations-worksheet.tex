@@ -1,0 +1,137 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Bitwise Operations Worksheet
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[11pt, oneside, letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage[T1]{fontenc}
+\usepackage{forest}
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{listings}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{multirow}
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{CMPT 433: Embedded Systems \\\medskip \Large Bitwise Operations Worksheet}
+\author{}
+\date{}
+
+\begin{document}
+
+	\maketitle
+	
+	\textbf{Given the following predefined values where LEDs are active high and buttons are active low:}
+
+\begin{lstlisting}[language=C, columns=fixed]
+VALUE
+
+LED0_BIT
+LED1_BIT
+LED2_BIT
+LED_MASK = (1 << LED0_BIT) | (1 << LED3_BIT) | (1 << LED2_BIT) 
+
+BTN0_BIT
+BTN1_BIT
+BTN_MASK = (1 << BTN0_BIT) | (1 << BTN1_BIT)
+
+SPD_BIT_BEGIN
+SPD_MASK
+\end{lstlisting}
+
+\vspace{1cm}
+
+\textbf{Complete the following calculations.}
+
+\begin{lstlisting}[language=C, columns=fixed]
+_Bool isLed0On =
+
+_Bool isAnyLEDOn =
+
+_Bool areAllLEDsOn =
+
+_Bool isAnyButtonPressed =
+
+_Bool areAllButtonsPressed =
+\end{lstlisting}
+
+\clearpage
+
+\begin{lstlisting}[language=C, columns=fixed]
+void turnOnLed0() {
+
+}
+
+void turnOnAllLeds() {
+
+}
+
+void turnOffLed() {
+
+}
+
+void turnOffLeds1And2() {
+
+}
+
+void turnOffAllLeds() {
+
+}
+
+void turnOffAllLedsExcept2() {
+
+}
+
+void toggleLed0() {
+
+}
+
+void toggleAllLeds() {
+
+}
+
+// Assume ints are in the correct format and do not need 
+// to be converted to/from binary.
+int getSpeed() {
+
+}
+
+int setSpeed(int speed)
+
+
+}
+\end{lstlisting}
+
+\end{document}
