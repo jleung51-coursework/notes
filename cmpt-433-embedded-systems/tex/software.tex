@@ -1,0 +1,42 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Section: Software
+%
+% Author: Jeffrey Leung
+%
+
+\section{Software}
+	\label{sec:software}
+\begin{easylist}
+
+& Modular design:
+	&& Separate functionality into components (e.g. interface in header files and implementation on source files)
+	&& \textbf{External linkage:} Declaration of a member (function or variable) which is accessible by code in any other source file
+		&&& Accessed from another source file using the keyword \textit{extern}
+		&&& Avoid externally linked variables by providing access through functions
+	&& \textbf{Internal linkage:} Declaration of a member (function or variable) which is only accessible by code in the same source file
+		&&& In C, use the keyword \lstinline[columns=fixed]{static}
+	&& Public files must have good comments or be easy to understand
+
+& C:
+	&& Creates loose assumptions if a function does not have a prototype
+	&& Include guard: Structure which ensures a header file is only included once per program
+	&& Declare a pointer as NULL after freeing the memory, to avoid a dangling pointer
+	&& String: Null-terminated (\lstinline[columns=fixed]{\0}) array of characters
+	&& Volatile: Keyword which specifies that a variable may change without the knowledge of the code, and therefore should not be optimized out
+	&& Differences between C90/C99:
+		&&& Inline functions
+		&&& Variable declarations throughout blocks
+		&&& Single-line comments (\lstinline[columns=fixed]{//})
+
+& HTML:
+	&& \lstinline[columns=fixed]{div} is a section/paragraph, \lstinline[columns=fixed]{span} is a block of text within a paragraph
+
+& JavaScript and jQuery:
+	&& \lstinline[columns=fixed]{\$("\#id").html("<p>text</p>");} to modify the HTML content
+	&& \lstinline[columns=fixed]|{  \$("\#id").css(" {'color':'red'} "); }|  to modify the CSS styling
+	&& \lstinline[columns=fixed]{var input = \$("\#id").value();} to retrieve input field content
+	&& \lstinline[columns=fixed]{\$("\#id").hide();} to hide content
+
+\end{easylist}
+\clearpage

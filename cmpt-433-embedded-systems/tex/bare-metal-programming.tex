@@ -1,0 +1,132 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Section: Bare Metal Programming
+%
+% Author: Jeffrey Leung
+%
+
+\section{Bare Metal Programming}
+	\label{sec:bare-metal-programming}
+\begin{easylist}
+
+& Disadvantages:
+	&& No OS services such as threads, processes, file system, NFS, memory protection, swapping
+	&& No drivers or applications available
+	&& No terminal available
+& Advantages:
+	&& Full hardware control
+	&& Minimal space usage
+	&& Tightly controllable timing (no context switches, pre-emption, page faults)
+	&& Programs can be designed to never exit
+
+& Controlling pins:
+	&& Can be input, output, and/or generate interrupts (multiple functions available simultaneously)
+	&& Can be written by register access, or by writing to the SET/CLEAR registers
+
+& GPIO process:
+	&& Enable clocks on GPIO modules
+	&& Enable GPIO modules
+	&& Set the Output Enable Register (\lstinline[columns=fixed]{GPIO_OE} )
+
+\end{easylist}
+\subsection{Interrupt Service Routines}
+	\label{subsec:bare-metal-programming:interrupt-service-routines}
+\begin{easylist}
+
+& \textbf{Interrupt Request (IRQ):} Hardware signal set to the processor to inform of a specific event
+	&& \textbf{Interrupt Service Routines (ISR):} Routine which is registered to handle a certain interrupt
+
+& ISRs are effectively multi-threaded
+	&& Variables modified in an ISR should be labeled \lstinline[columns=fixed]{volatile} in order to prevent compiler optimization when a value changes during the ISR
+	&& ISR adds data to all stacks in a multithreaded environment
+
+\end{easylist}
+\subsection{Timers}
+	\label{subsec:bare-metal-programming:timers}
+\begin{easylist}
+
+& Timers can be set to trigger an IRQ
+	&& Loads the value in \lstinline[columns=fixed]{TLDR} (Time LoaD Register)
+	&& Counts up at $25 mHz$ or $32.768 kHz$
+	&& Immediately resets to the value in \lstinline[columns=fixed]{TLDR} when the value reaches $0xFFFF\ FFFF + 1$
+
+& \textbf{Prescale/divider:} Reduction of amount added to the clock every cycle (value of $N$ equals a $2^N$ slowdown)
+	&& Division of the clock frequency equals exponentiation of the period
+
+& Calculating period of time and timer clock frequency:
+\begin{equation}
+	\textrm{Period} = \frac{0xFFFF\ FFFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N
+\end{equation}
+
+	&& E.g. Given an 8-bit timer with a 32Hz clock and no divider, find the maximum timer duration.
+		&&& An 8-bit timer has maximum value $0xFF$.
+		&&& To achieve the maximum timer duration, set $TLDR$ to $0$.
+		&&& The frequency is 32.
+		&&& The equation is:
+		\end{easylist}
+		\begin{align}
+			\textrm{Period}
+			&= \frac{0xFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N \\
+			&= \frac{0xFF - 0 + 1}{32} * 2^0 \\
+			&= \frac{2^8}{2^5} \\
+			&= 2^3 \\
+			&= 8s
+		\end{align}
+		\begin{easylist}
+		&&& Answer: Maximum timer duration is 8s
+
+	&& E.g. Given an 8-bit timer with a 32Hz clock, calculate the necessary divider and TLDR for a 200s period.
+		&&& To change the period to 1s, divide the 32Hz clock by $N = 5$ to multiply the period by $2^5 = 32$.
+		&&& The equation is:
+		\end{easylist}
+		\begin{align}
+			\textrm{Period}
+			&= \frac{0xFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N \\
+			&= \frac{2^8 - TLDR}{32} * 2^5 \\
+			&= 2^8 - TLDR \\
+			&= 256 - TLDR \\
+			TLDR = 256-200 \\
+			&= 56
+		\end{align}
+		\begin{easylist}
+		&&& Answer: $N = 0$, $TLDR = 56$
+
+	&& E.g. Given a 32-bit timer with a 25MHz clock and no divider, find the maximum timer period.
+		&&& A 32-bit timer has maximum value $0xFFFF\ FFFF$.
+		&&& Let $TLDR = 0$ for the maximum amount of time.
+		&&& The equation is:
+		\end{easylist}
+		\begin{align}
+			\textrm{Period}
+			&= \frac{0xFFFF\ FFFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N \\
+			&= \frac{0xFFFF\ FFFF - 0 + 1}{25MHz} * 2^0 \\
+			&= \frac{2^{32}}{25,000,000} \\
+			&\approx 170s \\
+			&\approx 2.8 min
+		\end{align}
+		\begin{easylist}
+		&&& Answer: Maximum timer duration is about 2.8 minutes
+
+	&& E.g. Given a 32-bit timer with a 25MHz clock, calculate the necessary divider and TLDR for a 2s period.
+		&&& Since the maximum timer period is greater than 2s (see previous question), no divider is necessary. Let $N = 0$.
+		&&& The equation is:
+		\end{easylist}
+		\begin{align}
+			\textrm{Period } = 2s
+			&= \frac{0xFFFF\ FFFF - TLDR + 1}{\textrm{Timer Clock Frequency}} * 2^N \\
+			&= \frac{2^{32} - TLDR}{25,000,000} * 2^0 \\
+			50,000,000
+			&= 2^{32} - TLDR \\
+			TLDR
+			&= 2^{32} - 50,000,000 \\
+			&= 0xFD05\ 0F80 \\
+		\end{align}
+		\begin{easylist}
+		&&& Answer: $N = 0$, $TLDR = 0xFD05\ 0F80$
+		
+	&& E.g. Given the same parameters and TLDR from the previous question but with $N = 2$, how long will the period be?
+		&&& If $N = 2$, the period is multiplied by $2^N = 2^2 = 4$.
+		&&& Period = $2s \times 4 = 8s$
+
+\end{easylist}
+\clearpage

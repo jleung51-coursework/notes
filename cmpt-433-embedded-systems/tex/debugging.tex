@@ -1,0 +1,44 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Section: Debugging
+%
+% Author: Jeffrey Leung
+%
+
+\section{Debugging}
+	\label{sec:debugging}
+\begin{easylist}
+
+& \lstinline[columns=fixed]{readelf}: Linux utility which displays details of an executable in an Executable and Linkable Format
+
+& gdb:
+	&& Generates debug symbols which can stripped later for a smaller, quicker executable
+	&& Informational commands:
+		&&& \lstinline[columns=fixed]{list}: Show code
+		&&& \lstinline[columns=fixed]{bt}: Show backtrace of current code
+		&&& \lstinline[columns=fixed]{info x}: Display information of a breakpoint, frame, etc.
+		&&& \lstinline[columns=fixed]{print x}: Prints the value of variable \lstinline[columns=fixed]{x}
+	&& Control commands:
+		&&& \lstinline[columns=fixed]{target remote}: Connect a machine to debug an executable on
+		&&& \lstinline[columns=fixed]{break n} or \lstinline[columns=fixed]{b n}: Sets a breakpoint at line or function \lstinline[columns=fixed]{n}
+		&&& \lstinline[columns=fixed]{next}: Run until the next breakpoint occurs
+		&&& \lstinline[columns=fixed]{up/down}: Moves to the previous/next stack frame
+	&& \textbf{Core file:} File dumped by gdb upon a crash which is an image of the memory
+		&&& \lstinline[columns=fixed]{gdb ./executable core}: Run executable with a core file
+
+& \textbf{Instrumentation:} Addition of a tool to measure information/performance
+	&& \textbf{Profiling:} Runtime analysis of an executable through instrumentation
+		&&& \textbf{gprof:} Linux profiling utility which describes how much time was spent in each part of the program
+			&&&& \lstinline[columns=fixed]{gprof ./executable gmon.out}: Generate a log showing time usage in each part of the program
+	&& \textbf{Valgrind:} Memory debugging and profiling tool
+	&& \textbf{mtrace:} Linux memory tracking utility which traces allocation and frees dynamic memory
+		&&& \lstinline[columns=fixed]{mtrace ./executable log.txt}: Generate a log showing memory usage
+		&&& Less disruptive than Valgrind
+
+& Use a GPIO pin to track software performance, and an oscilloscope to view changes in pin value
+
+& \textbf{List Dynamic Dependencies (LDD):} Utility which locates required missing libraries
+
+
+\end{easylist}
+\clearpage

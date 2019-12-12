@@ -1,0 +1,41 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Section: Communication and Networking
+%
+% Author: Jeffrey Leung
+%
+
+\section{Communication and Networking}
+	\label{sec:communication-and-networking}
+\begin{easylist}
+
+& \textbf{Serial port:} Direct (wire-to-wire) connection between two systems
+	&& Can transmit (Tx) and/or receive (Rx)
+& \textbf{Serial protocol:} Ruleset for bitwise communication over a serial port
+	&& \textbf{Bitrate:} Frequency of each bit communicated
+	&& \textbf{Start bit:} Bit which represents the beginning of information transfer
+	&& \textbf{End bit:} Bit which represents the termination of information transfer
+	&& Examples of protocols:
+		&&& \textbf{RS232:} Serial protocol which operates from -12V (representing 1) to 12V (representing 0)
+		&&& \textbf{TTL:} Serial protocol which operates from 0V to 3V/5V
+		&&& \textbf{Dynamic Host Configuration Protocol (DHCP):} UDP/IP protocol where an IP address is dynamically assigned to a machine so it can be connected to on a network
+
+
+
+& \textbf{Pipe:} Unidirectional communication endpoint between two threads or processes
+
+& \textbf{Socket:} Abstracted bidirectional communication endpoint for sending data between two processes on the same computer or across a network
+	&& Server listens for data, client sends data
+	&& \textbf{TCP:} Communication protocol where all data is sent in order with automatic retransmission
+	&& \textbf{Datagram (UDP):} Communication protocol where each packet is standalone
+		&&& \lstinline[columns=fixed]{htons():} Function which sends a short data packet from host to network
+		&&& \lstinline[columns=fixed]{htonl():} Function which sends a long data packet from host to network
+		&&& \lstinline[columns=fixed]{ntohs():} Function which receives a short data packet from network to host
+		&&& \lstinline[columns=fixed]{ntohl():} Function which receives a long data packet from network to host
+
+& \lstinline[columns=fixed]{netcat:} Linux utility which reads/writes from TCP or UDP network connections
+& \textbf{Network byte order:} Protocol of whether the least or most significant bit is sent first
+	&& \textbf{Big endian:} Protocol where the most significant bit (MSB) is sent first
+
+\end{easylist}
+\clearpage

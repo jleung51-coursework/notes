@@ -1,0 +1,35 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Section: Signals and Noise
+%
+% Author: Jeffrey Leung
+%
+
+\section{Signals and Noise}
+	\label{sec:signals-and-noise}
+\begin{easylist}
+
+& \textbf{Signal:} Value to be recorded
+& \textbf{Ground:} 0V
+
+& \textbf{Voltage regulator:} Component which converts unstable input voltage to a stable output voltage
+& \textbf{Quantization:} Resolution of a single bit which involves a detectable change
+& \textbf{Sample rate:} How quickly an A2D samples the input
+	&& Audio requires high sample rates
+	&& Potentiometers require low sample rates
+
+& \textbf{Piecewise Linear (PWL):} Approximation of a function with a series of lines
+
+& Strategies to tolerate noise:
+	&& Change state only when a number of samples exceed the threshold
+	&& Require additional value beyond the threshold in each direction to change the value
+	&& Use a simple moving average of a past set of samples
+	&& \textbf{Simple Moving Average:} Method of smoothing equally weights all values
+	&& \textbf{Exponential Smoothing:} Method of smoothing which provides greater weights to recent values
+
+& \textbf{Hysteresis:} Property of a state machine where the changes lag behind the actual values
+
+& \textbf{Clamping:} Capping a signal at its maximum or minimum possible value to prevent overflow
+
+\end{easylist}
+\clearpage

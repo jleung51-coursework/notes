@@ -1,0 +1,25 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Section: Synchronization
+%
+% Author: Jeffrey Leung
+%
+
+\section{Synchronization}
+	\label{sec:synchronization}
+\begin{easylist}
+
+& \textbf{Process:} Program which has a dedicated address space
+	&& \textbf{Virtual access space:} Component of a process which is an abstracted memory location
+	&& \textbf{fork():} Command which duplicates the address space of the current process
+	&& \textbf{exec():} Set of commands which replaces the current process with an executable file
+
+& \textbf{Thread:} Program which shares an address space with other instances of the same program
+	&& Threads of the same process share a virtual access space, including global variables
+& \textbf{Mutex:} Data structure which prevents simultaneous access to volatile data which may be changed
+	&& \textbf{Critical section:} Section of code which can only be running once at a time
+		&&& Keep critical sections as minimal as possible
+& \textbf{Pipe:} Unidirectional data stream for inter-thread/process communication
+
+\end{easylist}
+\clearpage

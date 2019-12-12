@@ -1,0 +1,32 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Section: Operating System Components
+%
+% Author: Jeffrey Leung
+%
+
+\section{Operating System Components}
+	\label{sec:operating-system-components}
+\begin{easylist}
+
+& \textbf{Application Binary Interface (ABI):} Standard of how a program uses datatypes, function calling conventions, and system calls
+
+& Bootup components:
+	&& \textbf{Embedded Multi-Media Controller (eMMC):} Flash storage on a chip on the board which contains the vital operating system files
+	&& \textbf{uSD Card:} SD card which can act as a replacement booter or flasher for the eMMC in case of corruption
+	&& \textbf{U-Boot:} Bootloader which initializes hardware and loads the kernel into memory
+		&&& \textbf{Trivial Transfer File Protocol (TFTP):} Protocol used to boot a machine using specific files
+
+& \textbf{Kernel:} Core operating system component which handles process control, memory, IO, etc.
+& \textbf{Root filesystem:} Filesystem which contains an operating system
+
+& \textbf{Network File System (NFS):} Direct method to mount a directory from another device on the network, mirroring changes immediately
+
+& Linux directories:
+	&& \lstinline[columns=fixed]{/dev}: Devices
+ 	&& \lstinline[columns=fixed]{/etc}: Local system configuration
+	&& \lstinline[columns=fixed]{/proc}: Kernel and process information
+	&& \lstinline[columns=fixed]{/lib}: Shared libraries and kernel modules
+
+\end{easylist}
+\clearpage

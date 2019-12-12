@@ -1,0 +1,28 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Section: systemd
+%
+% Author: Jeffrey Leung
+%
+
+\section{systemd}
+	\label{sec:systemd}
+\begin{easylist}
+
+& \textbf{.profile:} Program which runs at login
+& \textbf{systemd (system daemon):} First user-space application which is executed at boot by the kernel
+	&& \textbf{Daemon:} Background procress
+
+& Always use absolute paths
+
+& \textbf{Watchdog (WD) timer:} Program which prevents system lock-up
+	&& \textbf{Hit/pet:} To contact the WD
+		&&& Opening file \lstinline[columns=fixed]{/dev/watchdog} restarts the timer
+		&&& If the program exits, WD continues running
+	&& Applications use a WD to recover from faults:
+	 	&&& Periodically hits the WD
+		&&& WD restarts the board if the timer expires
+		&&& Critical when a reboot cannot be manually triggered
+
+\end{easylist}
+\clearpage

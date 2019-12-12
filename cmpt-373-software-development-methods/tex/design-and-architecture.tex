@@ -1,0 +1,116 @@
+%
+% CMPT 373: Software Development Methods - A Course Overview
+% Section: Design and Architecture
+%
+% Author: Jeffrey Leung
+%
+
+\section{Design and Architecture}
+	\label{sec:design-arch}
+\begin{easylist}
+
+& 3-tier architecture:
+	&& \textbf{Presentation layer:} System component which manages the user interface and interaction
+	&& \textbf{Business logic layer:} System component which handles data processing and manipulation
+	&& \textbf{Data layer:} System component which manages persistent data
+	&& Modular, logical, maintainable, testable
+
+& \textbf{Class-Responsibility-Collaborator (CRC) Card:} Set of cards each showing the responsibilities and connections of a single class
+	&& Data classes are described by what information is processed
+
+& \textbf{Unified Modeling Language (UML):} Method of diagram creation which illustrates relationships between entities
+	&& Connections:
+		&&& Arrow: Has a
+		&&& Arrow with label $0..*$: Has 0 or more
+		&&& Arrow with triangle head: Subclass of a class
+		&&& Dashed arrow: Dependency/usage
+		&&& Dashed arrow with triangle head: Implementation of an interface
+		&&& Entity label: Stereotype descriptor
+
+& Software design:
+	&& Wicked, sloppy, heuristical, iterative
+	&& Required for construction
+	&& Requires implementation to accurately assess its effectiveness
+	&& Avoid inheritance until necessary; replace with dependency
+	&& Encapsulate whenever possible
+
+& \textbf{Tracer bullet:} Skeleton implemetation of an end-to-end process in a system
+	&& Provides architectural framework to iterate on
+
+& Methods of reducing complexity:
+	&& Limit the amount of details being considered at any given time
+	&& Having a code style standard for naming, brackets, indentation, spacing, comments, etc.
+	&& Encapulate and abstract
+	&& Design constructors to create fully formed objects
+
+& \textbf{Loose coupling:} Concept of two classes who rely on little or no implementation detail of each other
+& \textbf{Tight coupling:} Concept of two classes, one of which relies on a specific concrete type
+	&& E.g. Instantiating a new object
+
+\end{easylist}
+\subsection{Design Patterns}
+	\label{subsec:design-arch:design-patterns}
+\begin{easylist}
+
+& \textbf{Design principles:}
+	&& Separate changeable aspects of the program from aspects which will stay the same
+	&& \textbf{Open-closed principle:} Classes should be open for extension and closed for modification
+	&& \textbf{Composition over inheritance:} Prefer has-a relationships over is-a relationships
+		&&& Allows easier modification and separation of responsibilities, as well as attachment and removal at runtime
+	&& Design with an interface, not a concrete class
+
+& Types of design patterns:
+	&& \textbf{Creation patterns:} Architectural patterns which handle instantiation (e.g. factory, singleton)
+	&& \textbf{Structural patterns:} Architectural patterns which handle composition (e.g. decorator)
+	&& \textbf{Behavioural patterns:} Architectural patterns which handle communication between objects and distribute reponsibilites (e.g. iterator, observer, strategy, null object)
+
+& \textbf{Inheritance:}
+	&& Base class functionality changes may unintentionally affect derived classes, which consequently means:
+		&&& Local changes have non-local effects
+		&&& Structure is inflexible for code maintenance
+		&&& Object behaviour cannot be changed at runtime
+	&& Derived classes may need to remove base class functionality
+
+& \textbf{Dependency injection (DI):} Architectural pattern where object creation is unlinked from object usage; the main program handles dependencies and passes references of dependencies to client code
+	&& \textbf{Client (DI)}: Class in DI which uses a service instantiated by the main class
+	&& \textbf{Injector (DI)}: Class in DI which instantiates a service object and provides it to the client for usage
+		&&& \textbf{Constructor injection:} Injection method in DI where the framework constructs the object while providing the services
+		&&& \textbf{Setter injection:} Injection method in DI where the framework constructs the object then providing the services
+		&&& \textbf{Framework injection:} Injection method in DI where the framework sets the class members to references of the services
+	&& Provides ability to mock out all dependencies
+	&& Requires designing dependencies to use an interface
+	&& More difficult to trace code
+
+& \textbf{Observer pattern:} Architectural pattern consisting of a UI and Model
+	&& Synchronization happens when either:
+		&&& The UI repeatedly polls for updates (con: delayed, resource-intensive)
+		&&& The Model has a reference to the UI and calls it when an event occurs (con: tight coupling)
+		&&& The UI registers an Observer with the Model; the Observer implements a notify() function which the model calls
+	&& Benefits:
+		&&& Loose coupling due to registering an observer at runtime
+		&&& Multiple observers can register with th subject
+		&&& Decouples model and UI
+	&& Drawbacks:
+		&&& Difficult to trace code
+
+& \textbf{Strategy pattern:} Architectural pattern where a family of interchangeable modules each contain an algorithm or unique component, which allows the algorithm to be easily modified
+
+& \textbf{Decorator pattern:} Architectural pattern where a decorator subclass wraps a reference to the base class, and can be recursively wrapped with continually more decorators
+	&& Dynamically attaches behaviour/properties to an object
+	&& UML diagram will have both an is-a and has-a relationship between two classes
+	&& Decorator classes share the same supertype as their objects
+	&& Can be stacked multiple times
+	&& Avoids violating the open-closed principle
+	&& Cons
+		&&& Adds many small classes
+		&&& Difficult to learn an architecture
+		&&& Method of instantiation is complex
+
+& \textbf{Singleton pattern:} Architectural pattern where only a single instance of an instance can exist and has a global point of access
+	&& Allows lazy instantiation
+	&& Allows global dependency
+	&& Does not allow inheritance
+	&& Difficult to mock and test
+
+\end{easylist}
+\clearpage

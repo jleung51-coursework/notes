@@ -1,0 +1,59 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Section: Linux Kernel Programming
+%
+% Author: Jeffrey Leung
+%
+
+\section{Linux Kernel Programming}
+	\label{sec:linux-kernel-programming}
+\begin{easylist}
+
+& Kernel is privileged; user space access to hardware is restricted
+	&& \textbf{Syscall:} System call to the kernel to access privileged instructions
+	&& \lstinline[columns=fixed]{strace}: Linux utility to show syscalls
+		&&& \lstinline[columns=fixed]{ioctl()}: Function shown in strace which controls a device through its virtual file
+	&& Delays using system calls block the process and allow the CPU to work on other tasks
+
+& \textbf{Monolithic kernel:} Kernel which has a single process image and address space
+
+& \textbf{Device tree:} Structure used by the kernel to manage connected hardware
+	&& \textbf{Device Tree Source (.dts):} File which
+	&& \textbf{Device Tree Blob (.dtb):} Binary file which manages the device and is passed by U-Boot to the kernel
+	&& \textbf{Device Tree Overlay (.dtbo):} Binary file which can modify the device tree at runtime
+
+& uboot downloads the kernel and device tree, runs Linux, and loads the root file system
+
+\end{easylist}
+\section{Drivers}
+	\label{subsec:linux-kernel-programming:drivers}
+\begin{easylist}
+
+& File extension: \lstinline[columns=fixed]{.ko}
+
+& Process of creating a driver:
+	&& Allocate major/minor node numbers
+	&& Create nodes in \lstinline[columns=fixed]{/dev} and \lstinline[columns=fixed]{/sys} for interfacing
+	&& Register as a character driver
+
+& \textbf{Character driver:} Driver which handles bytes and buffers
+& \textbf{Miscellaneous driver:} Driver for which the system manages allocation of node numbers, \lstinline[columns=fixed]{/dev} and \lstinline[columns=fixed]{/sys} nodes, and character driver registering for ease of creation
+
+&& Programming drivers:
+	&& \lstinline[columns=fixed]{module_init()}, \lstinline[columns=fixed]{module_exit()}: Functions which run during load and unload
+		&&& Set functions to be static to prevent conflicts with other modules
+	&& \lstinline[columns=fixed]{__init, __exit:} GCC extensions which reduce memory use by freeing or skipping the code when unnecessary
+	&& \lstinline[columns=fixed]{file_operations} (fops): Struct which links functions to your kernel file read/write operations
+		&&& When the file in \\ \lstinline[columns=fixed]{/dev/driver_name} is modified, the associated loaded file operations struct is registered with the function
+
+& Linux commands to manage drivers:
+	&& \lstinline[columns=fixed]{lsmod}: List all loaded modules
+	&& \lstinline[columns=fixed]{insmod module.ko}: Load a module
+	&& \lstinline[columns=fixed]{modinfo module.ko}: List the info of a module
+	&& \lstinline[columns=fixed]{rmmod module.ko}: Unload a module
+
+& Kernel must validate user-level pointers which could be NULL or invalid
+	&& Use functions \lstinline[columns=fixed]{copy_from_user} and \lstinline[columns=fixed]{copy_to_user}
+
+\end{easylist}
+\clearpage

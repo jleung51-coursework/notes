@@ -1,0 +1,80 @@
+%
+% CMPT 433: Embedded Systems - A Course Overview
+% Section: Electronics
+%
+% Author: Jeffrey Leung
+%
+
+\section{Electronics}
+	\label{sec:electronics}
+\begin{easylist}
+
+& \textbf{RS232:} Recommended Standard which is a specific bitrate with voltages -12V meaning 1 and 12V meaning 0
+
+& Circuits are often damaged through water, short-circuiting, and ESD
+	&& \textbf{Electrostatic Discharge (ESD):} Static shock given to a system
+
+& \textbf{Voltage:} Pressure which causes electricity flow; the difference in pressure between two points in a circuit
+	&& Symbol: $V$
+	&& SI Unit: Volt (V)
+
+& \textbf{Current:} Flow of electrons caused by a difference in pressure between two points in a circuit
+	&& Symbol: $I$
+	&& SI Unit: Amp (A)
+		&&& \textbf{Microamp:} $1/1,000,000$ of an amp
+		&&& \textbf{Kiloamp:} $1,000$ amps
+		&&& \textbf{Megaamp:} $1,000,000$ amps
+	&& Flows from higher voltage (+) to lower voltage (-)
+	&& Electrons flow in the opposite direction
+
+& \textbf{Resistance:} Resistance experienced by the current when flowing between two points
+	&& Symbol: $R$
+	&& SI Unit: Ohm ($\Omega$)
+	&& Ohm's Law: $R = \frac{V}{I}$
+
+\end{easylist}
+\subsection{Circuits}
+\begin{easylist}
+
+& \textbf{Open circuit:} Uncompleted circuit which has infinite resistance and no current
+& \textbf{Closed circuit:} Completed circuit
+& \textbf{Short circuit:} Circuit which has no resistance and high current
+
+& Components:
+	&& Current is constant across all components
+	&& Voltage is lost across each component to equal the total voltage
+	&& \textbf{Sourcing:} Components which outputs voltage
+	&& \textbf{Sinking:} Component which inputs voltage
+	&& \textbf{Shorted:} Component which is directly connected to a power source or ground
+	&& \textbf{Floating:} Component which is neither connected to a power source nor a ground
+
+& Serial circuits: Calculate the total resistance, calculate current (constant across all components), and use it to find voltage drop across each component
+
+& \textbf{Diode:} Component which only allows current in one direction
+	&& \textbf{Light Emitting Diode:} Diode which creates illumination
+
+& \textbf{Resistor:} Component which generates resistance and creates voltage drop
+	&& \textbf{Current-limiting resistor:} Resistor with the purpose of reducing current
+	&& \textbf{Pull-down resistor:} Large resistance between a component and ground to create a weak pull-down effect when a circuit is open
+	&& \textbf{Pull-up resistor:} Large resistance between a component and the power source to create a weak pull-up effect when a circuit is open
+	&& \textbf{Resistor divider:} Equal pull-up and pull-down resistors which divides the voltage in two
+
+& \textbf{Pulse Code Modulation (PCM):} Format of an audio file which stores the amplitude at each sample point
+	&& \textbf{Quantization:} Accuracy of a measurement
+	&& \textbf{Bit depth:} Number of bits per quantization
+	&& WAV file has a bit depth of 16
+	&& \textbf{Superposition:} Combining multiple signals to create a single signal
+
+\end{easylist}
+\subsection{Software Interactions}
+\begin{easylist}
+
+& \textbf{Debouncing:} Process of removing fluctuation when switching states to read a stable value
+
+& \textbf{General Purpose Input-Output (GPIO):} Pins which can be set to read a value, or output a a value (0 or 1)
+& \textbf{Inter-Integrated Circuit (I\textsuperscript{2}C):} Direct communication value setting/reading protocol for hardware chips
+& \textbf{Analog-to-Digital (A2D):} Method to read analog voltages to a digital value
+& \textbf{Pulse-Width Modulation (PWM):} Method to generate analog voltage by toggling a digital value over time
+
+\end{easylist}
+\clearpage
