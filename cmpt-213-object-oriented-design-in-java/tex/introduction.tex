@@ -1,0 +1,55 @@
+%
+% CMPT 213: Object Oriented Design in Java - A Course Overview
+% Section: Introduction
+%
+% Author: Jeffrey Leung
+%
+
+\section{Introduction}
+	\label{sec:introduction}
+\begin{easylist}
+
+& Standards:
+	&& Make fields private when possible
+
+& Commenting:
+	&& Comment purpose of a class
+	&& Name fields/methods/parameters so comments are unnecessary
+
+& When possible, convert strings to non-string types internally for consistency
+
+& \textbf{Clean code:} Code which is correct, easy to read/maintain, and conforms to a standard
+
+& Software design:
+	&& 4 steps:
+		&&& Requirements
+		&&& Design and implementation
+		&&& Verification
+		&&& Evolution
+	&& Designing involves identifying classes, responsibilities, and relationships to create a diagram
+	&& Implementation process options:
+		&&& \textbf{Skeleton code:} Beginning minimal parts/features of a system
+		&&& \textbf{Component-wise:} Creating components one at a time
+	&& Methods of integrating code from multiple people:
+		&&& \textbf{Continual integration:} Gradual system growth by constantly integrating changes
+		&&& \textbf{Big Bang integration:} Building all parts separately without integrating until the end
+
+& \textbf{Feature envy:} Characteristic of a class which relies heavily on another class
+& Warning sign: Characteristic of a method which operates more strongly on another object than its own
+& \textbf{Deprecation:} State where a public interface is no longer supported or recommended, and is slated to be removed in the future
+
+
+& \textbf{try-catch:} Structure which watches for an exception and handles it
+	&& Only one exception can be live at a given time
+	&& \textbf{finally clause:} Optional clause after catch clauses which is executed regardless of the result
+		&&& If exception is thrown, the finally clause is executed immediately afterwards
+	&& \textbf{try-with-resources:} Block which cleans up a resource when a try block exits
+
+& Exception: Issue which may be fixable and is not out of the software's control
+	&& \textbf{Checked exception:} Exception which must be caught or listed in a throws clause
+	&& \textbf{Unchecked exception:} Exception which will automatically propagate and does not require catching
+		&&& E.g. RuntimeException
+		&&& Preferred as it does not require modification of methods between try/catch, which decouples code
+
+\end{easylist}
+\clearpage

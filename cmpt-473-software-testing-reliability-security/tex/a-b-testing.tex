@@ -1,0 +1,54 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: A/B Testing
+%
+% Author: Jeffrey Leung
+%
+
+\section{A/B Testing}
+	\label{sec:a-b-testing}
+\begin{easylist}
+
+& \textbf{A/B testing:} Hypothesis testing which provides different services to randomly selected individuals
+	&& Requires a hypothesis and population to test
+
+& Used to evaluate:
+	&& Usability improvements
+	&& Perforamnce improvements
+	&& Promotion effectiveness
+	&& Gradual rollouts
+
+& Possible issues:
+	&& Uncontrolled influencing factors
+	&& Populations may not be representative
+	&& False positives/negatives
+		&&& \textbf{p-hacking:} Altering results by executing many tests to compound the effect of false positives/negatives, and choosing exactly when to stop based on the results
+		&&& \textbf{Regression to the mean:} Tendency for results to return to relatively normal levels after an extreme event
+			&&&& E.g. Poorly performing students are placed in a program, after which their grades improve
+
+& Ways to mitigate issues:
+	&& Calculate significance and test amount beforehand, rather than stopping when significance is reached
+
+\end{easylist}
+\subsection{Hypothesis Testing}
+	\label{subsec:hypothesis-testing}
+\begin{easylist}
+
+& T-Test: Comparison between samples of populations
+	&& Modeled as a distribution
+	&& Requires the data to have a known variance, independence from other factors
+
+& Sequential testing may have bounding criteria for when to stop early
+
+& \textbf{Multi-armed bandit:} Testing technique which determines the best of multiple options based on evidence so far
+	&& Requirements:
+		&&& Reward probabilities do not change
+		&&& Sampling is singular, instantaneous, and independent
+		
+	&& \textbf{$\epsilon$-greedy strategy:} Multi-armed bandit technique where the greater the previous sample proportion, the more likely the population is sampled
+		&&& Sensitive to variance
+		
+	&& \textbf{Thompson sampling:} Multi-armed bandit technique where the probability of the best arm is chosen
+		
+\end{easylist}
+\clearpage

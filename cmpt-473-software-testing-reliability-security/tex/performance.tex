@@ -1,0 +1,56 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Performance
+%
+% Author: Jeffrey Leung
+%
+
+\section{Performance}
+	\label{sec:performance}
+\begin{easylist}
+
+& Performance areas include:
+	&& Speed/runtime
+	&& Resource management
+	&& Throughput
+	&& Responsiveness
+	
+& Analyzed differently depending on component granularity (e.g. system-level, instruction-level)
+
+& Strategies of measuring performance:
+	&& Identify area of interest
+
+& Evaluating results:
+	&& Be aware of:
+		&&& Warm-up time
+		&&& Caching
+	&& Measure and compare across changes
+	&& Run many executions and take the average
+	
+& Measurement of results:
+
+	&& \textbf{Arithmetic mean:} Average of measurements which measure the same value
+		&&& Equation:
+\begin{equation}
+\frac{ \displaystyle \sum_{i=1}^N r_i }{N}
+\end{equation}
+
+	&& \textbf{Harmonic mean:} Average of measurements which report rates (e.g. throughput for multiple tasks)
+		&&& Represents the constant rate required for the same amount of time
+		&&& Calculated by dividing the total number of rates by the rate per unit (inversion of the rate)
+		&&& Equation:
+\begin{equation}
+\frac{N}{ \displaystyle \sum_{i=1}^N \frac{1}{r_i} }
+\end{equation}
+	&& \textbf{Geometric mean:} Average of measurements which represent different values
+		&&& A change in any benchmark affects the final value proportionally
+		&&& Represents a multiplied score of performance
+		&&& Equation:
+\begin{equation}
+\sqrt[N]{ \prod_{i=1}^N r_i }
+\end{equation}
+	&& \textbf{Standard deviation:} Measure of confidence in the mean
+		&&& Large values imply needing more samples or correction of methodological error
+
+\end{easylist}
+\clearpage

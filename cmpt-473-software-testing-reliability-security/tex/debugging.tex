@@ -1,0 +1,71 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Debugging
+%
+% Author: Jeffrey Leung
+%
+
+\section{Debugging}
+	\label{sec:debugging}
+\begin{easylist}
+
+& \textbf{Debugging:} Application of the scientific method to find and eliminate an incorrect behaviour
+
+& Steps:
+	&& Ignore assumptions
+		&&& Mental model of software may be incorrect
+		&&& Comments may be incorrect
+	&& Reproduce the behaviour
+	&& Brainstorm possible reasons why the incorrect behaviour occurred
+	&& Choose the most testable and likely hypotheses
+
+& Debugging framework features:
+	&& Breakpoints (conditional)
+	&& Stepping through/over code
+	&& State:
+		&&& Print/display
+		&&& Modification
+		&&& Watchpoints
+	&& Call functions
+
+\end{easylist}
+\subsection{Bug Reporting}
+	\label{subsec:bug-reporting}
+\begin{easylist}
+
+& Perspectives:
+	&& Developer: How a bug should be handled
+	&& Client/teammate: How a bug should be reported/fixed
+
+& Error messages should contain:
+	&& What is incorrect
+	&& Where the error occurred
+	&& When the error occurred
+
+& Good error messages allow you to:
+	&& Reproduce a failure
+	&& Find the original creator
+	&& Combine duplicate error reports
+	&& Identify causes
+	&& Prioritize
+	&& Identify workarounds
+	&& Create an accurate fix
+
+& Prioritize bugs by:
+	&& Frequency
+	&& Risk level or consequence
+	&& Recency of introduction
+
+& Bug reports should contain:
+	&& Summary
+	&& What happened, when, where
+	&& Expected result
+	&& Steps to reproduce
+	&& Product, version, feature
+	&& Platform and environment
+	&& Severity/priority
+	&& Owner(s)
+	&& Duplicate(s)
+
+\end{easylist}
+\clearpage

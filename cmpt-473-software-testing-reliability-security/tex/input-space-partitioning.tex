@@ -1,0 +1,93 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Input Space Partitioning
+%
+% Author: Jeffrey Leung
+%
+
+\section{Input Space Partitioning}
+	\label{sec:input-space-partitioning}
+\begin{easylist}
+
+& \textbf{Input Space Partitioning:} Division of potential inputs into classes where each input in a class should yield identical output
+
+& \textbf{Input Domain Model:} Description of possible test inputs through discrete partitions which are disjoint and cover the entire domain
+	&& \textbf{Interface-based approach:} Choosing inputs for a domain model based on parameters and domains
+	&& \textbf{Functionality/requirements-based approach:} Choosing inputs for a domain model based on behaviours or functionality in the specification
+
+& Process:
+	&& Identify and isolate the component under test
+	&& Identify inputs
+		&&& Possible values to be partitioned:
+			&&& Parameters and inputs
+			&&&& Object state
+			&&&& Global state
+			&&&& File contents
+	&& Identify characteristics of each input to divide into possible values
+	&& Identify constraints
+		&&& Characteristics to consider:
+			&&&& Preconditions and postconditions
+			&&&& Relationships to special values
+			&&&& Relationships between variables
+	&& Select representative values from an input block, including:
+			&&&& Expected/valid values
+			&&&& Special values
+			&&&& Invalid values
+			&&&& Boundary values
+
+& E.g. Given a command to FIND instances of a PATTERN in a FILE:
+	&& The component is the FIND command
+	&& The parameters are the pattern to search for, the filename, and the file contents
+	&& The characteristics include:
+	 	&&& Is the pattern empty?
+		&&& Is the length of the pattern contents less than, the same as, or greater than the length of the longest line in the file?
+		&&& Does the pattern have quotation marks enclosing it?
+		&&& Are ther escaped quotation marks in the pattern?
+		&&& Is the filename empty?
+		&&& Does the file exist?
+		&&& Is the file a directory?
+		&&& Is the file blank?
+		&&& Does the file have a blank line?
+		&&& Is there a line in the file matching the pattern multiple times?
+
+\end{easylist}
+\subsection{Test Combination Strategies}
+	\label{subsec:input-space-partitioning:test-combination-strategies}
+\begin{easylist}
+
+& * means any value is valid
+
+& \textbf{Each Choice:} From each block, use at least one value in at least one test
+	&& Size: Largest domain
+	&& Does not cover many possible conflicting states
+	&& E.g. Given inputs A/B/C and 1/2, an adequate set of tests are:
+		&&& A 1
+		&&& B 2
+		&&& C *
+
+& \textbf{Pair Wise:} From each block, choose 1 value and test it at least once with every value from every other block
+	&& Size (lower bound): $\geq$ the product of the domain sizes of the two largest partitions
+	&& E.g. Given inputs A/B/C, 1/2, and X/Y, an adequate set of tests are:
+		&&& A 1 X
+		&&& A 2 Y
+		&&& B 1 Y
+		&&& B 2 X
+		&&& C 1 *
+		&&& C 2 *
+
+& \textbf{T-Wise:} From each block, test 1 value for each group of $T$ characteristics
+	&& Size: $\geq$ product of the $T$ largest domain partitionings
+
+& \textbf{Base Choice:} Create a base test and create tests by changing only a single value and fixing the others
+	&& Size: 1 base test plus one for each other unselected block
+	&& Base case must be a valid positive test
+
+& Hierarchy of test type satisfaction:
+	&& All combinations includes all T-Wise tests and Multiple Base Choice testing
+		&&& T-Wise testing includes all Pair-Wise tests
+			&&&& Pair-Wise tests includes all Each Choice tests
+		&&& Multiple Base Choice testing includes all Base Choice tests
+			&&&& Base Choice tests includes all Each Choice tests
+
+\end{easylist}
+\clearpage

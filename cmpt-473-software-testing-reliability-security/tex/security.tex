@@ -1,0 +1,56 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Security
+%
+% Author: Jeffrey Leung
+%
+
+\section{Security}
+	\label{sec:security}
+\begin{easylist}
+
+& \textbf{Security:} Maintainance of desired properties against the presence of adversaries
+
+& \textbf{CIA model:} Model of classic security properties
+	&& \textbf{Confidentiality:} Security property where information is only available to those authorized to access it
+		&&& E.g. Information leaks violate confidentiality of information
+	&& \textbf{Integrity:} Security property where information can only be modified by authorized entities in permitted ways
+		&&& E.g. Data corruption removes data integrity
+	&& \textbf{Access:} Security property where those authorized for access are not prevented
+		&&& E.g. Denial of service attacks remove access from legitimate users
+
+& Inability to test all points creates an attack surface
+
+& MITRE's categories of security vulnerabilities: Insecure interaction, risky resource management, porous defenses
+
+& Buffer overflows can overwrite other code in the stack
+	&& \textbf{Stack canary:} Indicator of compromised stack memory which exists between the return address and frame pointer, and aborts the program if it is overwritten
+	&& \textbf{Data Execution Prevention:} Technique which only allows execution of code from an allowed area
+
+& \textbf{Return to libc attack:} Attack which replaces critical code which must be executed
+	&& E.g. Replacement of a return address with a pointer to a new, compromised function
+	&& \textbf{Return-oriented programming:} Manipulation of function pointers and stack memory to execute various components of existing functions
+
+& \textbf{Address Space Layout Randomization (ASLR):} Randomized placement of function and stack data to prevent data manipulation and execution redirection
+
+& \textbf{Control flow integrity:} Technique which restricts program execution to only allowed areas
+
+& Memory safety vulnerabilities:
+	&& Potential causes:
+		&&& Out-of-bounds pointers
+		&&& Dangling pointers
+	&& Use tools/abstractions which avoid thse issues
+
+& SQL injections
+
+& CIA can be violated by inferring information
+	&& \textbf{Side channel attack:} Attach which infers system information based on information details
+	&& Leaks from logs, output, timing, power, sound, light, etc.
+	&& Difference in behaviour/cache retrieval upon sensitive information can create difference in timing
+
+& \textbf{Access control policies:} Rules which specify who can access certain information
+	&& \textbf{Discretionary access control:} Access control policies where the owner determines access within their own domain
+	&& \textbf{Mandatory access control:} Access control policies where the operating system determines access to resources
+
+\end{easylist}
+\clearpage

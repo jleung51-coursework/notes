@@ -1,0 +1,30 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Automated Test Generation
+%
+% Author: Jeffrey Leung
+%
+
+\section{Automated Test Generation}
+	\label{sec:automated-test-generation}
+\begin{easylist}
+
+& \textbf{Automated test generation:} Executing program analysis to automatically derive tests
+
+& \textbf{Fuzz testing:} Automated test generation method which creates sample program inputs
+	&& \textbf{Generational (model-based) fuzz testing:} Fuzz testing method which creates inputs based on a predefined model
+		&&& Inputs will be valid; cannot test invalid inputs
+	&& \textbf{Mutational (heuristic change based) fuzz testing:} Fuzz testing method which creates inputs based modifying a test suite
+		&&& Given a corpus of inputs, evolve new inputs; if the input tests a new area of the program, add it to the corpus
+			&&&& Criteria can be different lines of code, more/less memory, etc.
+		&&& Inputs may not necessarily be valid
+
+& \textbf{Symbolic execution:}  Automated test generation method which replaces program inputs with symbolic values and calculates inputs based on constraints
+	&& \textbf{Concolic (dynamic symbolic) traversal:} Symbolic execution where values are maintained as symbolic, then calculated at the end to reveal every possible path
+
+& \textbf{Execution generated testing:} Symbolic execution where some values are set to be concrete
+
+& \textbf{Execution tree:} Graph of the possible paths taken by a program
+
+\end{easylist}
+\clearpage

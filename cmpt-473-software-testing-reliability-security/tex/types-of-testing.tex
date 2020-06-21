@@ -1,0 +1,54 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Types of Testing
+%
+% Author: Jeffrey Leung
+%
+
+\section{Types of Testing}
+	\label{sec:types-of-testing}
+\begin{easylist}
+
+& Test cases:
+	&& Require an input and expected output/state/behaviour
+	&& \textbf{Oracle:} Evaluation of the output/behaviour of a test
+	&& \textbf{Mock:} Entity which is used to measure or examine behaviour
+	&& \textbf{Stub:} Fake entity which is used during testing to replace a component
+
+& If external state is uncontrolled, tests will be nondeterministic
+	&& Factors causing lack of control:
+		&&& Lack of isolation
+		&&& Asynchronous behavior
+		&&& Remote services
+		&&& Time
+		&&& Resource leaks
+
+& \textbf{Coverage/adequacy:} Measurement of how well a test suite addresses quality criteria
+
+& \textbf{Test Driven Development (TDD)}: Software testing where unit tests are created first and used to drive development
+
+& \textbf{Unit testing}: Software testing of the smallest possible components
+	&& Principles include component isolation, simplicity, ease of understanding
+
+& \textbf{Integration testing}: Software testing based on the connection of multiple components
+
+& \textbf{Acceptance testing}: Software testing based on acceptance criteria
+
+& \textbf{Black-box testing:} Software testing based on the external input specification of a system
+	&& Involves \hyperref[sec:input-space-partitioning]{input space partitioning}
+& \textbf{White-box testing:} Software testing based on the internal program structure of a system
+	&& Involves \hyperref[sec:graph-coverage]{graph coverage}
+
+& \textbf{Fuzz testing:} Method of exploratory software testing which inputs randomly mutated data into a program to evaluate random inputs
+
+& Test scenarios can be concrete (e.g. $x = 5$) or abstract (e.g. for all $x$, $x > 0$)
+	&& Abstract test cases can generate a test and check the oracle, using:
+		&&& Testing with randomly generated values
+		&&& Symbolic execution
+
+& Testing strategies which evaluate the existing test suite for effectiveness:
+	&& MC/DC
+	&& Mutation testing
+
+\end{easylist}
+\clearpage

@@ -1,0 +1,59 @@
+%
+% CMPT 213: Object Oriented Design in Java - A Course Overview
+% Section: Java
+%
+% Author: Jeffrey Leung
+%
+
+\section{Java}
+	\label{sec:java}
+\begin{easylist}
+
+& \textbf{this:} Keyword which refers to the current surrounding object
+& Almost everything is an object except for primitive types (e.g. int, float, double, boolean)
+
+& Assignment and parameterization passes by:
+	&& Value for primitive types
+	&& Reference for objects
+
+& Type conversion:
+	&& \textbf{Type promotion:} Implicit conversion from a smaller to larger type (e.g. int to double)
+	&& \textbf{Type demotion:} Explicit conversion from a larger to smaller type (e.g. double to int)
+
+& String literals are:
+	&& Immutable
+	&& Of the String class
+	&& Compared with the equality operator using a reference
+
+& Equality comparison compares by reference; \lstinline!.equals()! compares by value
+	&& \lstinline!.equals()! must be overridden
+	&& Using \lstinline!instanceof! violates symmetry for derived classes
+	&& Using \lstinline!getClass()! violates Liskov Substitution Principle (ability of derived classes to share the same behaviour)
+
+& \lstinline!hashCode()!:
+	&& Used to sort objects into easily-searchable accessible buckets in a hash table
+	&& Must be overridden with \lstinline!getClass()!
+	&& Multiples the result of each previous step's addition of fields by 31 as this value is prime, odd and optimized on some hardware
+	&& Shortcut for checking equality: If two objects have inequal hash codes, then they must not be equal
+
+& Automatic garbage collection once no references to an object exist
+
+& Collections store objects (not primitives)
+
+& \textbf{Inner class:} Class within a file-level class
+	&& If static, can be accessed without referencing the outer class
+	&& Can receive a reference to final variables and methods in the outer class
+		&&& Variables must be final (or not modified) because the method will be executed later, and a definitive value must be captured
+
+& \lstinline!for-each! loops can take unmodifiable collections to iterate through, preventing side effects
+
+& Common interfaces:
+	&& Classes which are Iterable must implement the \lstinline!Iterator iterator()! method
+	&& Classes which are Comparable must implement the \lstinline!int compareTo(Object obj)! method
+
+& \textbf{Plain Old Java Object (POJO):} Java class/object which is basic and only interacts with Java classes, without external component access
+
+& \textbf{Spring (Boot):} Dependency injection framework for Java
+
+\end{easylist}
+\clearpage

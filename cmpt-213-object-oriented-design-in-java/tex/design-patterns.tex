@@ -1,0 +1,51 @@
+%
+% CMPT 213: Object Oriented Design in Java - A Course Overview
+% Section: Design Patterns
+%
+% Author: Jeffrey Leung
+%
+
+\section{Design Patterns}
+	\label{sec:design-patterns}
+\begin{easylist}
+
+& \textbf{Lambda expression:} Short function implementation for an interface with only one method
+
+& \textbf{Software design pattern:} Description of a common software design problem and a solution
+
+& \textbf{Don't Repeat Yourself (DRY):}
+	&& \textbf{Pulling-up:} Elimination of duplicate code by placing the code in a called function
+
+& \textbf{Strategy pattern:} Design method which modularizes an algorithm by encapsulating it into a class
+	&& E.g. FileFilter, Comparator
+	&& Uses composition and can be swapped during runtime
+		&&& Compatible with lambda functions
+	&& Function accepts an interface as a parameter; the subclass passed into the function implements the algorithm
+
+& \textbf{Template method:} Design pattern where a base class delegates primitive operations to derived classes inside a template method
+	&& Requires inheritance and cannot be modified after compilation
+	&& \textbf{Primitive operation:} Modular procedure overridden create different implementations of similar methods
+	&& Algorithm is in the abstract base class which calls abstract primitive operations, which are overridden by subclasses
+
+& \textbf{Static factory method:} Static method which creates an instance of its object, configured as per the method name
+
+& \textbf{Dependency injection (DI):} Architectural design pattern where classes are passed references to dependencies
+	&& Allows loose coupling by separating object instantiation/ownership from use
+	&& \textbf{Constructor injection:} Dependency injection through a class constructor
+
+& \textbf{Iterator:} Interface which allows abstraction of iteration over a set of objects
+	&& Encapsulates implementation details
+
+& \textbf{Observer pattern:} Design method where observer objects register for updates with a certain class
+	&& Upon update, the class notifies all observer objects which retrieve the updates
+
+& \textbf{Model View Controller pattern (MVC):}
+	&& \textbf{Model:} Component(s) which handle data and application logic
+	&& \textbf{View:} Component(s) which display information to users
+	&& \textbf{Controller:} Component(s) which receive user interaction
+	&& \textbf{Clean design:} Separating logic and display
+
+& \textbf{Facade pattern:} Design pattern which encapsulates structure of the model code into a common interface
+
+\end{easylist}
+\clearpage

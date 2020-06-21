@@ -1,0 +1,186 @@
+%
+% BUS 314: Resourcing New Ventures - A Course Overview
+% Section: Capitalization Structure
+%
+% Author: Jeffrey Leung
+%
+
+\section{Capitalization Structure}
+	\label{sec:capitalization-structure}
+\subsection{Introduction}
+	\label{subsec:capitalization-structure:introduction}
+\begin{easylist}
+
+& \textbf{Capitalization structure:} Distribution of debt and equity in a company
+
+& \textbf{Venture capital:} Private equity funding provided to startups at early funding rounds
+
+& \textbf{Stock/share:} Equity in an entity
+
+& \textbf{Vesting:} Gradual transfer of legal ownership of equity
+	&& \textbf{Cliff:} Period of time until which no shares vest
+	&& \textbf{Accelerated vesting:} Ability to increase the speed at which shares vest
+
+& \textbf{Security:} Order of reimbursement of assets during liquidation
+	&& In order of most security to least security:
+		&&& Debtors
+		&&& Preferred shareholders
+			&&&& Series B shareholders
+			&&&& Series A shareholders
+		&&& Common shareholders
+
+& \textbf{Pre-money valuation:} Valuation of a company before funding
+
+& \textbf{Post-money valuation:} Valuation of a company after funding
+	&& Equation: Pre-money valuation + value of funding
+
+& \textbf{Valuation:} Perceived balance of risk and reward
+
+& \textbf{Pro-rata ownership:} Ability to maintain a certain percentage of ownership of the company by being given the option to purchase more shares upon any dilution
+
+& \textbf{Term sheet:} Formal document between an investor and investing company containing terms on which investment occurs
+	&& May have legally binding provisions (e.g. confidentiality)
+	&& Not legally binding; does not imply a closed deal
+
+& \textbf{Key control terms:} Contract terms to manage risk
+	&& E.g. Protective provisions, anti-dilution provisions
+	&& \textbf{Drag-along rights:} Contract term where a majority of voters can override the minority
+	&& Control provisions exist for voting, which can be majority or super majority
+
+& \textbf{Investment memo:} Confidential internal documentation about a decision on a potential investment
+
+\end{easylist}
+\subsection{Common Stock}
+	\label{subsec:capitalization-structure:common-stock}
+\begin{easylist}
+
+& \textbf{Common stock:} Stock which has claim to assets/dividends, and gives voting rights
+
+& Does not have a participation cap
+
+& Calculation of common stock liquidation:
+\end{easylist}
+\begin{align*}
+	\textrm{Common stock liquidation }
+	& = \textrm{ Percent of ownership } \times \\
+	& ( \textrm{Total liquidated } - \textrm{ Preferred stock liquidation} )
+\end{align*}
+\begin{easylist}
+
+\end{easylist}
+\subsection{Preferred Stock}
+	\label{subsec:capitalization-structure:types-of-preferred-stock}
+\begin{easylist}
+
+& \textbf{Preferred stock:} Stock which has higher claim to assets/dividends than common stock, but has no voting rights
+	&& Convertible to common stock at a 1-to-1 ratio
+
+& \textbf{Series A round:} First significant round of venture capital financing
+	&& \textbf{Series A stock:} Preferred stock generated during the Series A round
+
+& \textbf{Series B round:} Second significant round of venture capital financing
+	&& \textbf{Series B stock:} Preferred stock generated during the Series A round
+
+& Investors can follow the rules for preferred stock, or convert it to common stock which removes the rules
+
+& \textbf{Liquidation preference:} Term on preferred stock which provides guaranteed investor protection by returning liquidated proceeds first if a venture fails
+	&& Calculated as a multiple of the investment
+	&& Above 1x is unreasonable
+	&& E.g. Given an investment of \$1M, a liqudation preference of 2x, and a liquidation of \$5M (at least greater than \$2M), the investor is guaranteed a return of \$2M
+
+& \textbf{Participation cap:} Maximum amount of liquidated proceeds received from preferred stock, relative to the investment
+	&& E.g. Given an investment of \$1M and a participation cap of 3x, the maximum amount received upon liquidating the preferred stock and participating is \$3M
+
+& \textbf{Participating (preferred) stock:} Preferred stock which receives liquidated proceeds (investment times liquidation preference) first, then continues to receive a percentage of common stock
+
+	&& Calculation of participating preferred stock liquidation:
+\end{easylist}
+\begin{align*}
+	\textrm{Participating preferred liquidation } =
+	& \textrm{ } MAX( \\
+	& \qquad MIN( \\
+	& \qquad \qquad \textrm{Investment } \times \textrm{ LiquidPref } + \\
+	& \qquad \qquad \textrm{ParticipatingPrefStockPercent } \times \textrm{ TotalLiquidated}, \\
+	& \qquad \qquad \textrm{Investment } \times \textrm{PartCap} \\
+	& \qquad ), \\
+	& \qquad toCommon(\textrm{PrefStock}) \\
+	& )
+\end{align*}
+\begin{easylist}
+
+& \textbf{Non-participating (preferred) stock:} Preferred stock which receives liquidated proceeds (investment times liquidation preference) but does not receive a percentage of common stock
+
+	&& Calculation of non-participating preferred stock liquidation:
+\end{easylist}
+\begin{align*}
+	\textrm{Non-participating preferred liquidation } =
+	& \textrm{ } MAX( \\
+	& \qquad MIN( \\
+	& \qquad \qquad \textrm{Investment } \times \textrm{ LiquidPref }, \\
+	& \qquad \qquad \textrm{Investment } \times \textrm{PartCap} \\
+	& \qquad ), \\
+	& \qquad toCommon(\textrm{PrefStock}) \\
+	& )
+\end{align*}
+\begin{easylist}
+
+& Steps to calculate exit value for a given investor with preferred shares:
+	&& Calculate the value of liquidating common shares:
+		&&& Change the class of shares from preferred to common, keeping the percentage the same
+		&&& Multiply the percentage of common share by the liquidation amount
+	&& Calculate the value of liquidating preferred shares:
+		&&& Take the original investment
+		&&& Multiply it by the liquidation preference
+		&&& Cap it by the liquidation amount
+		&&& If participating, add the participating value:
+			&&&& Take the liquidation amount
+			&&&& Remove the preferred share liquidation
+			&&&& Multiply it by the percentage of preferred shares
+			&&&& Add this to the preferred share liquidation amount calculated above
+		&&& Apply the participation cap:
+			&&&& Multiply the original investment by the participation cap
+			&&&& Cap the liquidation amount above by this amount
+		&&& Take the larger value of this vs. the value of liquidating common shares
+
+& \textbf{Participation right:} Term where investors receive additional returns according to cap table percentage upon liquidation
+
+& Avoid:
+	&& \textbf{Redemption right:} Term which provides investors with the ability to withdraw the investment
+	&& Milestone/tranching-based financing: Ability to hold back investments until a certain date or milestone
+	&& Reciprocal contract
+
+\end{easylist}
+\subsection{Stock Options}
+	\label{subsec:capitalization-structure:stock-options}
+\begin{easylist}
+
+& \textbf{Stock option:} Right to buy common stock (at a discounted rate)
+	&& Rate to purchase is set when first issued
+	&& Not stock/shares, so they cannot vote
+	&& Can be converted to common shares
+	&& Will vest over time
+
+& Stages in the capitalization table:
+	&& Reserved
+	&& Allocated
+	&& Vested
+	&& Exercised
+
+& \textbf{Exercise/strike price:} Discounted price at which a share can be bought using a stock option
+
+\end{easylist}
+\subsection{Stages}
+	\label{subsec:capitalization-structure:stages}
+\begin{easylist}
+
+& \textbf{Startup:} Venture which has not yet received Series B funding
+	&& Financing from equity (initial investors), customers, employees (who will work for equity and lower salary)
+
+& \textbf{Scaling:} Venture which has received Series B funding but is not yet public or having private equity
+	&& Financing from equity, debt, and customers
+
+& \textbf{Mature:} Venture which is stable, being public or having private equity
+	&& Financing from equity, debt, and customers
+
+\end{easylist}
+\clearpage

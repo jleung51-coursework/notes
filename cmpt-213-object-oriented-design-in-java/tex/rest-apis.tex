@@ -1,0 +1,54 @@
+%
+% CMPT 213: Object Oriented Design in Java - A Course Overview
+% Section: REST APIs
+%
+% Author: Jeffrey Leung
+%
+
+\section{REST APIs}
+	\label{sec:rest-apis}
+\begin{easylist}
+
+& \textbf{Application Program Interface:} Protocol for communicating with a program component
+	&& \textbf{Create-Read-Update-Delete (CRUD):} Set of general operations to manage an entity
+	&& \textbf{Idempotent:} Operation which has the same response when executed multiple times
+
+& \textbf{Hypertext Transfer Protocol (HTTP):}
+	&& Ports:
+		&&& HTTP port: 80
+		&&& HTTPS port: 443
+
+& \textbf{Model View Controller API:} Web application architecture where server sends fully formed HTML pages
+
+& \textbf{Representational State Transfer (REST):} Web application architecture standard where client and server send and receive chunks of data
+	&& Client sends a request to the server's endpoint
+	&& Improves performance by caching
+	&& \textbf{Uniform interface:} Interface which returns self-descriptive resources
+	&& \textbf{Stateless:} Interface where all information about each request is contained, and no connection state is maintained by the application
+	&& \textbf{Cacheable:} Implementation detail where as much information as possible is cached to minimize server load
+
+& Request components:
+	&& \textbf{Method:} Action by an endpoint
+		&&& POST, DELETE, GET, PUT
+	&& \textbf{Uniform Resource Locator (URL):} Endpoint to send the request to
+	&& \textbf{Path variable:} Data within a URL
+	&& \textbf{Query string:} Data as a non-hierarchical key-value pairs exposed in the URL, after a question mark
+		&& Only available for GET requests
+	&& \textbf{Header:} Data as a key-pair value
+	&& \textbf{Body:} Data as a block
+
+& Response components:
+	&& \textbf{Response status code:}
+		&& E.g. 200, 201, 401, 403, 404, 500
+
+\end{easylist}
+\subsection{Servers}
+	\label{subsec:rest-apis:servers}
+\begin{easylist}
+
+& \textbf{Server:} Program in web development which exposes an API to consume
+
+& \textbf{Controller:} Component in a server which manages the endpoints and parameters
+
+\end{easylist}
+\clearpage

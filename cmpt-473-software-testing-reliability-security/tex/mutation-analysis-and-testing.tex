@@ -1,0 +1,81 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Mutation Analysis and Testing
+%
+% Author: Jeffrey Leung
+%
+
+\section{Mutation Analysis and Testing}
+	\label{sec:mutation-analysis-and-testing}
+
+\subsection{Mutant Fundamentals}
+	\label{subsec:mutation-analysis-and-testing:mutant-fundamentals}
+\begin{easylist}
+
+& \textbf{Mutant:} Valid program which behaves differently from the original
+	&& Involves smallest possible changes
+	&& Invalid (and not counted in the mutation score) if:
+		&&& Not compilable (still born)
+		&&& Killed by most test cases (trivial)
+		&&& Equivalent to the original program or to other mutants (redundant; can be undecidable)
+	&& A valid mutant must satisfy the reachability, infection, and propagation model:
+		&&& \textbf{Reachability:} Ability of the fault to be executed by a test
+		&&& \textbf{Infection:} Ability of a fault to cause the program state to differ
+		&&& \textbf{Propagation:} Ability of the differing program state to affect the output
+
+& \textbf{Mutation operator:} Systematic change applied to produce a mutant
+	&& \textbf{Intraprocedural mutations:} Modifying the internal values or operators of a procedure
+		&&& E.g. (Optionally negated) absolute value insertion, arithmetic/relational/conditional operator replacement
+	&& \textbf{Interprocedural mutations:} Modifying the inputs of a procedure
+		&&& E.g. Parameter values, call target, incoming dependencies
+
+& \textbf{Kill:} Characteristic of a test which produces a different outcome on a mutant than the original program
+	&& Formal definition: A test $t$ kills a mutant $m$ if $t$ produces a different outcome on $m$ than the original program
+	&& \textbf{Weakly kill:} A mutant test which results in different internal state
+		&&& Satisfies reachability and infection, but not propagation
+	&& \textbf{Strongly kill:} A mutant test which results in different output
+		&&& Satisfies reachability, infection, and propagation
+
+& Difficulties:
+	&& Managing and executing a large amount of mutants
+	&& Identifying identical mutants
+
+\end{easylist}
+\subsection{Fault Seeding}
+	\label{subsec:mutation-analysis-and-testing:fault-seeding}
+\begin{easylist}
+
+& \textbf{Fault seeding:} Inserting expected faults to be killed
+	&& Equation: $$\frac{\textrm{\# of mutants which killed a bug}}{\textrm{\# of mutants}}$$
+	&& Issues:
+		&&& Faults may not be meaningful
+		&&& May forget to remove the faults
+
+\end{easylist}
+\subsection{Mutation Testing}
+	\label{subsec:mutation-analysis-and-testing:mutantion-testing}
+\begin{easylist}
+
+& \textbf{Mutation analysis:} Ability to find bugs using a mutant
+& \textbf{Mutation testing:} Process of creating a test suite which covers a representative set of mutants
+	&& Given an unkilled mutant, improve the test suite by adding a test which kills it
+	&& \textbf{Representative set:} Set of mutants which covers all possible faults
+
+& \textbf{Mutation score:} Quantitative score of mutation analysis effectiveness
+	&& Invalid mutants are not counted
+	&& Equation: $$\frac
+			{\textrm{\# of non-duplicated mutants which kill a bug}}
+			{\textrm{\# of non-equivalent, non-duplicated mutants}}
+			$$
+
+& Manage scalability by:
+	&& Filter based on coverage
+	&& Short circuit tests
+	&& Testing multiple mutants simultaneously
+
+& Test coverage:
+	&& \textbf{Weak mutation coverage}: For each mutant, the test suite contains a test which weakly kills the mutant
+	&& \textbf{Strong mutation coverage}: For each mutant, the test suite contains a test which strongly kills the mutant
+
+\end{easylist}
+\clearpage

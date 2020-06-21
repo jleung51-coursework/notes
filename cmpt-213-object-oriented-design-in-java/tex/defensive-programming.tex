@@ -1,0 +1,26 @@
+%
+% CMPT 213: Object Oriented Design in Java - A Course Overview
+% Section: Defensive Programming
+%
+% Author: Jeffrey Leung
+%
+
+\section{Defensive Programming}
+	\label{sec:defensive-programming}
+\begin{easylist}
+
+& \textbf{Precondition:} Guarantee before a method is called
+	&& Enforced by client, or else the class may have unintended behaviour
+& \textbf{Postcondition:} Guarantee after a method is called
+	&& Enforced by caller
+
+& Implementation has a contract for the client to fulfill
+	&& \textbf{Design by Contract:} Client is expected to enforce contract
+		&&& Less error checking
+	&& \textbf{Defensive Programming:} Paradigm where implementation checks for contractual violations and is responsible for maintaining correct state
+		&&& Quicker error catching
+
+& Use assert to maintain consistent internal state
+
+\end{easylist}
+\clearpage

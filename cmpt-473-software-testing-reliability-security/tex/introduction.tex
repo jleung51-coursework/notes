@@ -1,0 +1,75 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Introduction
+%
+% Author: Jeffrey Leung
+%
+
+\section{Introduction}
+	\label{sec:introduction}
+\subsection{Software Quality}
+	\label{subsec:introduction:software-quality}
+\begin{easylist}
+
+& Quality of development process influences quality of resulting software
+
+& Perspectives/roles of the software:
+	&& Priorities of \textit{end users}:
+		&&& Fulfill its desired purposes
+		&&& Produce reliable results upon consistent input
+		&&& Handles bad input
+		&&& Easy to use
+		&&& Responsive
+		&&& Integrates well with other software
+	&& Priorities of \textit{operations/deployment}:
+		&&& Secure from attacks
+		&&& Uses appropriate amount of resources
+	&& Priorities of \textit{developers}:
+		&&& Easily modifiable
+		&&& Comprehensible
+		&&& Has measurable quality
+		&&& Adaptible to other systems
+
+& \textbf{ISO/IEC 9126:} Functionality, reliability, usability, efficiency, portability, maintainability
+	&& \textbf{Reliability:} Characteristic of software which, in the context of software faults, involves avoidance, maintenance of performance during, and re-establishment of performance/data afterwards
+	&& \textbf{Usability:} Characteristic of software which is understandable in the context of how it fits the users' needs, easy to learn/operate, and enjoyable
+	&& \textbf{Maintainability:} Characteristic of software which makes defects easy to identify, allows changes unlikely to affect other components, and easy to test
+
+& Defect terminology:
+	&& \textbf{Defect/fault:} Flaw in static software/code
+		&&& \textbf{Latent defect:} Unobserved defect in delivered software which was not exposed by testing
+	&& \textbf{Failure:} Observable behaviour which does not match expectations
+	&& \textbf{Error/infection:} Not-yet-observed incorrect state
+
+\end{easylist}
+\subsection{Quality Measurement}
+	\label{subsec:introduction:quality-measurement}
+\begin{easylist}
+
+& \textbf{Planning:} Choosing the most important assessment criteria
+
+& Tools:
+	&& \textbf{Synthetic tools:} Quality measurement tools/techniques to create better software
+		&&& E.g. Design methodologies, coding standards, templates, compilers
+	&& \textbf{Analytical tools:} Quality measurement tools/techniques to evaluate software quality
+		&&& E.g. Walk-throughs, audits, unit/integration/system testing
+	&& \textbf{Manual tools:} Quality measurement tools/techniques which is interactively driven
+		&&& E.g. Design methodologies
+	&& \textbf{Automated tools:} Quality measurement tools/techniques which requires no interaction
+		&&& E.g. Compilers, program generators
+
+& Testing is difficult because of dependencies
+
+& Use polymorphism to create a mock to isolate modules during testing
+	&& Inheritance can be used
+	&& \textbf{Parametric polymorphism:} Applying superclasses or templates of parameters to allow generics for testing
+	&& \textbf{Dependency injection:} Using dependencies by accepting them as arguments upon construction rather than instantiating them directly
+
+& \textbf{Test frame:} Plan for a set of test cases based on partitioned inputs
+
+& Coverage effectiveness:
+	&& For statement coverage, having quantitatively more coverage is not necessarily more effective
+	&& For mutation testing, test frame size correlates with defect-finding ability
+
+\end{easylist}
+\clearpage

@@ -1,0 +1,44 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Regression Testing
+%
+% Author: Jeffrey Leung
+%
+
+\section{Regression Testing}
+	\label{sec:regression-testing}
+\begin{easylist}
+
+& \textbf{Regression testing:} Method of testing which ensures previous functionality is preserved, supporting change
+
+& Unexpected behaviour can be caused by:
+	&& New environments
+	&& Modifying other components
+
+& Regression test suite is a subset of the test suite
+
+& Components are tests for:
+	&& Previously fixed bugs
+	&& Units
+	&& System
+
+& Upon a failing test, one or more of the following should occur:
+	&& Fix the software bug
+	&& Fix stale test inputs
+	&& Change expected behaviour
+
+\end{easylist}
+\subsection{Managing Test Suite Size}
+	\label{subsec:regression-testing:managing-test-suite-size}
+\begin{easylist}
+
+& Limit regression test suite size by preventing redundant tests (e.g. not useful behaviour, not covered by adequacy criteria)
+
+& Choosing a subset of tests:
+	&& Conservative approach: Run all tests
+	&& Cheap approach: Run tests which have requirements relating to the modified lines
+	&& Middle ground approach: Run tests affected by how changes propagate by software
+		&&& \textbf{Change impact analysis:} Identification of how a change affects other components
+
+\end{easylist}
+\clearpage

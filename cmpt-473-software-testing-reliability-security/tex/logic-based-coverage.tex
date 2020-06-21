@@ -1,0 +1,101 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Logic-Based Coverage
+%
+% Author: Jeffrey Leung
+%
+
+\section{Logic-Based Coverage}
+	\label{sec:logic-based-coverage}
+\begin{easylist}
+
+& \textbf{Predicate coverage:} Each boolean expression must be tested as true and false in at least one test each
+& \textbf{Clause coverage:} Each clause must be tested as true and false in at least one test
+& \textbf{Combinatorial/Multiple Condition coverage:} Each possible combination of clauses must be tested
+
+& Clause determines the outcome of a predicate if changing only the value of that clause changes the outcome of the predicate
+
+& \textbf{Modified Condition/Decision Coverage (MCDC):} Coverage demonstrating that each entry/exit is used, each decision can take every possible outcome, each clause can take every possible outcome, and each clause independently can impact the outcome
+	&& Based on the behaviour how one clause affects the entire expression
+	&& Ensures that each clause has an impact
+	&& Not effective to generate a test suite as the drive to create minimal tests interferes with MC/DC
+	&& Used to check test suites generated using other strategies
+
+& Determining the impact of a predicate
+	&& Process for a given predicate $a$:
+		&&& Create two clauses, one which replaces $a$ with $\#T$ (true) and the other which replaces $a$ with $\#F$ (false)
+		&&& Set these two clauses as not equal to each other
+		&&& Solve the equation
+		&&& If the equation is not equal, then the predicate has impact
+		
+	&& Example: Given $(a \land b) \lor (a \land \neg b)$, prove whether $a$ has impact or not.
+		&&& Let $a = T$ for one version of the clause, and $a = F$ for another version of the clause.
+
+		\end{easylist}
+		\begin{align*}
+		(T \land b) \lor (T \land \neg b)
+		& \stackrel{?}{=} (F \land b) \lor (F \land \neg b) \\
+		b \lor \neg b
+		& \stackrel{?}{=} F \lor F \\
+		T
+		& \stackrel{?}{=} F
+		\end{align*}
+		\begin{easylist}
+		
+		&&& The expression evalutes to $T \neq F$. Therefore $a$ has impact.
+
+& Process of creating a minimal test suite using MC/DC:
+	&& Change all compared expressions into clauses, each represented by one predicate
+	&& Create a minimal set of logical assignments where, for each predicate, there are at least two assignments where:
+		&&& The values of the predicate and result both differ, and
+		&&& The values of all other predicates match
+	&& Create a test suite with the original inputs set to specific values to satisfy the predicate values
+
+	&& Example: Given $a \lor (b \land c)$, generate a minimal set of tests to demonstrate MCDC coverage.
+		&&& See figure~\ref{fig:mcdc-example-1}.
+		&&& Test entries 1 and 2 show the impact of $a$.
+		&&& Test entries 2 and 3 show the impact of $b$.
+		&&& Test entries 3 and 4 show the impact of $c$.
+		
+		\end{easylist}
+		\begin{figure}[!htb]
+			\centering
+			\begin{tabular}{ c c c | c }
+				a & b & c & Result \\
+				\hline
+				T & F & T & T \\
+				F & F & T & F \\
+				F & T & T & T \\
+				F & T & F & F
+			\end{tabular}
+			\caption{MCDC Example Test Suite}
+			\label{fig:mcdc-example-1}
+		\end{figure}
+		\begin{easylist}
+
+	&& Example: Given $(a \land b \land c) \lor (d \land a)$, generate a minimal set of tests to demonstrate MCDC coverage.
+		&&& See figure~\ref{fig:mcdc-example-2}.
+		&&& Test entries 1 and 2 show the impact of $a$.
+		&&& Test entries 2 and 3 show the impact of $d$.
+		&&& Test entries 3 and 4 show the impact of $c$.
+		&&& Test entries 4 and 5 show the impact of $b$.
+		
+		\end{easylist}
+		\begin{figure}[!htb]
+			\centering
+			\begin{tabular}{ c c c c | c }
+				a & b & c & d & Result \\
+				\hline
+				F & T & F & T & F \\
+				T & T & F & T & T \\
+				T & T & F & F & F \\
+				T & T & T & F & T \\
+				T & F & T & F & F
+			\end{tabular}
+			\caption{MCDC Example Test Suite}
+			\label{fig:mcdc-example-2}
+		\end{figure}
+		\begin{easylist}
+
+\end{easylist}
+\clearpage

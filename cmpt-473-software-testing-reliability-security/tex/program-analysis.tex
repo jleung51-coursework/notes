@@ -1,0 +1,30 @@
+%
+% CMPT 473: Software Quality Assurance - A Course Overview
+% Section: Program Analysis
+%
+% Author: Jeffrey Leung
+%
+
+\section{Program Analysis}
+	\label{sec:program-analysis}
+\begin{easylist}
+
+& \textbf{Program analysis:} Tools and techniques which automatically analyze software behaviour
+
+& \textbf{Dynamic analysis:} Analysis about a single instance of program execution
+	&& Can be computationally expensive
+	&& Does not examine all possible executions
+
+& \textbf{Static analysis:} Analysis on source code about all possible executions
+	&& Undecidability prevents some analyses
+	&& \textbf{Abstract interpretation:} Static analysis method which simulates different execution paths
+
+& False positives/negatives may occur
+
+& Examples:
+	&& Valgrind: Dynamic binary instrumentation tool to check for memory leaks
+		&&& Only works on executables which provide both stack and heap allocated memory
+	&& Clang sanitizers: Compile-time instrumentation tools to analyze safety of usage
+
+\end{easylist}
+\clearpage

@@ -1,0 +1,171 @@
+%
+% CMPT 213: Object Oriented Design in Java - A Course Overview
+% Section: Object-Oriented Design
+%
+% Author: Jeffrey Leung
+%
+
+\section{Object-Oriented Design}
+	\label{sec:object-oriented-design}
+\begin{easylist}
+
+& Effective because classes represent stable problem domain concepts
+& Design involves identifying classes, responsibilities, and relationships
+
+& \textbf{Object:} Unique software entity with state and behaviours
+	&& \textbf{State:} Information about an object
+	&& \textbf{Behaviour:} Methods and operations which view and/or modify state
+	&& \textbf{Class:} Type of a set of objects with the same behaviours and set of possible states
+		&&& \textbf{Final class:} Class which cannot be inherited from
+	&& \textbf{Field/instance data:} Member variable stored by an object
+	&& \textbf{Method:} Member function of a class
+		&&& \textbf{Final method:} Method which cannot be overridden
+	&& Statics:
+		&&& \textbf{Static/class field:} Field for which only a single instance exists and is shared between all classes
+		&&& \textbf{Static/class method:} Method which can be called on the class without a constructed object
+	&& Unique types of objects:
+		&&& Agent: Object which performs a specific task
+		&&& Users/roles, events, systems, interfaces
+
+& Anonymous classes:
+	&& \textbf{Anonymous class:} Single-use implementation of an interface, defined only once within another body of code
+	&& \textbf{Anonymous object:} Instance of an unnamed class
+
+& Relationships between objects:
+	&& \textbf{Dependency (uses):} Relationship between two classes where one uses the other (i.e. the first may need to change if the second changes)
+		&&& \textbf{Coupling:} Relationship between two classes where one is a dependency of the other
+			&&&& The greater the coupling, the greater the changes required when one component is modified
+			&&&& Ideally minimized
+	&& \textbf{Aggregation (has a):} Relationship between two classes where one contains the other
+	&& \textbf{Inheritance (is a):} Relationship between two classes where one is a subclass of the other (see subsection~\ref{subsec:object-oriented-design:inheritance})
+
+& \textbf{Side effect:} Observable change to state caused by code execution
+
+& \textbf{Idiom:} Common practice
+
+& \textbf{Protected:} Access class which is available at package-level as well as derived classes, but not external code
+	&& Breaks encapsulation; exposes implementation details to derived classes
+	&& Difficult because no control over the extending clases
+
+\end{easylist}
+\subsection{Public Interface}
+	\label{subsec:object-oriented-design:public-interface}
+\begin{easylist}
+
+& \textbf{Interface:} Set of methods which an implementing class can choose to implement
+
+& Object type cannot be dynamically changed
+
+\end{easylist}
+\subsection{Principles}
+	\label{subsec:object-oriented-design:principles}
+\begin{easylist}
+
+& \textbf{Encapsulation:} Characteristic of a module which only exposes some public interfaces, allowing some internal changes to be made without breaking outward interface
+	&& Modules manage their own state
+	&& Reduces scope of change (which encourages modification) and cognitive load
+
+& \textbf{Immutability:} Characteristic of an entity which has no methods which change its visible state
+	&& A modification to an object must return a new object
+	&& An accessor should return a value or immutable reference
+	&& Avoids issues from partial setters and shared references
+	&& \textbf{Final:} Keyword which declares a field to have an immutable reference
+
+& \textbf{Command-Query Separation:} Principle which states that methods should not be both mutator and accessor, to avoid unexpected side effects
+	&& \textbf{Command:} Mutator method
+		&&& Should return null
+	&& \textbf{Query:} Accessor method
+
+& \textbf{Responsibility heuristic:} Tendency to avoid exposing internal details only for external access
+
+\end{easylist}
+\subsection{SOLID Principles}
+	\label{subsec:object-oriented-design:solid-principles}
+\begin{easylist}
+
+& \textbf{Single Responsibility Principle:} Each class only has one responsibility
+
+& \textbf{Open-Closed Principle:} Classes must be open for extension but closed for modification
+
+& \textbf{Liskov Substitution Principle:} Subtype objects must be interchangeable with base objects
+
+& \textbf{Interface Segregation Principle:} Models should support multiple possible interfaces
+
+& \textbf{Dependency Inversion Principle:} Code should depend on abstractions, not concrete classes
+
+\end{easylist}
+\subsection{Polymorphism}
+	\label{subsec:object-oriented-design:polymorphism}
+\begin{easylist}
+
+& \textbf{Concrete type:} Exact instantiated type of an object
+
+& \textbf{Interface:} Definition of a set of public methods to be implemented
+	&& A class implements an interface
+	&& Code to an interface, not a concrete type
+	&& Can inherit from another object
+
+& \textbf{Polymorphism:} Characteristic of an object which can be one of multiple different concrete types
+	&& Possible due to composition
+	&& Allows late binding
+
+& \textbf{Late binding:} Characteristic of a variable which is assigned a specific concrete type at runtime
+	&& Allows loose coupling
+
+\end{easylist}
+\subsection{Inheritance}
+	\label{subsec:object-oriented-design:inheritance}
+\begin{easylist}
+
+& \textbf{Inheritance:} Subclass created from and extending a superclass
+	&& Allows sharing members (properties and methods)
+	&& Allows polymorphism between two concrete classes
+	&& \textbf{Single inheritance:} A subclass may have at most 1 superclass
+	&& \textbf{Multiple inheritance:} A subclass may have multiple superclasses
+	&& \textbf{Liskov Substitution Principle (LSP):} Rule which states that class B can inherit from A if and only if, for each method in A, the corresponding method in B accepts the same parameters (or more) and executes the same operations (or more)
+		&&& I.e. Client code using the base class must be able to use the derived class without modification
+		&&& Is-a relationships must satisfy the Liskov Substitution Principle
+	&& Should be used for permanent relationships, not temporary assignments
+	&& Favor polymorphism over inheritance
+
+& \textbf{Superclass/Base class:} Class from which another class inherits
+	&& Cannot be assigned to an instance of a subclass
+	&& Referred to by \lstinline!super!
+  && Cannot be final
+
+& \textbf{Subclass/Derived class:} Class which inherits from another
+	&& Can access non-private members of the superclass
+	&& Cannot directly access private members of the superclass
+	&& Can be assigned to an instance of a superclass
+
+& \textbf{Constructor chaining:} Call to a superclass constructor by a constructor in the subclass
+	&& Ensures base classes are initialized first
+	&& In Java, if no superclass constructor is called, then superclass default 0-argument constructor is  automatically called
+
+& Abstracts:
+	&& \textbf{Abstract method:} Un-implemented method which must be implemented by any concrete subclass
+	&& \textbf{Abstract class:} Class with abstract methods
+		&&& Concrete derived classes must implement all abstract methods
+	&& Abstract classes vs. interfaces:
+		&&& Both require implementation of a given set of methods
+		&&& Abstract classes can have member variables and implemented methods; interfaces cannot
+		&&& A class can implement multiple interfaces; a class can only have a single (abstract) superclass
+
+\end{easylist}
+\subsection{Overriding}
+	\label{subsec:object-oriented-design:overriding}
+\begin{easylist}
+
+& The overriding method:
+	&& Must have identical signature (except for visibility and return type)
+	&& Visibility cannot be reduced
+	&& Cannot throw additional checked exceptions
+	&& Can return a subclass of the original return type
+
+& Method to override:
+	&& Cannot be private, static, final
+
+& \textbf{Shadow variable:} Subclass variable which overrides a variable of the superclass
+
+\end{easylist}
+\clearpage
