@@ -1,8 +1,18 @@
 # Jeffrey Leung's SFU Coursework Notes
 
-Notes from my SFU coursework, written in pdfLaTeX. (...mostly. A couple written in Microsoft Word.)
+Notes from my SFU coursework, written in pdfLaTeX. (...mostly. One or two written in Microsoft Word.)
 
-## Required Packages
+## Building the LaTeX Files
 
-* texlive
-* texlive-fonts-extra
+Install the base required LaTeX files:
+```shell
+sudo apt-get install texlive texlive-fonts-extra
+```
+
+In the directory of a specific course, build the file twice:
+```shell
+pdflatex FILE.tex
+pdflatex FILE.tex
+```
+
+View the resulting generated PDF.
