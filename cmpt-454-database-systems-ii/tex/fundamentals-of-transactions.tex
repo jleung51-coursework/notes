@@ -1,0 +1,44 @@
+%
+% CMPT 454: Database Systems II - A Course Overview
+% Section: Fundamentals of Transactions
+%
+% Author: Jeffrey Leung
+%
+
+\section{Fundamentals of Transactions}
+	\label{sec:fundamentals-of-transactions}
+\begin{easylist}
+
+& Operations:
+	&& \textbf{Commit operation:} Database transaction operation which declares the transaction to be applied, even upon system crash
+	&& \textbf{End operation:} Database transaction operation which declares the transaction to be complete
+
+& Notation; given transaction $1$, page $A$, and LSN $X$:
+	&& Read operation: $R1(A)$
+	&& Write operation: $W1(A)$ or $T1 UPDATE A$
+		&&& Modifies RAM; writing to disk is determined separately by replacement policy
+	&& Abort operation: $T1 ABORT$
+	&& Undo operation: $T1 CLR LSN X, undonextLSN = X$
+	&& Commit operation: $C1$ or $T1 COMMIT$
+	&& End operation: $T1 END$
+	&& Begin/end checkpoints: $Begin_checkpoint$ and $End_checkpoint$
+
+& \textbf{Transaction (Xact):} Single data access footprint of an SQL statement
+	&& Consists of a sequence of read, write, commit, and abort actions
+	&& Notation: $Tx$ where $x$ is a number signifying a specific transcation
+		&&& Sequence of concurrent transactions: $T1T2\ldots$
+	&& \textbf{Transaction ID (XID):} Unique identifier for a transaction
+	&& \textbf{Atomic:} Transaction where either all read/write actions are executed or none are
+
+& \textbf{Schedule:} Execution of multiple transactions where the order of reads/writes in each individual transaction are preserved
+	&& \textbf{Complete schedule:} Schedule where every transaction ends with either a commit or abort action
+	&& ACID (atomicity, consistency, isolation, durability) properties of schedules:
+		&&& \textbf{Atomic schedule:} Schedule where all transactions are atomic
+		&&& \textbf{Consistent schedule:} Schedule where, if the initial DB is in a consistent state, the resulting DB must also be in a consistent state
+		&&& \textbf{Isolated schedule:} Schedule where an aborted transaction does not cause other transactions to be inconsistent
+		&&& \textbf{Durable schedule:} Schedule where committed transactions must persist their write operations, regardless of system crash
+
+& \textbf{Blind write:} Write operation on a given data item, which has no previous read operation on the data item in the transaction
+
+\end{easylist}
+\clearpage

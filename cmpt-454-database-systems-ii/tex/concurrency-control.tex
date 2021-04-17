@@ -1,0 +1,201 @@
+%
+% CMPT 454: Database Systems II - A Course Overview
+% Section: Concurrency Control
+%
+% Author: Jeffrey Leung
+%
+
+\section{Concurrency Control}
+	\label{sec:concurrency-control}
+\begin{easylist}
+
+& Concurrency control:
+	&& If atomicity is maintained and there is no system crash, then concurrency control guarantees consistency and isolation
+
+\end{easylist}
+\subsection{Consistency}
+	\label{subsec:consistency}
+\begin{easylist}
+
+& \textbf{Serial schedule:} Consistent schedule where transactions are executed sequentially
+	&& Different transaction orders may create different DB states, all of which are acceptable
+	&& Example: Given transactions:
+	\end{easylist}
+	\begin{align*}
+		T1: & \ R1(A) \ W1(A) \\
+		T2: & \ R2(A) \ W2(A)
+	\end{align*}
+	\begin{easylist}
+	The two possible serial schedules are:
+	\end{easylist}
+	\begin{align*}
+		T1\ T2 = & \ R1(A)\ W1(A)\ R2(A)\ W2(A) \\
+		T2\ T1 = & \ R2(A)\ W2(A)\ R1(A)\ W1(A)
+	\end{align*}
+	\begin{easylist}
+
+& \textbf{(View) Serializable schedule:} Consistent schedule where, for every data item, all transaction read and final write actions have the same effect as a serial schedule of the same transactions
+
+	&& Example: Given transactions:
+	\end{easylist}
+	\begin{align*}
+		T1: & \ R1(A) \ W1(A)\ R1(B)\ W1(B) \\
+		T2: & \ R2(B) \ W2(B)
+	\end{align*}
+	\begin{easylist}
+	
+	A serializable schedule is:
+	\end{easylist}
+	\begin{align*}
+		R1(A)\ W1(A)\ R2(B)\ W2(B)\ R1(B)\ W1(B)
+	\end{align*}
+	\begin{easylist}
+	
+	A non-serializable schedule is:
+	\end{easylist}
+	\begin{align*}
+		R1(A)\ W1(A)\ R1(B)\ R2(B)\ W1(B)\ W2(B)
+	\end{align*}
+	\begin{easylist}
+	
+	&& Explanation: For each table in each transaction, the final write operation is dependent on all previous reads in the same transaction. \\
+	Therefore, if for every data item in every transaction in a given schedule, the read operations and final write operation have the same effect as in a serial schedule, then the schedules are equivalent.
+	
+	
+	&& Manual method to determine if a schedule is serializable, given a set of transactions:
+		&&& Write out all possible serial schedules
+		&&& For each serial schedule possibility:
+			&&&& For each table:
+				&&&&& In the test schedule and the current serial schedule, isolate the read operations and final write operation on the current table
+				&&&&& Compare the isolated operations
+				&&&&& If any operation does not have the same effect, then move to the next serial schedule possibility
+			&&&& If all tables' read and final write operations have the same effect as the current serial schedule, then the schedule is serializable
+		&&& If no serial schedule possibility matches, then the schedule is not serializable
+
+	&& \textbf{Conflict-based testing:} Method to determine if a schedule is serializable through analyzing its conflict actions
+	
+		&&& Actions from an aborted transaction are ignored when calculating conflicts
+		
+		&&& \textbf{Conflict actions:} Two subsequent read/write actions (at least one write) from different transactions (in a schedule) which operate on the same data item
+			&&&& Every conflict action \textbf{induces} the order of transactions to match the order in the two operations
+		
+			&&&& Types of conflict actions:
+				&&&&& If the operations are write then read: \\
+				Given operations $W1\ R2$, \textbf{transaction $T2$ reads the effect of transaction $T1$}
+				&&&&& If the operations are read then write: \\
+				Given operations $R1\ W2$, \textbf{transaction $T1$ does not read the effect of transaction $T2$}
+				&&&&& If the operations are both write: \\
+				Given operations $W1\ W2$, \textbf{transaction $T2$ overwrites transaction $T1$}
+	
+		&&& If and only if all conflict actions in a schedule induce the same priority of transactions, then the schedule is serializable
+		
+		&&& Precedence graph is created by analyzing each conflict action and adding directional edges to transactions in their induced orders
+			&&&& An acyclic precedence graph can be navigated in any topological order to create a serial schedule
+			
+		&&& \textbf{Conflict-serializable schedule:} Consistent serializable schedule which has an acyclic precedence graph
+			&&&& Subset of serializable schedules
+
+\clearpage
+\end{easylist}
+\subsection{Isolation}
+	\label{subsec:isolation}
+\begin{easylist}
+
+& \textbf{Isolation:} Property of a transaction where, if it is aborted, other transactions should not be affected
+	&& \textbf{Dependent:} Transaction which reads from or writes to a data item, with the result dependent on the write action of another transaction
+		&&& Conflict actions which create a dependency: $WW$ or $WR$
+		&&& E.g. If the order of actions is $W1\ R2$, then $T2$ depends on $T1$
+
+& \textbf{Cascading abort:} Abort action which causes a different transaction to also abort
+	&& Invalidates the isolation property
+	&& E.g. Given concurrent transactions $T1$ and $T2$:
+		&&& $W1\ R2\ ABORT(1)$ means that the value before $W1$ must be restored, which invalidates $R2$. Therefore, $T2$ must be aborted in addition to $T1$.
+		&&& $W1\ W2\ ABORT(1)$ means that the value before $W1$ must be restored, which loses the write by $W2$. Therefore, $T2$ must be aborted in addition to $T1$.
+
+& \textbf{Recoverable schedule:} Isolated schedule where a transaction can only commit after the transactions it depends on have committed
+	&& Cascading aborts are possible, but are safe to do
+
+    && \textbf{Avoid Cascading Aborts (ACA) schedule:} Isolated schedule which avoids cascading aborts by waiting to access a resource with an uncommitted write, until the action is committed
+        &&& Subset of recoverable schedules
+        &&& All dependencies are replaced with waits
+        &&& The only conflict action allowed is $RW$
+        	&&&& If a schedule has $WW$ or $WR$ conflict actions, then it violates ACA
+
+\clearpage
+\end{easylist}
+\subsection{Enforcing Consistency and Isolation}
+	\label{subsec:enforcing-consistency-and-isolation}
+\begin{easylist}
+
+& Resource locks:
+	&& \textbf{Share lock (S-lock):} Lock on a resource during a read operation
+		&&& Notation: $S(T)$
+	&& \textbf{Exclusive lock (X-lock):} Lock on a resource during a write operation
+		&&& Notation: $X(T)$
+		&&& \textbf{Upgrade:} Action where a lock is changed from share to exclusive, due to a transaction requesting an exclusive lock while holding a share lock on the same resource
+	&& Unlock notation: $U(T)$
+	&& Locking by itself does not guarantee serializability
+	&& \textbf{Lock table:} Hash table of lock entries
+		&&& \textbf{Lock entry:} Data structure representing a single resource which maintains a list of transactions holding locks and a wait queue
+		&&& \textbf{On lock release (OID/XID):} Operation where the next available locks in the wait queue are processed
+
+& \textbf{2PL:} Resource access lock protocol which ensures conflict serializability (consistency)
+	&& Rules: For each transaction:
+		&&& Before reading, a share lock must be activated
+		&&& Before writing, an exclusive lock must be activated
+		&&& All unlocks must happen after all lock operations
+			&&&& \textbf{Lock point:} Time in a schedule at which all required locks have been acquired by a transaction
+	&& Does not enforce isolation
+
+& \textbf{Strict 2PL:} Resource access lock protocol which ensures conflict serializability (consistency) and ACA (isolation)
+	&& Rules: For each transaction:
+		&&& Before reading, a share lock must be activated
+		&&& Before writing, an exclusive lock must be activated
+		&&& Unlocks only happen when committing
+	&& E.g. Schedule which violates string 2PL: $R2(A)\ W1(A)\ W2(A)$
+
+\clearpage
+\end{easylist}
+\subsection{Deadlocks}
+	\label{subsec:deadlocks}
+\begin{easylist}
+
+& \textbf{Deadlock:} Situation where two transactions hold locks while waiting for the other transaction to release their lock
+	&& Can occur in 2PL or strict 2PL
+
+\end{easylist}
+\subsubsection{Detection Strategies}
+	\label{subsubsec:detection-strategies}
+\begin{easylist}
+
+& \textbf{Waits-for-graph:} Deadlock detection strategy where a directed graph is maintained between transactions waiting for another transaction to release a lock, and if a cycle (deadlock) is detected, a transaction in the cycle is aborted
+	&& Aborted transaction is chosen by criteria such as fewest locks, least work done, farthest from completion, etc.
+
+& \textbf{Timeout:} Deadlock detection strategy where a transaction which exceeds a certain duration is aborted
+
+\end{easylist}
+\subsubsection{Prevention Strategies}
+	\label{subsubsec:prevention-strategies}
+\begin{easylist}
+
+& Each transaction is assigned a unique timestamp; waits can only occur in one temporal direction
+	&& \textbf{Wait-die:} Deadlock prevention strategy where older transactions may wait for newer transactions
+	&& \textbf{Wound-wait:} Deadlock prevention strategy where newer transactions may wait for older transactions
+	&& If a transaction violates this, the newer transaction is aborted and restarted after some time with the original timestamp
+
+\end{easylist}
+\subsection{B+ Tree Concurrency}
+	\label{subsec:b-tree-concurrency}
+\begin{easylist}
+
+& B+ tree indices also require locking
+
+& Locking a node also locks the subtree
+
+& \textbf{Crabbing locking:} B+ tree locking strategy which releases ancestor locks as child locks are obtained, `crabbing' down the tree
+	&& Search: Release a lock on a node when a child node of it is locked
+	&& Insert/delete: Release a lock on any ancestor nodes when a child node of it is locked, and the child is not full
+		&&& Reason: Any split in the index will propagate to the non-full child, then stop
+
+\end{easylist}
+\clearpage

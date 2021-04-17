@@ -1,0 +1,285 @@
+%
+% CMPT 454: Database Systems II - A Course Overview
+% Section: Logging and Recovery
+%
+% Author: Jeffrey Leung
+%
+
+\section{Logging and Recovery}
+	\label{sec:logging-and-recovery}
+\begin{easylist}
+
+& \textbf{Logging and recovery:} Strategy to ensure database atomicity and durability
+	&& If consistency and isolation are maintained (e.g. through strict 2PL), then logging and recovery guarantees Atomicity and Durability
+	&& \textbf{Recovery manager:} Component which manages logging and recovery
+
+	&& Example logs:
+	\begin{lstlisting}
+	10 T1 UPDATE P1
+	20 T2 UPDATE P2
+	30 T1 UPDATE P3 (STEAL)
+	40 T1 COMMIT
+	50 T2 UPDATE P3
+	60 T1 END
+	70 T2 COMMIT
+	80 T2 END
+	\end{lstlisting}
+
+& Atomicity:
+	&& Aborted transactions should have their effects nullified, and should not affect other transactions
+
+& Durability:
+	&& Committed transactions (whether written to disk or not) should persist
+	&& Uncommitted transactions should be rolled back
+	&& Assumes that the buffer-pool is updated on writes, and write to disk only occurs occasionally
+		&&& \textbf{Buffer-pool:} Main memory holding the frames of data currently used by the database
+
+\end{easylist}
+\subsection{Solutions for Atomicity and Durability}
+	\label{subsec:solutions-for-atomicity-and-durability}
+\begin{easylist}
+
+& \textbf{Force:} Solution for durability where every write operation is immediately written to disk
+	&& Response time is slow
+	
+& \textbf{Steal:} Solution for atomicity where dirty buffer frames in use by in-progress, uncommitted transactions are written to disk to free up the frame
+	&& Example logs of a steal:
+	\begin{lstlisting}
+	10 T1 UPDATE P1 (STEAL)
+	\end{lstlisting}
+	
+	&& Before writing a stolen page to disk, the old disk page is logged
+	&& If the transaction which was stolen from is aborted, then the disk write must be rolled back to the saved logged value
+	&& Increases throughput
+	&& Flushes the log tail (see subsection~\ref{subsec:transaction-log-information})
+
+& Optimal solution: \textbf{Steal/No Force policy}
+
+	&& Before writing a stolen page to disk, the old disk page is logged
+
+	&& Before committing a transaction, the value of the dirty page is logged
+
+	&& Upon a system crash and restart:
+		&&& Crashed transactions must UNDO all changes by restoring from the saved logged pages (Steal strategy)
+		&&& Committed transactions which had dirty pages must REDO all dirty pages and the commit by restoring from the saved logged pages (No Force strategy)
+
+	& \textbf{Write-Ahead Logging (WAL):} Logging strategy for recovery where all changes are logged, and the log buffer is flushed to the log just before stealing a dirty page or committing a page
+
+\clearpage
+\end{easylist}
+\subsection{Transaction Log Information}
+	\label{subsec:transaction-log-information}
+\begin{easylist}
+
+& \textbf{Logging:} Strategy where each write operation also creates REDO and UNDO information in a log file
+	&& Must use diff information
+	&& Must be safe from crashes
+
+& \textbf{Log tail:} Memory buffer used to hold data before writing to a log
+	&& Flushed upon:
+		&&& A steal
+		&&& A commit action
+		&&& $\textrm{end\_checkpoint}$ (see below)
+
+& \textbf{Log record:} Line of data in a log representing a single change
+	&& Format: $\langle \textrm{XID,\ pageID,\ offset,\ length,\ old\ data,\ new\ data} \rangle$
+	&& Significantly smaller than entire pages; represents a change made to a page
+	&& \textbf{Log Sequence Number (LSN):} Value which uniquely identifies a log record
+		&&& \textbf{flushedLSN:} Value identifying the last-flushed log record from the log tail
+		&&& \textbf{pageLSN:} LSN value on a disk page representing the most recent update
+
+
+
+& \textbf{Transaction Table (TT):} Table containing a record for each active transaction
+	&& Records are:
+		&&& Added upon first execution of a transaction's operation
+		&&& Updated upon a transaction's subsequent operations (including commits)
+		&&& Removed upon execution of the $\textrm{END}$ operation
+	&& Format: $\langle \textrm{XID,\ status,\ lastLSN} \rangle$
+		&&& Status: Transaction status (uncommitted/committed/aborted)
+		&&& \textbf{lastLSN:} LSN value representing the most recent log record when the transaction executed a write action
+	&& Example of a TT: See figure~\ref{tab:transaction-table}
+	\end{easylist}
+	\begin{figure}[!htb]
+		\caption{Example of a Transaction Table}
+		\label{tab:transaction-table}
+		\centering
+		\begin{tabular}{ c | c r }
+			XID & Status & lastLSN \\
+			\hline
+			T1 & U & 100 \\
+			T2 & C & 80
+		\end{tabular}
+	\end{figure}
+	\begin{easylist}
+
+& \textbf{Dirty Page Table (DPT):} Table containing a record for each dirty page
+	&& Records are:
+		&&& Added upon the modification of a non-dirty page
+		&&& Removed upon $\textrm{STEAL}$ing the page or upon writing the page to disk
+	&& Format: $\langle \textrm{pageID,\ recLSN} \rangle$
+		&&& \textbf{recLSN:} LSN value representing the first log record which caused the page to become dirty
+	&& Example of a DPT: See figure~\ref{tab:dirty-page-table}
+	\end{easylist}
+	\begin{figure}[!htb]
+		\caption{Example of a Dirty Page Table}
+		\label{tab:dirty-page-table}
+		\centering
+		\begin{tabular}{ l | r }
+			Page & recLSN \\
+			\hline
+			P1 & 50 \\
+			P3 & 70
+		\end{tabular}
+	\end{figure}
+	\begin{easylist}
+
+& \textbf{Checkpoint (chkpt):}  Regular interval at which the Transaction Table and Dirty Page Table are written to disk for crash prevention
+	&& Limits the amount of log required to analyze upon recovery
+	&& \textbf{begin\_checkpoint:} Log record signifying the time at which the TT and DPT were saved
+	&& \textbf{end\_checkpoint:} Log record signifying at which time the checkpoint was finished being written to disk
+		&&& Flushes the log tail
+	&& Checkpoint LSNs are logged - for example:
+	\begin{lstlisting}
+	10 T1 UPDATE P1
+	20 begin_checkpoint
+	30 T1 UPDATE P2
+	40 end_checkpoint
+	\end{lstlisting}
+
+\clearpage
+\end{easylist}
+\subsection{Aborting}
+	\label{subsec:aborting}
+\begin{easylist}
+
+& \textbf{Abort:} Action where an in-progress, uncommitted transaction is reverted
+
+& Procedure to abort a single transaction $T$:
+	&& Write a $\textrm{T ABORT}$ record to log
+	&& From the TT, retrieve $T$'s $\textrm{lastLSN}$
+	&& For each update starting at $\textrm{lastLSN}$:
+		&&& Undo the update to disk
+		&&& Log the UNDO action as $T\_ CLR LSN\_ undonextLSN=\_$
+			&&&& \textbf{CLR:} Log record value in an ABORT/UNDO action which states that a specified LSN has been undone
+		&&& Take the $\textrm{prevLSN}$ from the undone action to set the $\textrm{undonextLSN}$ value
+			&&&& \textbf{undonextLSN:} Log record value which indicates the next LSN to be undone
+		&&& Update the $\textrm{pageLSN}$ in the Transaction Table
+		&&& Queue another action to undo $\textrm{undonextLSN}$
+	&& If there are no more actions to undo:
+		&&& Release all locks held
+		&&& Write a $\textrm{T END}$ record to log
+
+& Example logs from an abort:
+\begin{lstlisting}
+10 T1 UPDATE P1
+20 T1 UPDATE P2
+30 T1 ABORT
+40 T1 CLR LSN 20, undonextLSN=10
+50 T1 CLR LSN 10, undonextLSN=nil
+60 T1 END
+\end{lstlisting}
+
+\clearpage
+\end{easylist}
+\subsection{Recovering from Crashes}
+	\label{subsec:recovering-from-crashes}
+\begin{easylist}
+
+& \textbf{Crash:} Loss of power which causes everything in memory (log tail, TT, DPT, and dirty pages) to be lost
+	&& Flushed log, master record, and written data pages survive a crash
+	&& \textbf{Repeated crash:} Subsequent crash which occurs during recovery of an initial crash
+	
+& \textbf{Recovery:} Crash restart process where the TT and DPT are restored, all active transactions are redone, and all uncommitted transactions are undone
+
+& Procedures in order: ANALYZE, REDO, UNDO
+	&& Only UNDO will add new log records
+
+
+
+& \textbf{ANALYZE:} Recovery procedure which restores the TT and DPT from the most recent \\ $\textrm{begin\_checkpoint}$ (logged on the master record) and reconstructs the remaining unsaved changes using the logged actions
+	&& Difference from the TT and DPT lost at crash: Steals are not reflected in the reconstructed DPT
+
+
+
+& \textbf{REDO:} Recovery procedure which begins from the smallest recLSN in the DPT and re-dos all logged actions
+	&& Applies actions to disk
+	&& Applies to all actions, even for aborted transactions
+	&& No logs are added/modified, only data actions are executed
+	&& No redo is executed (i.e. an update has already been written to disk) if any of the following are true:
+		&&& The page is not in the DPT
+		&&& The $\textrm{recLSN}$ in the DPT is greater than the current LSN
+		&&& The $\textrm{pageLSN}$ of the page is greater or equal to the current LSN
+	&& When redoing a $\textrm{CLR}$ record:
+		&&& Reapply the $\textrm{UNDO}$ from the record to the data
+		&&& Update $\textrm{pageLSN}$ to the $\textrm{CLR}$ record to avoid repeated redos
+
+\clearpage
+	
+& \textbf{UNDO:} Recovery procedure for a single uncommitted transaction which begins from the $\textrm{lastLSN}$ in the TT, and un-dos all actions in the transaction
+	&& \textbf{Loser:} Transaction which was not yet committed when a crash happened, and requires rolling back
+	&& Transactions are undone starting from the greatest $\textrm{lastLSN}$
+	&& Procedure to UNDO transactions:
+		&&& Create a list of LSNs $\textrm{ToUndo}$
+		&&& For each transaction which was uncommitted when the crash happened, add its $\textrm{lastLSN}$ to $\textrm{ToUndo}$
+		
+		&&& Until $\textrm{ToUndo}$ is empty, take the largest LSN:
+			&&&& If the action is an $\textrm{Abort}$, add its $\textrm{prevLSN}$ to $\textrm{ToUndo}$
+			&&&& If the action is an $\textrm{Update}$:
+				&&&&& Undo the update on disk
+				&&&&& Write $CLR$ as the new log record
+				&&&&& If the undone record's $\textrm{prevLSN}$ is not null, add it to $\textrm{ToUndo}$
+			&&&& If the action is a $CLR$ record:
+				&&&&& If $\textrm{undoNextLSN}$ is null, then write the $\textrm{END}$ record for this transaction
+				&&&&& If $\textrm{undoNextLSN}$ is not null, then add the $\textrm{undoNextLSN}$ record to $\textrm{ToUndo}$
+	&& Example logs from UNDO:
+		\begin{lstlisting}
+		110 CLR T1 UNDO LSN = 100, undoNextLSN =10 
+		120 CLR T2 UNDO LSN = 90, undoNextLSN = 50
+		130 CLR T2 UNDO LSN = 50, undoNestLSN = 20
+		\end{lstlisting}
+
+
+
+& Optimization:
+	&& To reduce work required by the ANALYSIS phase, save DPT and TT checkpoints more frequently
+	&& To reduce work required by the REDO phase, flush pages to disk often and asynchronously
+	&& To reduce work required by the UNDO phase, avoid long-running transactions (e.g. break up into shorter transactions)
+	
+& \textbf{Media recovery:} Recovery of data from a corrupted database object
+	&& Process:
+		&&& Occasionally copy a data item
+		&&& Upon corruption, restore the copy and use checkpoints and logs to update
+			&&&& Redo actions of committed transactions
+			&&&& Undo actions of uncommitted transactions
+	&& Regularly copying a data item is expensive
+
+\end{easylist}
+\clearpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

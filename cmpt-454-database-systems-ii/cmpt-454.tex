@@ -1,0 +1,65 @@
+%
+% CMPT 454: Database Systems II - A Course Overview
+%
+% Author: Jeffrey Leung
+%
+
+\documentclass[10pt, oneside, letterpaper, titlepage]{article}
+
+\usepackage{amsmath}
+\usepackage[ampersand]{easylist}
+	\ListProperties(
+		Progressive*=5ex,
+		Space=5pt,
+		Space*=5pt,
+		Style1*=\textbullet\ \ ,
+		Style2*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont} \ \ ,
+		Style3*=\textasteriskcentered\ \ ,
+		Style4*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Style5*=\textbullet\ \ ,
+		Style6*=\begin{normalfont}\begin{bfseries}\textendash\end{bfseries}\end{normalfont}\ \ ,
+		Style7*=\textasteriskcentered\ \ ,
+		Style8*=\begin{normalfont}\begin{bfseries}\textperiodcentered\end{bfseries}\end{normalfont}\ \ ,
+		Hide1=1,
+		Hide2=2,
+		Hide3=3,
+		Hide4=4,
+		Hide5=5,
+		Hide6=6,
+		Hide7=7,
+		Hide8=8 )
+\usepackage[skip=0.5\baselineskip]{caption}
+\usepackage{geometry}
+	\geometry{margin=1.2in}
+\usepackage{graphicx}
+	\graphicspath{ {img/} }
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{listings}
+\usepackage{lmodern} % Allows the use of symbols in font size 10; http://ctan.org/pkg/lm
+\usepackage{textcomp} % Allows the use of \textbullet with the font
+\usepackage{verbatim}
+
+\renewcommand{\arraystretch}{1.2}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{CMPT 454: Database Systems II \\\medskip \Large A Course Overview}
+\author{Jeffrey Leung \\ Simon Fraser University}
+\date{Spring 2021}
+
+\begin{document}
+
+	\maketitle
+	\tableofcontents
+	\clearpage
+	
+	\input{./tex/introduction.tex}
+	\input{./tex/data-storage-architecture.tex}
+	\input{./tex/heap-file-structure.tex}
+	\input{./tex/indexed-file-structure.tex}
+	\input{./tex/external-sorting.tex}
+	\input{./tex/query-optimization.tex}
+	\input{./tex/fundamentals-of-transactions.tex}
+	\input{./tex/concurrency-control.tex}
+	\input{./tex/logging-and-recovery.tex}
+	
+\end{document}

@@ -1,0 +1,251 @@
+%
+% CMPT 454: Database Systems II - A Course Overview
+% Section: Query Optimization
+%
+% Author: Jeffrey Leung
+%
+
+\section{Query Optimization}
+	\label{sec:query-optimization}
+\begin{easylist}
+
+& Notation: Given a schema $R$:
+	&& The size in pages is denoted as $|R|$
+	&& The number of records per page is denoted as $p_R$
+	&& The size of the buffer is $B$
+
+& Clustered indices are only applicable for terms which form a prefix of the search key
+	&& E.g. The index $<A, B, C>$ can be used for the search key $A = 1, B = 3$
+
+\clearpage
+\end{easylist}
+\subsection{Optimizing Equality Joins}
+	\label{subsec:optimizing-equality-joins}
+\begin{easylist}
+
+& \textbf{Join:} Database operation where a single set of rows are returned, created from two relations
+
+& E.g. \textrm{SELECT * FROM Sailors S, Reserves R WHERE R.id = S.id}
+	
+& \textbf{Simple Nested Loops (SNL) join:} Equality join implementation where nested loops compare equality values using 1-page buffers
+	&& Consists of multiple nested loops, each of which loops through a table
+		&&& \textbf{Outer table:} Table in an SNL join which is scanned outside the other nested loop(s)
+		&&& \textbf{Inner table:} table in an SNL join which is scanned inside the other nested loop(s)
+	&& Runtime:
+		\begin{align*}
+			|Outer| + |Outer| \cdot |Inner|
+		\end{align*}
+		&&& $|Outer|$ is the cost of loading each value from the outer table into memory
+		&&& $|Outer| * |Inner|$ is the cost of loading each value from the inner table into memory, and comparing with an outer table value
+		&&& To optimize, smaller tables should be implemented as the outer
+			
+& \textbf{Block Nested Loops (BNL) join:} Equality join implementation where nested loops compare equality values using multi-page buffers
+	&& \textbf{Block:} Fixed-size set of pages representing the size of a buffer
+	&& Runtime:
+		\begin{align*}
+			|Outer| + |Outer\ Blocks| \cdot |Inner| \\
+			= |Outer| + \left\lceil \frac{|Outer|}{B-2} \right\rceil \cdot |Inner|
+		\end{align*}
+		&&& Two buffer pages are used; one as the output buffer and one as the input buffer for the inner table
+		&&& To optimize, smaller tables should be implemented as the outer
+
+& \textbf{Index Nested Loops (INL) join:} Equality join implementation where nested loops compare equality values, and inner loops use an index to search matching values from the outer loop
+	&& Runtime:
+		\begin{align*}
+			|Outer| + |Outer| \cdot p_{outer} \cdot \textrm{probing costs}
+		\end{align*}
+		&&& $|Outer| \cdot p_{outer}$ represents the number of records in table $R$
+		&&& \textbf{Probing cost:} I/O cost to search for an entry and record using an index
+			&&&& Probing cost of data entries in a hash index: 1.2
+			&&&& Probing cost of data entries in a B+ tree: 3-4
+			&&&& Probing cost of data records when the search key is a candidate key: 1
+			&&&& Probing cost of data records when the search key is not a candidate key, in a clustered index: 1
+			&&&& Probing cost of data records when the search key is not a candidate key, in an unclustered index: $\frac{\textrm{records in inner}}{\textrm{records in outer}}$
+				
+	&& Equality with multiple attributes: Index must apply to one or more of the attributes
+	&& Inequality: Index must be clustered B+ tree
+
+& \textbf{Sort-merge-join (SMJ):} Equality join implementation where tables are sorted externally, written back to the disk, merged by equality, then sent to output
+	&& Runtime:
+		&&& Sorting:
+		\begin{align*}
+			  2 \cdot |T_1| \cdot (\left\lceil \log_{B-1} (\frac{|T_1|}{B}) \right\rceil + 1) \\
+			+ 2 \cdot |T_2| \cdot (\left\lceil \log_{B-1} (\frac{|T_2|}{B}) \right\rceil + 1)
+		\end{align*}
+		where $T_1$, $T_2$ are tables and $B$ is the buffer size
+		&&& Merging:
+		\begin{align*}
+			|T_1| + |T_2|
+		\end{align*}
+		&&& Optimization 1: Find the tables which have the fewest maximum count of any repeating value, then use those those tables as the outer loop (to fit as much outer loop data as possible into the input buffer)
+		&&& Optimization 2: Join the runs of the sorted tables after only the first pass of the external sort
+			&&&& When joining, each run is allocated a single buffer
+			&&&& Only possible if $B \geq \sqrt{\textrm{max} \{ |T_1|, |T_2| \} }$
+			&&&& Runtime:
+			\end{easylist}
+			\begin{align*}
+				& \textrm{(Cost of pass 0)} + \textrm{(Merging all runs)} \\
+				& = 2 (|R|+|S|) + (|R|+|S|) \\
+				& = 3 (|R|+|S|)
+			\end{align*}
+			\begin{easylist}
+				
+	&& Equality with multiple attributes: Sort based on all joined attributes
+	&& Inequality: Not applicable
+			
+
+& \textbf{In-memory probing by hash table:} CPU runtime optimization which hashes database table pages into buckets
+	&& Reduces excess page retrieval and optimizes access speed to specific pages
+
+& \textbf{Hash-join (HJ):} Equality join implementation where tables are partitioned into hash buckets, then the values in each hash bucket is joined with the matching values in the hash bucket from the other table
+	&& Hash bucket notation:
+		&&& $T_i$ represents the contents of hash bucket $i$ created by partitioning $T$
+		&&& Assuming partitions are roughly equally sized: $|T_i| = \frac{|T|}{B-1}$
+	&& Tables can be hash-joined in one scan if and only if $B-2 \geq \textrm{min} \{ |R_i|, |S_i| \}$ for all $R_i$, $S_i$ given tables $R$, $S$
+		&&& Implies $B \geq \sqrt{\textrm{min} \{ |R_i|, |S_i| \} }$
+		&&& If tables cannot be hash-joined in one scan, recursively apply hash-join to the bucket(s) which are too large to fit in memory
+	&& Runtime (assuming $R_i$ or $S_i$ can fit in memory):
+	\end{easylist}
+	\begin{align*}
+		& \textrm{Cost of partitioning both relations - read and write} + \textrm{Cost of joining relations} \\
+		& = 2( |R|+|S|) + (|R|+|S|) \\
+		& = 3( |R|+|S|)
+	\end{align*}
+	\begin{easylist}
+	&& Parallelizable
+	&& Sensitive to data skew
+	
+	&& Equality with multiple attributes: Hash  based on all joined attributes
+	&& Inequality: Not applicable
+
+\clearpage
+\end{easylist}
+\subsection{Optimizing Selections}
+	\label{subsec:optimizing-selections}
+\begin{easylist}
+
+& \textbf{Selection:} Database operation where a subset of rows are returned from a relation
+
+& Notation:
+	&& \textbf{Reduction factor (RF):} Percent of data that a table is reduced by through a selection operation
+
+& Size of result:
+\begin{align*}
+	|T| \cdot \textrm{RF}
+\end{align*}
+
+& Runtime:
+	&& No index or not clustered on the attributes: $|T|$
+	&& Clustered on the attributes: $|T| \cdot \textrm{RF}$
+
+& Page I/O:
+	&& No index or not clustered on the attributes: $|T| \cdot \textrm{RF} \cdot p_T$
+		&&& Optimization: Collect and sort record IDs before retrieving them
+	&& Clustered on the attributes: $|T| \cdot \textrm{RF}$
+		&&& Clustered records are more likely to be on the same page
+
+& Converted to conjunctive normal form (CNF) before processing
+
+& Optimizing with multiple indices:
+	&& Approach 1: Retrieve a set of records using the most selective/restrictive index (minimizing returned values), then apply remaining terms
+	&& Approach 2: Retrieve sets of record IDs using all indices, intersect them, sort them, retrieve the records, then  apply remaining terms
+
+\clearpage
+\end{easylist}
+\subsection{Optimizing Projections}
+	\label{subsec:optimizing-projections}
+\begin{easylist}
+
+& \textbf{Projection:} Database operation where a subset of columns are returned from a relation
+	&& Often includes a $\textrm{DISTINCT}$ operation
+
+& \textbf{Standard projection:} Projection implementation using a modified version of the external sort Pass 0
+	&& When writing during external sort Pass 0, drop unnecessary fields
+	&& During external sort merging of runs, drop duplicate rows
+
+	&& Page I/O:
+	\end{easylist}
+	\begin{align*}
+	& \textrm{(Reading all records)} + \textrm{(Writing partial columns)} \\
+	& + \textrm{(Reading the same data)} \\
+	& + \textrm{(Merging non-duplicate rows)} \\
+	= & |T| + |T| \cdot \textrm{(\% of data projected)} * 2 \\
+	  & + |T| \cdot \textrm{(\% of data projected)} \cdot \textrm{(\% of distinct data merged)}
+	\end{align*}
+	\begin{easylist}
+
+& \textbf{Hash projection:} Projection implementation where hashing is used to eliminate duplicates
+	&& Process: Use a hash function on all wanted attributes to partition the table into $B-1$ partitions (while discarding unprojected fields), use a new hash function on all fields of each partition to discard duplicates
+
+& Index terms:
+	&& \textbf{Index-only projection:} Projection operation where all projected attributes are in the index's search key
+		&&& Requires sorting afterwards if the projected attributes are not a prefix of the search key
+		&&& Requires duplicate removal
+	&& \textbf{Index-only, no sort needed projection:} Projection operation where all projected attributes constitute a prefix of the index's search key
+		&&& Requires duplicate removal
+
+\clearpage
+\end{easylist}
+\subsection{Optimizing Unions}
+	\label{subsec:optimizing-unions}
+\begin{easylist}
+
+& \textbf{Union:} Database operation where two relations with matching columns are combined
+	&& Includes removal of duplicates
+
+& \textbf{Hash-based union:} Union implementation which utilizes two hash functions
+	&& Process:
+		&&& Hash both relations into partitions
+		&&& Re-hash a partition from the first relation, into new partitions
+		&&& Re-hash the matching partition from the second relation, into the same re-partitions (avoiding adding duplicates)
+
+\end{easylist}
+\subsection{Optimizing Differences}
+	\label{subsec:optimizing-differences}
+\begin{easylist}
+
+& \textbf{Difference:} Database operation between two relations where any row from the first relation which exists in the second relation is removed
+
+& \textbf{Hash-based difference:} Difference implementation which utilizes two hash functions
+	&& Process:
+		&&& Hash both relations into partitions
+		&&& Re-hash a partition from the first relation, into new partitions
+		&&& For each value in the second relation's matching partition:
+			&&&& Re-hash it to find the corresponding partition
+			&&&& Remove it from the partition if it exists
+
+\end{easylist}
+\subsection{Optimizing Aggregation}
+	\label{subsec:optimizing-aggregation}
+\begin{easylist}
+
+& \textbf{Aggregation:} Database operation where numerical values in rows are combined
+
+& If the index is clustered based on the attribute to be grouped, then no sorting will be required
+
+& \textbf{Index-only aggregation:} Aggregation case where the search key contains all attributes to be searched and grouped, therefore no record access is required (only entries)
+
+\end{easylist}
+\subsection{Combined Operations}
+	\label{subsec:combined-operations}
+\begin{easylist}
+
+& If grouping by a specific attribute:
+	&& Ensure the relation is clustered/sorted on the attribute (if not, sort it externally)
+	&& Use the relation with the attribute as the outer loop to preserve order 
+
+\end{easylist}
+\clearpage
+
+
+
+
+
+
+
+
+
+
+
+
+
